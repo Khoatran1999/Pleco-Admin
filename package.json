@@ -1,0 +1,78 @@
+{
+  "name": "fishmarket-pro-dashboard",
+  "private": true,
+  "version": "1.0.0",
+  "description": "FishMarket Pro Dashboard - Desktop Application",
+  "main": "electron.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && npm run dev",
+    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+    "start:frontend": "cd frontend && npm run preview",
+    "start:backend": "cd backend && npm start",
+    "build": "cd frontend && npm run build",
+    "build:frontend": "cd frontend && npm run build",
+    "electron:dev": "cross-env NODE_ENV=development ELECTRON=1 concurrently \"npm run dev:frontend\" \"wait-on http://localhost:5173 && electron .\"",
+    "electron:build": "npm run build:frontend && electron-builder --win",
+    "electron:build:dir": "npm run build:frontend && electron-builder --win --dir",
+    "migrate": "node scripts/migrate-mysql-to-sqlite.js",
+    "test:smoke": "node scripts/smoke/reports.js",
+    "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install"
+  },
+  "build": {
+    "appId": "com.fishmarket.dashboard",
+    "productName": "FishMarket Pro Dashboard",
+    "asar": false,
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "electron.js",
+      "preload.js",
+      "package.json",
+      "backend/**/*",
+      "frontend/dist/**/*",
+      "database/**/*",
+      "!backend/uploads"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico",
+      "signAndEditExecutable": false,
+      "sign": null
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3",
+    "electron": "^28.0.0",
+    "electron-builder": "^24.0.0",
+    "wait-on": "^7.0.0"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "better-sqlite3": "^9.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^4.18.2",
+    "express-validator": "^7.0.1",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.2",
+    "mysql2": "^3.16.0"
+  }
+}
