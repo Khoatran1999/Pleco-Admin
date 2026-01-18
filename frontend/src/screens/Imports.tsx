@@ -123,7 +123,7 @@ const Imports: React.FC<ImportsProps> = ({ onNewImport }) => {
                     <td className="px-6 py-4">{imp.expected_delivery}</td>
                     <td className="px-6 py-4">{imp.delivery_date || "-"}</td>
                     <td className="px-6 py-4">{imp.item_count}</td>
-                    <td className="px-6 py-4 font-bold text-slate-900">
+                    <td className="px-6 py-4 font-bold text-white">
                       {formatCurrencyK(Number(imp.total_amount))}
                     </td>
                     <td className="px-6 py-4">

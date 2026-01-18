@@ -637,11 +637,11 @@ const NewImportOrder: React.FC<NewImportOrderProps> = ({ onBack }) => {
                     >
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-xl">
+                          <div className="w-10 h-10 rounded-xl bg-slate-800/50 flex items-center justify-center text-xl border border-slate-700/50">
                             🐟
                           </div>
                           <div>
-                            <p className="text-sm text-slate-900">
+                            <p className="text-sm text-slate-100">
                               {item.fish_name}
                             </p>
                           </div>
@@ -652,10 +652,10 @@ const NewImportOrder: React.FC<NewImportOrderProps> = ({ onBack }) => {
                           {item.batch_id}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-sm text-slate-900 text-right">
+                      <td className="px-6 py-4 text-sm text-slate-100 text-right">
                         {item.quantity}
                       </td>
-                      <td className="px-6 py-4 text-sm text-slate-900 text-right">
+                      <td className="px-6 py-4 text-sm text-slate-100 text-right">
                         {formatCurrencyK(item.unit_price)}
                       </td>
                       <td className="px-6 py-4 text-sm text-primary text-right">

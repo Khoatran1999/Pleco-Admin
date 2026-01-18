@@ -128,7 +128,7 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                     {type === "sale" ? "Customer" : "Supplier"}
                   </p>
                   {!editing ? (
-                    <p className="text-sm font-bold text-slate-900 mt-1">
+                    <p className="text-sm font-bold text-slate-100 mt-1">
                       {type === "sale"
                         ? order.customer_name || "Walk-in"
                         : order.supplier_name}
@@ -268,7 +268,7 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                             className="border-t border-slate-50"
                           >
                             <td className="px-4 py-3">
-                              <p className="font-bold text-slate-900">
+                              <p className="font-bold text-slate-100">
                                 {item.fish_name}
                               </p>
                               <p className="text-xs text-slate-400">
@@ -281,7 +281,7 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                             <td className="px-4 py-3 text-right font-medium text-slate-600">
                               {formatCurrencyK(Number(item.unit_price))}
                             </td>
-                            <td className="px-4 py-3 text-right font-bold text-slate-900">
+                            <td className="px-4 py-3 text-right font-bold text-slate-100">
                               {formatCurrencyK(Number(item.total_price))}
                             </td>
                           </tr>
@@ -302,11 +302,11 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
               </div>
 
               {/* Order Totals */}
-              <div className="bg-slate-50 rounded-xl p-4 space-y-2">
+              <div className="bg-slate-800/30 rounded-xl p-4 space-y-2">
                 {type === "sale" && order.subtotal !== undefined && (
                   <div className="flex justify-between text-sm">
-                    <span className="text-slate-500">Subtotal</span>
-                    <span className="font-medium text-slate-700">
+                    <span className="text-slate-400">Subtotal</span>
+                    <span className="font-medium text-slate-100">
                       {formatCurrencyK(Number(order.subtotal))}
                     </span>
                   </div>
@@ -321,9 +321,9 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                       </span>
                     </div>
                   )}
-                <div className="flex justify-between text-base pt-2 border-t border-slate-200">
-                  <span className="font-bold text-slate-900">Total</span>
-                  <span className="font-black text-slate-900">
+                <div className="flex justify-between text-base pt-2 border-t border-slate-700/50">
+                  <span className="font-bold text-slate-100">Total</span>
+                  <span className="font-black text-slate-100">
                     {formatCurrencyK(Number(order.total_amount))}
                   </span>
                 </div>

@@ -5,6 +5,7 @@
 
 const supabase = require("../config/supabase");
 const { executeQuery, applyPagination } = require("../utils/supabase-query");
+const { sanitizeForPostgrest } = require("../utils/security");
 
 const User = {
   /**
@@ -12,6 +13,9 @@ const User = {
    */
   async findByUsername(username) {
     return executeQuery(async () => {
+      // Sanitize input to prevent PostgREST filter injection
+      const sanitizedUsername = sanitizeForPostgrest(username);
+
       const result = await supabase
         .from("users")
         .select(
@@ -24,7 +28,9 @@ const User = {
           )
         `,
         )
-        .or(`username.eq.${username},email.eq.${username}`)
+        .or(
+          `username.eq."${sanitizedUsername}",email.eq."${sanitizedUsername}"`,
+        )
         .single();
 
       return result;

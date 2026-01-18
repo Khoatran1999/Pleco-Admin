@@ -4,6 +4,7 @@ import {
   getCurrentUser,
   getSession,
 } from "../../../services/supabase";
+import { API_BASE_URL } from "../../../services/api";
 
 interface User {
   id: string;
@@ -43,7 +44,7 @@ export const signUp = createAsyncThunk(
     { rejectWithValue },
   ) => {
     try {
-      const response = await fetch("http://localhost:5000/api/auth/signup", {
+      const response = await fetch(`${API_BASE_URL}/auth/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(credentials),
@@ -68,7 +69,7 @@ export const signIn = createAsyncThunk(
     { rejectWithValue },
   ) => {
     try {
-      const response = await fetch("http://localhost:5000/api/auth/signin", {
+      const response = await fetch(`${API_BASE_URL}/auth/signin`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(credentials),
@@ -97,7 +98,7 @@ export const signOut = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem("access_token");
-      const response = await fetch("http://localhost:5000/api/auth/signout", {
+      const response = await fetch(`${API_BASE_URL}/auth/signout`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -128,7 +129,7 @@ export const getProfile = createAsyncThunk(
         return rejectWithValue("No access token found");
       }
 
-      const response = await fetch("http://localhost:5000/api/auth/profile", {
+      const response = await fetch(`${API_BASE_URL}/auth/profile`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -172,14 +173,11 @@ export const refreshSession = createAsyncThunk(
         return rejectWithValue("No refresh token found");
       }
 
-      const response = await fetch(
-        "http://localhost:5000/api/auth/refresh-token",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ refresh_token: refreshToken }),
-        },
-      );
+      const response = await fetch(`${API_BASE_URL}/auth/refresh-token`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ refresh_token: refreshToken }),
+      });
 
       const data = await response.json();
       if (!response.ok) {

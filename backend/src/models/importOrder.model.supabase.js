@@ -5,6 +5,7 @@
 
 const supabase = require("../config/supabase");
 const { executeQuery, applyPagination } = require("../utils/supabase-query");
+const { sanitizeForLike } = require("../utils/security");
 
 const ImportOrder = {
   /**
@@ -50,7 +51,8 @@ const ImportOrder = {
 
       // Apply search
       if (filters.search) {
-        query = query.ilike("order_number", `%${filters.search}%`);
+        const sanitizedSearch = sanitizeForLike(filters.search);
+        query = query.ilike("order_number", `%${sanitizedSearch}%`);
       }
 
       // Apply sorting
