@@ -7,6 +7,9 @@ const categoryController = {
       res.json({
         success: true,
         data: categories,
+        meta: {
+          total: categories.length,
+        },
       });
     } catch (error) {
       next(error);

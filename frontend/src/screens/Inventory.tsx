@@ -31,7 +31,7 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [showLossModal, setShowLossModal] = useState(false);
   const [selectedFishForLoss, setSelectedFishForLoss] = useState<Fish | null>(
-    null
+    null,
   );
   const [lossQuantity, setLossQuantity] = useState(1);
   const [lossReason, setLossReason] = useState("");
@@ -55,7 +55,7 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
         search,
         category_id: categoryFilter || undefined,
         status: statusFilter,
-      })
+      }),
     );
     setCurrentPage(1);
   }, [dispatch, search, categoryFilter, statusFilter]);
@@ -64,7 +64,7 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
   const totalPages = Math.ceil(fishes.length / ITEMS_PER_PAGE);
   const paginatedFishes = fishes.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
+    currentPage * ITEMS_PER_PAGE,
   );
 
   const handleEdit = (fish: Fish) => {
@@ -94,7 +94,7 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
         quantity: lossQuantity,
         loss_reason: lossReason,
         note: lossNote,
-      })
+      }),
     );
     setShowLossModal(false);
     dispatch(
@@ -102,7 +102,7 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
         search,
         category_id: categoryFilter || undefined,
         status: statusFilter,
-      })
+      }),
     );
   };
 
@@ -110,29 +110,30 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
     <div className="max-w-7xl mx-auto flex flex-col gap-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-black text-slate-900 tracking-tight">
-            Fish Inventory 1
+          <h2 className="text-3xl font-black text-white tracking-tight">
+            Fish Inventory
           </h2>
-          <p className="text-slate-500 font-medium mt-1">
-            Manage your aquatic stock, update prices, and track availability.
+          <p className="text-cyan-300 font-medium mt-1">
+            Manage your aquatic stock, update prices, and track availability. (
+            {fishes.length} items)
           </p>
         </div>
         <button
           onClick={onAddItem}
-          className="bg-primary hover:bg-blue-600 text-white px-6 py-3 rounded-xl shadow-lg shadow-primary/30 flex items-center gap-2 font-bold transition-all active:scale-95"
+          className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:shadow-2xl hover:shadow-cyan-500/30 text-white px-6 py-3 rounded-xl shadow-lg shadow-cyan-500/20 flex items-center gap-2 font-bold transition-all active:scale-95"
         >
           <span className="material-symbols-outlined text-xl">add</span>
           Add New Fish
         </button>
       </div>
 
-      <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex flex-col md:flex-row gap-4 items-center">
+      <div className="bg-slate-900/50 backdrop-blur-xl p-4 rounded-2xl shadow-sm border border-emerald-500/20 hover:border-emerald-400/40 hover:shadow-2xl hover:shadow-emerald-500/20 transition-all flex flex-col md:flex-row gap-4 items-center">
         <div className="relative flex-1 w-full">
-          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-cyan-400">
             search
           </span>
           <input
-            className="w-full pl-10 pr-4 py-2.5 rounded-xl border-none bg-slate-50 focus:bg-white focus:ring-2 focus:ring-primary/20 transition-all text-sm font-medium"
+            className="w-full pl-10 pr-4 py-2.5 rounded-xl border-none bg-slate-800/50 text-slate-100 placeholder:text-slate-500 focus:bg-slate-800/70 focus:ring-2 focus:ring-cyan-500/20 transition-all text-sm font-medium"
             placeholder="Search by name, scientific name, or SKU..."
             type="text"
             value={search}
@@ -141,7 +142,7 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
         </div>
         <div className="flex gap-3 w-full md:w-auto">
           <select
-            className="flex-1 md:min-w-[160px] pl-4 pr-10 py-2.5 rounded-xl border-none bg-slate-50 text-slate-600 text-sm font-bold focus:ring-2 focus:ring-primary/20 cursor-pointer appearance-none"
+            className="flex-1 md:min-w-[160px] pl-4 pr-10 py-2.5 rounded-xl border-none bg-slate-800/50 text-cyan-300 text-sm font-bold focus:ring-2 focus:ring-cyan-500/20 cursor-pointer appearance-none"
             value={categoryFilter}
             onChange={(e) => setCategoryFilter(e.target.value)}
           >
@@ -153,7 +154,7 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
             ))}
           </select>
           <select
-            className="flex-1 md:min-w-[160px] pl-4 pr-10 py-2.5 rounded-xl border-none bg-slate-50 text-slate-600 text-sm font-bold focus:ring-2 focus:ring-primary/20 cursor-pointer appearance-none"
+            className="flex-1 md:min-w-[160px] pl-4 pr-10 py-2.5 rounded-xl border-none bg-slate-800/50 text-cyan-300 text-sm font-bold focus:ring-2 focus:ring-cyan-500/20 cursor-pointer appearance-none"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
           >
@@ -165,11 +166,11 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
         </div>
       </div>
 
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+      <div className="bg-slate-900/50 backdrop-blur-xl rounded-2xl shadow-sm border border-emerald-500/20 hover:border-emerald-400/40 hover:shadow-2xl hover:shadow-emerald-500/20 transition-all overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-slate-50/50 border-b border-slate-100 text-slate-500 text-[10px] font-bold uppercase tracking-widest">
+              <tr className="bg-slate-800/50 border-b border-slate-800/50 text-cyan-400 text-[10px] font-bold uppercase tracking-widest">
                 <th className="px-6 py-4 w-12 text-center">
                   <input
                     className="rounded border-slate-300 text-primary focus:ring-primary/30"
@@ -186,7 +187,7 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
                 <th className="px-6 py-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="text-sm font-medium text-slate-600">
+            <tbody className="text-sm font-medium text-slate-300">
               {loading ? (
                 <tr>
                   <td
@@ -209,7 +210,7 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
                 paginatedFishes.map((fish: Fish) => (
                   <tr
                     key={fish.id}
-                    className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors group"
+                    className="border-b border-slate-800/30 hover:bg-slate-800/30 transition-colors group"
                   >
                     <td className="px-6 py-4 text-center">
                       <input
@@ -219,41 +220,39 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
                     </td>
                     <td className="px-6 py-4">
                       <div
-                        className="size-12 rounded-xl bg-slate-100 bg-cover bg-center border border-slate-200"
+                        className="size-12 rounded-xl bg-slate-800/50 bg-cover bg-center border border-slate-700/50"
                         style={{
                           backgroundImage: `url(${fish.image || FALLBACK_IMG})`,
                         }}
                       ></div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="font-bold text-slate-900">
-                        {fish.name}
-                      </div>
+                      <div className="font-bold text-white">{fish.name}</div>
                       <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-0.5">
                         {fish.scientific_name}
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-600">
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-800/50 text-slate-300">
                         {fish.size || "N/A"}
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-blue-50 text-blue-600">
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-blue-500/20 text-blue-400 border border-blue-500/30">
                         {fish.category_name || "Uncategorized"}
                       </span>
                     </td>
-                    <td className="px-6 py-4 font-bold text-slate-900">
+                    <td className="px-6 py-4 font-bold text-cyan-400">
                       {formatCurrencyK(Number(fish.retail_price || 0))}
                     </td>
-                    <td className="px-6 py-4 font-bold text-emerald-600">
+                    <td className="px-6 py-4 font-bold text-emerald-400">
                       {formatCurrencyK(Number(fish.wholesale_price || 0))}
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
                         <div
                           className={`size-1.5 rounded-full ${getStatusDotColor(
-                            fish.status || ""
+                            fish.status || "",
                           )}`}
                         ></div>
                         <span className={getStatusTextColor(fish.status || "")}>
@@ -265,7 +264,7 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
                       <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-all">
                         <button
                           onClick={() => handleEdit(fish)}
-                          className="p-2 text-slate-400 hover:text-primary hover:bg-blue-50 rounded-lg transition-colors"
+                          className="p-2 text-slate-400 hover:text-cyan-400 hover:bg-cyan-500/20 rounded-lg transition-colors"
                           title="Edit"
                         >
                           <span className="material-symbols-outlined text-[20px]">
@@ -274,7 +273,7 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
                         </button>
                         <button
                           onClick={() => handleOpenLossModal(fish)}
-                          className="p-2 text-slate-400 hover:text-orange-500 hover:bg-orange-50 rounded-lg transition-colors"
+                          className="p-2 text-slate-400 hover:text-orange-400 hover:bg-orange-500/20 rounded-lg transition-colors"
                           title="Record Loss"
                         >
                           <span className="material-symbols-outlined text-[20px]">
@@ -283,7 +282,7 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
                         </button>
                         <button
                           onClick={() => handleDelete(fish.id)}
-                          className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                          className="p-2 text-slate-400 hover:text-red-400 hover:bg-red-500/20 rounded-lg transition-colors"
                           title="Delete"
                         >
                           <span className="material-symbols-outlined text-[20px]">
@@ -298,8 +297,8 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
             </tbody>
           </table>
         </div>
-        <div className="px-6 py-4 border-t border-slate-50 flex items-center justify-between bg-slate-50/30">
-          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+        <div className="px-6 py-4 border-t border-slate-800/50 flex items-center justify-between bg-slate-800/30">
+          <p className="text-xs font-bold text-cyan-400 uppercase tracking-widest">
             Showing {paginatedFishes.length} of {fishes.length} results (Page{" "}
             {currentPage} of {totalPages || 1})
           </p>
@@ -307,7 +306,7 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
             <button
               onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
               disabled={currentPage <= 1}
-              className="p-2 rounded-lg border border-slate-200 bg-white text-slate-400 text-sm hover:bg-slate-50 disabled:opacity-50"
+              className="p-2 rounded-lg border border-slate-700/50 bg-slate-800/50 text-slate-400 text-sm hover:bg-slate-700/50 disabled:opacity-50"
             >
               <span className="material-symbols-outlined text-[18px]">
                 chevron_left
@@ -321,8 +320,8 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
                   onClick={() => setCurrentPage(page)}
                   className={`px-3.5 py-2 rounded-lg text-xs font-bold ${
                     currentPage === page
-                      ? "bg-primary text-white shadow-md shadow-primary/20"
-                      : "border border-slate-200 bg-white text-slate-500 hover:bg-slate-50"
+                      ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md shadow-cyan-500/20"
+                      : "border border-slate-700/50 bg-slate-800/50 text-slate-300 hover:bg-slate-700/50"
                   }`}
                 >
                   {page}
@@ -333,7 +332,7 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
             <button
               onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
               disabled={currentPage >= totalPages}
-              className="p-2 rounded-lg border border-slate-200 bg-white text-slate-500 text-sm hover:bg-slate-50 disabled:opacity-50"
+              className="p-2 rounded-lg border border-slate-700/50 bg-slate-800/50 text-slate-300 text-sm hover:bg-slate-700/50 disabled:opacity-50"
             >
               <span className="material-symbols-outlined text-[18px]">
                 chevron_right
@@ -345,15 +344,13 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
 
       {/* Loss Recording Modal */}
       {showLossModal && selectedFishForLoss && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-xl">
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-slate-900 border border-orange-500/20 rounded-2xl p-6 w-full max-w-md shadow-2xl shadow-orange-500/20">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-bold text-slate-900">
-                Record Fish Loss
-              </h3>
+              <h3 className="text-xl font-bold text-white">Record Fish Loss</h3>
               <button
                 onClick={() => setShowLossModal(false)}
-                className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg"
+                className="p-2 text-slate-400 hover:text-slate-300 hover:bg-slate-800/50 rounded-lg transition-colors"
               >
                 <span className="material-symbols-outlined">close</span>
               </button>
@@ -361,11 +358,11 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-bold text-slate-600 mb-2">
+                <label className="block text-sm font-bold text-cyan-400 mb-2">
                   Fish
                 </label>
-                <div className="p-3 bg-slate-50 rounded-lg">
-                  <div className="font-bold text-slate-900">
+                <div className="p-3 bg-slate-800/50 rounded-lg">
+                  <div className="font-bold text-white">
                     {selectedFishForLoss.name}
                   </div>
                   <div className="text-xs text-slate-400">
@@ -376,8 +373,8 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-slate-600 mb-2">
-                  Quantity Lost <span className="text-red-500">*</span>
+                <label className="block text-sm font-bold text-cyan-400 mb-2">
+                  Quantity Lost <span className="text-red-400">*</span>
                 </label>
                 <input
                   type="number"
@@ -387,18 +384,18 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
                   onChange={(e) =>
                     setLossQuantity(Math.max(1, parseInt(e.target.value) || 1))
                   }
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-700/50 bg-slate-800/50 text-slate-100 focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500/50 transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-slate-600 mb-2">
-                  Reason for Loss <span className="text-red-500">*</span>
+                <label className="block text-sm font-bold text-cyan-400 mb-2">
+                  Reason for Loss <span className="text-red-400">*</span>
                 </label>
                 <select
                   value={lossReason}
                   onChange={(e) => setLossReason(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-700/50 bg-slate-800/50 text-slate-100 focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500/50 transition-all"
                 >
                   <option value="">Select reason...</option>
                   <option value="death">Death</option>
@@ -412,7 +409,7 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-slate-600 mb-2">
+                <label className="block text-sm font-bold text-cyan-400 mb-2">
                   Additional Notes
                 </label>
                 <textarea
@@ -420,7 +417,7 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
                   onChange={(e) => setLossNote(e.target.value)}
                   placeholder="Optional: Add more details..."
                   rows={3}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-700/50 bg-slate-800/50 text-slate-100 placeholder:text-slate-500 focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500/50 transition-all resize-none"
                 />
               </div>
             </div>
@@ -428,14 +425,14 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
             <div className="flex gap-3 mt-6">
               <button
                 onClick={() => setShowLossModal(false)}
-                className="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-bold hover:bg-slate-50"
+                className="flex-1 px-4 py-2.5 rounded-xl border border-slate-700/50 text-slate-300 font-bold hover:bg-slate-800/50 hover:border-orange-500/50 hover:text-orange-300 transition-all"
               >
                 Cancel
               </button>
               <button
                 onClick={handleRecordLoss}
                 disabled={!lossReason || lossQuantity < 1}
-                className="flex-1 px-4 py-2.5 rounded-xl bg-orange-500 text-white font-bold hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 px-4 py-2.5 rounded-xl bg-gradient-to-r from-orange-500 to-red-600 text-white font-bold hover:shadow-2xl hover:shadow-orange-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Record Loss
               </button>

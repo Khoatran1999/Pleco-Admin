@@ -8,6 +8,9 @@ const customerController = {
       res.json({
         success: true,
         data: customers,
+        meta: {
+          total: customers.length,
+        },
       });
     } catch (error) {
       next(error);

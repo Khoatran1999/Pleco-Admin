@@ -67,10 +67,10 @@ export const fetchDashboardStats = createAsyncThunk(
       return response.data.data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to fetch dashboard stats"
+        error.response?.data?.message || "Failed to fetch dashboard stats",
       );
     }
-  }
+  },
 );
 
 export const fetchWeeklyRevenue = createAsyncThunk(
@@ -81,17 +81,17 @@ export const fetchWeeklyRevenue = createAsyncThunk(
       return response.data.data; // expect [{ day, revenue }]
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to fetch weekly revenue"
+        error.response?.data?.message || "Failed to fetch weekly revenue",
       );
     }
-  }
+  },
 );
 
 export const fetchSpeciesSales = createAsyncThunk(
   "report/fetchSpeciesSales",
   async (
     params: { startDate?: string; endDate?: string; limit?: number } = {},
-    { rejectWithValue }
+    { rejectWithValue },
   ) => {
     try {
       const qs = [] as string[];
@@ -109,17 +109,17 @@ export const fetchSpeciesSales = createAsyncThunk(
       return data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to fetch species sales"
+        error.response?.data?.message || "Failed to fetch species sales",
       );
     }
-  }
+  },
 );
 
 export const fetchReportSummary = createAsyncThunk(
   "report/fetchSummary",
   async (
     { startDate, endDate }: { startDate?: string; endDate?: string } = {},
-    { rejectWithValue }
+    { rejectWithValue },
   ) => {
     try {
       const qs = [] as string[];
@@ -130,10 +130,10 @@ export const fetchReportSummary = createAsyncThunk(
       return response.data.data; // expect { summary: {...}, revenue_by_date: [...] }
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to fetch report summary"
+        error.response?.data?.message || "Failed to fetch report summary",
       );
     }
-  }
+  },
 );
 
 const reportSlice = createSlice({
@@ -166,7 +166,8 @@ const reportSlice = createSlice({
       })
       .addCase(fetchReportSummary.fulfilled, (state, action) => {
         const payload = action.payload || {};
-        state.summary = payload.summary || payload;
+        // Backend returns data directly at root level (not nested in summary)
+        state.summary = payload;
       });
   },
 });

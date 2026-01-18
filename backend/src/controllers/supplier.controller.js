@@ -8,6 +8,9 @@ const supplierController = {
       res.json({
         success: true,
         data: suppliers,
+        meta: {
+          total: suppliers.length,
+        },
       });
     } catch (error) {
       next(error);

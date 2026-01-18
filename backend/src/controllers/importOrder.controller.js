@@ -11,6 +11,10 @@ const importOrderController = {
       res.json({
         success: true,
         data: orders,
+        meta: {
+          total: orders.length,
+          filtered: orders.length,
+        },
       });
     } catch (error) {
       next(error);

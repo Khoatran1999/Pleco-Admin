@@ -49,7 +49,7 @@ const Quotation: React.FC = () => {
 
   const setSingleSort = (
     key: "featured" | "newest" | "best" | "name" | "price",
-    dir: "asc" | "desc"
+    dir: "asc" | "desc",
   ) => {
     setSortKey(key);
     setSortDir(dir);
@@ -106,43 +106,43 @@ const Quotation: React.FC = () => {
         <div className="flex flex-wrap gap-2">
           <button
             onClick={() => setSingleSort("featured", "desc")}
-            className="px-4 py-2 rounded-lg bg-white border"
+            className="px-4 py-2 rounded-lg bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:bg-slate-800 hover:border-slate-600 transition-all"
           >
             Featured
           </button>
           <button
             onClick={() => setSingleSort("newest", "desc")}
-            className="px-4 py-2 rounded-lg bg-white border"
+            className="px-4 py-2 rounded-lg bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:bg-slate-800 hover:border-slate-600 transition-all"
           >
             Newest
           </button>
           <button
             onClick={() => setSingleSort("best", "desc")}
-            className="px-4 py-2 rounded-lg bg-white border"
+            className="px-4 py-2 rounded-lg bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:bg-slate-800 hover:border-slate-600 transition-all"
           >
             Best Selling
           </button>
           <button
             onClick={() => setSingleSort("name", "asc")}
-            className="px-4 py-2 rounded-lg bg-white border"
+            className="px-4 py-2 rounded-lg bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:bg-slate-800 hover:border-slate-600 transition-all"
           >
             A to Z
           </button>
           <button
             onClick={() => setSingleSort("name", "desc")}
-            className="px-4 py-2 rounded-lg bg-white border"
+            className="px-4 py-2 rounded-lg bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:bg-slate-800 hover:border-slate-600 transition-all"
           >
             Z to A
           </button>
           <button
             onClick={() => setSingleSort("price", "asc")}
-            className="px-4 py-2 rounded-lg bg-white border"
+            className="px-4 py-2 rounded-lg bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:bg-slate-800 hover:border-slate-600 transition-all"
           >
             Price: ↑
           </button>
           <button
             onClick={() => setSingleSort("price", "desc")}
-            className="px-4 py-2 rounded-lg bg-white border"
+            className="px-4 py-2 rounded-lg bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:bg-slate-800 hover:border-slate-600 transition-all"
           >
             Price: ↓
           </button>
@@ -184,15 +184,25 @@ const Quotation: React.FC = () => {
         </button>
       </div>
 
-      <div className="bg-white rounded-2xl shadow-sm border overflow-auto">
+      <div className="bg-slate-900/50 backdrop-blur-xl rounded-2xl shadow-2xl shadow-purple-500/20 border border-purple-500/20 overflow-auto">
         <table className="min-w-full table-auto">
           <thead>
-            <tr className="text-left">
-              <th className="px-4 py-3">Tên</th>
-              <th className="px-4 py-3">Kích thước</th>
-              <th className="px-4 py-3">Category</th>
-              <th className="px-4 py-3">Giá</th>
-              <th className="px-4 py-3">Hành động</th>
+            <tr className="text-left bg-slate-800/30 border-b border-slate-800/50">
+              <th className="px-4 py-3 text-cyan-400 text-xs font-bold uppercase tracking-widest">
+                Tên
+              </th>
+              <th className="px-4 py-3 text-cyan-400 text-xs font-bold uppercase tracking-widest">
+                Kích thước
+              </th>
+              <th className="px-4 py-3 text-cyan-400 text-xs font-bold uppercase tracking-widest">
+                Category
+              </th>
+              <th className="px-4 py-3 text-cyan-400 text-xs font-bold uppercase tracking-widest">
+                Giá
+              </th>
+              <th className="px-4 py-3 text-cyan-400 text-xs font-bold uppercase tracking-widest">
+                Hành động
+              </th>
             </tr>
           </thead>
           <tbody>

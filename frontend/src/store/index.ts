@@ -7,9 +7,11 @@ import saleReducer from "./features/sale/saleSlice";
 import reportReducer from "./features/report/reportSlice";
 import supplierReducer from "./features/supplier/supplierSlice";
 import customerReducer from "./features/customer/customerSlice";
+import authReducer from "./features/auth/authSlice";
 
 export const store = configureStore({
   reducer: {
+    auth: authReducer,
     fish: fishReducer,
     category: categoryReducer,
     inventory: inventoryReducer,

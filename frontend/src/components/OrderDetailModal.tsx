@@ -53,7 +53,7 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
 }) => {
   const [editing, setEditing] = React.useState(false);
   const [editCustomer, setEditCustomer] = React.useState(
-    order?.customer_name || ""
+    order?.customer_name || "",
   );
   const [selectedCustomerId, setSelectedCustomerId] = React.useState<
     number | null
@@ -75,16 +75,16 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl shadow-xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="bg-slate-900 border border-purple-500/20 rounded-2xl shadow-2xl shadow-purple-500/20 max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-slate-100">
+        <div className="flex items-center justify-between p-6 border-b border-slate-800/50">
           <div>
-            <h3 className="text-xl font-bold text-slate-900">
+            <h3 className="text-xl font-bold text-white">
               {type === "sale" ? "Sale Order Details" : "Import Order Details"}
             </h3>
             {order && (
-              <p className="text-slate-500 text-sm font-medium mt-1">
+              <p className="text-cyan-400 text-sm font-medium mt-1">
                 {order.order_number}
               </p>
             )}
@@ -117,7 +117,7 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                   </p>
                   <span
                     className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold mt-1 ${getStatusColor(
-                      order.status
+                      order.status,
                     )}`}
                   >
                     {order.status}
@@ -144,7 +144,7 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                           setEditCustomer(val);
                           const match = customers.find(
                             (c: any) =>
-                              c.name.toLowerCase() === val.toLowerCase()
+                              c.name.toLowerCase() === val.toLowerCase(),
                           );
                           setSelectedCustomerId(match ? match.id : null);
                         }}
@@ -192,7 +192,7 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                               onClick={async () => {
                                 try {
                                   await navigator.clipboard.writeText(
-                                    String(order.customer_social)
+                                    String(order.customer_social),
                                   );
                                   alert("Copied to clipboard");
                                 } catch (err) {
@@ -382,7 +382,7 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                       payload.customer_name = "Walk-in Customer";
                     }
                     await dispatch(
-                      updateSaleOrderDetails({ id: order.id, data: payload })
+                      updateSaleOrderDetails({ id: order.id, data: payload }),
                     ).unwrap();
                     setEditing(false);
                   } catch (err) {

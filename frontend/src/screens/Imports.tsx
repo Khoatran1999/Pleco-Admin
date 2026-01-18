@@ -58,17 +58,17 @@ const Imports: React.FC<ImportsProps> = ({ onNewImport }) => {
     <div className="max-w-7xl mx-auto flex flex-col gap-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-black text-slate-900 tracking-tight">
+          <h2 className="text-3xl font-black text-white tracking-tight">
             Imports
           </h2>
-          <p className="text-slate-500 font-medium mt-1">
-            Manage import/orders from suppliers.
+          <p className="text-cyan-300 font-medium mt-1">
+            Manage import/orders from suppliers ({imports.length} items).
           </p>
         </div>
         <div className="flex items-center gap-3">
           <button
             onClick={onNewImport}
-            className="bg-primary hover:bg-blue-600 text-white px-6 py-3 rounded-xl shadow-lg shadow-primary/30 flex items-center gap-2 font-bold transition-all active:scale-95"
+            className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:shadow-2xl hover:shadow-cyan-500/30 text-white px-6 py-3 rounded-xl shadow-lg shadow-cyan-500/20 flex items-center gap-2 font-bold transition-all active:scale-95"
           >
             <span className="material-symbols-outlined text-xl">add</span>
             New Import
@@ -76,11 +76,11 @@ const Imports: React.FC<ImportsProps> = ({ onNewImport }) => {
         </div>
       </div>
 
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+      <div className="bg-slate-900/50 backdrop-blur-xl rounded-2xl shadow-sm border border-emerald-500/20 hover:border-emerald-400/40 hover:shadow-2xl hover:shadow-emerald-500/20 transition-all overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-slate-50/50 border-b border-slate-100 text-slate-500 text-[10px] font-bold uppercase tracking-widest">
+              <tr className="bg-slate-800/50 border-b border-slate-800/50 text-cyan-400 text-[10px] font-bold uppercase tracking-widest">
                 <th className="px-6 py-4">Order #</th>
                 <th className="px-6 py-4">Supplier</th>
                 <th className="px-6 py-4">Expected</th>
@@ -91,7 +91,7 @@ const Imports: React.FC<ImportsProps> = ({ onNewImport }) => {
                 <th className="px-6 py-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="text-sm font-medium text-slate-600">
+            <tbody className="text-sm font-medium text-slate-300">
               {loading ? (
                 <tr>
                   <td
@@ -114,9 +114,9 @@ const Imports: React.FC<ImportsProps> = ({ onNewImport }) => {
                 imports.map((imp: any) => (
                   <tr
                     key={imp.id}
-                    className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors group"
+                    className="border-b border-slate-800/30 hover:bg-slate-800/30 transition-colors group"
                   >
-                    <td className="px-6 py-4 font-bold text-slate-900">
+                    <td className="px-6 py-4 font-bold text-white">
                       {imp.order_number}
                     </td>
                     <td className="px-6 py-4">{imp.supplier_name}</td>
@@ -149,12 +149,12 @@ const Imports: React.FC<ImportsProps> = ({ onNewImport }) => {
                                     id: imp.id,
                                     status: editingStatus,
                                     total_amount: editingTotal ?? undefined,
-                                  })
+                                  }),
                                 ).unwrap();
                                 setEditingId(null);
                               } catch (err: any) {
                                 alert(
-                                  err?.message || "Failed to update status"
+                                  err?.message || "Failed to update status",
                                 );
                               } finally {
                                 setSavingId(null);
@@ -187,7 +187,7 @@ const Imports: React.FC<ImportsProps> = ({ onNewImport }) => {
                       ) : (
                         <span
                           className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold ${getStatusColor(
-                            imp.status
+                            imp.status,
                           )}`}
                         >
                           {imp.status}

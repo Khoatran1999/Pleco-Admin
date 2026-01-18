@@ -381,6 +381,24 @@ const SaleOrder = {
   },
 
   /**
+   * Update order status
+   */
+  async updateStatus(id, status, userId) {
+    return executeQuery(async () => {
+      const { data: order, error } = await supabase
+        .from("sale_orders")
+        .update({ status })
+        .eq("id", id)
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      return { data: order };
+    });
+  },
+
+  /**
    * Cancel sale order and restore inventory
    */
   async cancel(id, userId) {

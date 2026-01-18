@@ -46,7 +46,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onAddOrder }) => {
             { name: "Sat", revenue: 0 },
             { name: "Sun", revenue: 0 },
           ],
-    [weeklyRevenue]
+    [weeklyRevenue],
   );
 
   const speciesData = useMemo(() => {
@@ -79,25 +79,25 @@ const Dashboard: React.FC<DashboardProps> = ({ onAddOrder }) => {
     csvRows.push("Metric,Value");
     csvRows.push(
       `Total Revenue (This Week),${formatCurrencyK(
-        dashboardStats?.revenue?.current || 0
-      )}`
+        dashboardStats?.revenue?.current || 0,
+      )}`,
     );
     csvRows.push(
       `Total Revenue (Last Week),${formatCurrencyK(
-        dashboardStats?.revenue?.previous || 0
-      )}`
+        dashboardStats?.revenue?.previous || 0,
+      )}`,
     );
     csvRows.push(`Revenue Change,${dashboardStats?.revenue?.change || 0}%`);
     csvRows.push(
       `Total Inventory,${Math.round(
-        dashboardStats?.inventory?.total || 0
-      )} pieces`
+        dashboardStats?.inventory?.total || 0,
+      )} pieces`,
     );
     csvRows.push(
-      `Today's Imports,${dashboardStats?.inventory?.today_imports || 0} pieces`
+      `Today's Imports,${dashboardStats?.inventory?.today_imports || 0} pieces`,
     );
     csvRows.push(
-      `Total Orders (This Week),${dashboardStats?.orders?.total || 0}`
+      `Total Orders (This Week),${dashboardStats?.orders?.total || 0}`,
     );
     csvRows.push(`Pending Orders,${dashboardStats?.orders?.pending || 0}`);
     csvRows.push("");
@@ -127,167 +127,330 @@ const Dashboard: React.FC<DashboardProps> = ({ onAddOrder }) => {
   }, [dashboardStats, chartData, speciesData]);
 
   return (
-    <div className="max-w-7xl mx-auto flex flex-col gap-8">
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-        <div>
-          <h2 className="text-3xl font-black text-slate-900 tracking-tight">
-            Dashboard Overview
-          </h2>
-          <p className="text-slate-500 font-medium mt-1">
-            Welcome back, here's what's happening at FishMarket today.
-          </p>
-        </div>
-        <div className="flex gap-3">
-          <button
-            onClick={handleExportReport}
-            className="flex items-center gap-2 px-5 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-700 hover:bg-slate-50 transition-all shadow-sm"
-          >
-            <span className="material-symbols-outlined text-[20px]">
-              download
-            </span>
-            Export Report
-          </button>
-          <button
-            onClick={() => {
-              if (onAddOrder) onAddOrder();
-              else navigate("/orders/new");
-            }}
-            className="flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-xl text-sm font-bold hover:bg-blue-600 transition-all shadow-lg shadow-primary/30"
-          >
-            <span className="material-symbols-outlined text-[20px]">add</span>
-            Add Order
-          </button>
-        </div>
-      </div>
+    <div className="max-w-7xl mx-auto flex flex-col gap-6">
+      {/* Header Section with Crypto Neon Theme */}
+      <div className="relative overflow-hidden bg-slate-900/50 backdrop-blur-xl border border-cyan-500/20 rounded-2xl p-8 shadow-2xl shadow-cyan-500/10">
+        {/* Animated gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-blue-500/10 to-purple-500/10"></div>
+        <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/20 rounded-full filter blur-3xl opacity-20 animate-pulse"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-500/20 rounded-full filter blur-3xl opacity-20 animate-pulse delay-1000"></div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition-shadow group">
-          <div className="flex justify-between items-start mb-4">
-            <div className="p-3 bg-blue-50 rounded-2xl text-primary group-hover:scale-110 transition-transform">
-              <span className="material-symbols-outlined text-[28px] fill-1">
-                payments
-              </span>
-            </div>
-            <div
-              className={`flex items-center gap-1 text-xs font-bold ${
-                (dashboardStats?.revenue?.change || 0) >= 0
-                  ? "text-emerald-600 bg-emerald-50"
-                  : "text-red-600 bg-red-50"
-              } px-2.5 py-1 rounded-full`}
-            >
-              <span className="material-symbols-outlined text-[16px]">
-                {(dashboardStats?.revenue?.change || 0) >= 0
-                  ? "trending_up"
-                  : "trending_down"}
-              </span>
-              <span>{dashboardStats?.revenue?.change || 0}%</span>
-            </div>
-          </div>
-          <h3 className="text-slate-500 text-xs font-bold uppercase tracking-widest">
-            Total Revenue
-          </h3>
-          <p className="text-3xl font-black text-slate-900 mt-1">
-            {formatCurrencyK(dashboardStats?.revenue?.current || 0)}
-          </p>
-          <p className="text-xs text-slate-400 font-medium mt-2">
-            Compared to{" "}
-            {formatCurrencyK(dashboardStats?.revenue?.previous || 0)} last week
-          </p>
-        </div>
-
-        <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition-shadow group">
-          <div className="flex justify-between items-start mb-4">
-            <div className="p-3 bg-teal-50 rounded-2xl text-teal-600 group-hover:scale-110 transition-transform">
-              <span className="material-symbols-outlined text-[28px] fill-1">
-                inventory_2
-              </span>
-            </div>
-            {(dashboardStats?.inventory?.today_imports || 0) > 0 && (
-              <div className="flex items-center gap-1 text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full">
-                <span className="material-symbols-outlined text-[16px]">
-                  add_circle
-                </span>
-                <span>
-                  +{dashboardStats?.inventory?.today_imports || 0} today
-                </span>
+        <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div>
+            <div className="flex items-center gap-3 mb-3">
+              <div className="p-2 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl shadow-lg shadow-cyan-500/50">
+                <svg
+                  className="w-6 h-6 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                  />
+                </svg>
               </div>
-            )}
-          </div>
-          <h3 className="text-slate-500 text-xs font-bold uppercase tracking-widest">
-            Total Inventory
-          </h3>
-          <p className="text-3xl font-black text-slate-900 mt-1">
-            {Math.round(dashboardStats?.inventory?.total || 0)}{" "}
-            <span className="text-lg font-normal text-slate-400">pieces</span>
-          </p>
-          <p className="text-xs text-slate-400 font-medium mt-2">
-            {(dashboardStats?.inventory?.today_imports || 0) > 0
-              ? `${dashboardStats?.inventory?.today_imports} pieces arrived today`
-              : "Current stock level"}
-          </p>
-        </div>
-
-        <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition-shadow group">
-          <div className="flex justify-between items-start mb-4">
-            <div className="p-3 bg-orange-50 rounded-2xl text-orange-500 group-hover:scale-110 transition-transform">
-              <span className="material-symbols-outlined text-[28px] fill-1">
-                shopping_bag
-              </span>
+              <h2 className="text-4xl font-black text-white tracking-tight">
+                Dashboard Overview
+              </h2>
             </div>
-            <div className="flex items-center gap-1 text-xs font-bold text-orange-600 bg-orange-50 px-2.5 py-1 rounded-full">
-              <span className="material-symbols-outlined text-[16px]">
-                pending
-              </span>
-              <span>{dashboardStats?.orders?.pending || 0} Pending</span>
-            </div>
+            <p className="text-cyan-300/80 text-lg font-medium">
+              Welcome back, here's what's happening at FishMarket today.
+            </p>
           </div>
-          <h3 className="text-slate-500 text-xs font-bold uppercase tracking-widest">
-            Total Orders
-          </h3>
-          <p className="text-3xl font-black text-slate-900 mt-1">
-            {dashboardStats?.orders?.total || 0}
-          </p>
-          <p className="text-xs text-slate-400 font-medium mt-2">This week</p>
+          <div className="flex gap-3">
+            <button
+              onClick={handleExportReport}
+              className="cursor-pointer flex items-center gap-2 px-5 py-3 bg-slate-800/50 backdrop-blur-sm border border-cyan-500/30 rounded-xl text-sm font-bold text-cyan-300 hover:bg-slate-800/80 hover:border-cyan-400/50 transition-all shadow-lg hover:shadow-cyan-500/20 hover:scale-105 active:scale-95"
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                />
+              </svg>
+              Export Report
+            </button>
+            <button
+              onClick={() => {
+                if (onAddOrder) onAddOrder();
+                else navigate("/orders/new");
+              }}
+              className="cursor-pointer flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl text-sm font-bold text-white hover:from-cyan-400 hover:to-blue-500 transition-all shadow-lg shadow-cyan-500/50 hover:shadow-cyan-500/70 hover:scale-105 active:scale-95"
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 4v16m8-8H4"
+                />
+              </svg>
+              Add Order
+            </button>
+          </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 bg-white rounded-3xl p-6 shadow-sm border border-slate-100">
-          <div className="flex justify-between items-center mb-6">
-            <h3 className="text-lg font-bold text-slate-900">
-              Revenue Overview
+      {/* KPI Cards with Crypto Dark Theme */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Revenue Card */}
+        <div className="cursor-pointer group relative overflow-hidden bg-slate-900/50 backdrop-blur-xl rounded-2xl p-6 border border-cyan-500/20 hover:border-cyan-400/40 hover:shadow-2xl hover:shadow-cyan-500/20 transition-all duration-300 hover:scale-[1.02]">
+          <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-blue-500/5"></div>
+          <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full filter blur-3xl -mr-16 -mt-16 group-hover:bg-cyan-500/20 transition-colors"></div>
+          <div className="relative z-10">
+            <div className="flex justify-between items-start mb-4">
+              <div className="p-3 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl shadow-lg shadow-cyan-500/50 group-hover:scale-110 group-hover:shadow-cyan-500/70 transition-all">
+                <svg
+                  className="w-7 h-7 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </div>
+              <div
+                className={`flex items-center gap-1.5 text-xs font-bold ${
+                  (dashboardStats?.revenue?.change || 0) >= 0
+                    ? "text-emerald-400 bg-emerald-500/20 border border-emerald-500/30"
+                    : "text-red-400 bg-red-500/20 border border-red-500/30"
+                } px-3 py-1.5 rounded-full shadow-sm`}
+              >
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2.5}
+                    d={
+                      (dashboardStats?.revenue?.change || 0) >= 0
+                        ? "M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                        : "M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"
+                    }
+                  />
+                </svg>
+                <span>{Math.abs(dashboardStats?.revenue?.change || 0)}%</span>
+              </div>
+            </div>
+            <h3 className="text-cyan-400 text-xs font-extrabold uppercase tracking-wider mb-2">
+              Total Revenue
             </h3>
-            <select className="bg-slate-50 border-none text-xs font-bold rounded-xl py-2 px-4 focus:ring-2 focus:ring-primary/20 text-slate-500 cursor-pointer">
+            <p className="text-4xl font-black text-white mb-2">
+              {formatCurrencyK(dashboardStats?.revenue?.current || 0)}
+            </p>
+            <div className="flex items-center gap-2 text-sm">
+              <span className="text-slate-400 font-medium">Last 7 days</span>
+              <span className="text-slate-600">•</span>
+              <span className="text-slate-500 font-medium">
+                {formatCurrencyK(dashboardStats?.revenue?.previous || 0)} prev
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Inventory Card */}
+        <div className="cursor-pointer group relative overflow-hidden bg-slate-900/50 backdrop-blur-xl rounded-2xl p-6 border border-emerald-500/20 hover:border-emerald-400/40 hover:shadow-2xl hover:shadow-emerald-500/20 transition-all duration-300 hover:scale-[1.02]">
+          <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-teal-500/5"></div>
+          <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full filter blur-3xl -mr-16 -mt-16 group-hover:bg-emerald-500/20 transition-colors"></div>
+          <div className="relative z-10">
+            <div className="flex justify-between items-start mb-4">
+              <div className="p-3 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl shadow-lg shadow-emerald-500/50 group-hover:scale-110 group-hover:shadow-emerald-500/70 transition-all">
+                <svg
+                  className="w-7 h-7 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                  />
+                </svg>
+              </div>
+              {(dashboardStats?.inventory?.today_imports || 0) > 0 && (
+                <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-400 bg-emerald-500/20 border border-emerald-500/30 px-3 py-1.5 rounded-full shadow-sm">
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2.5}
+                      d="M12 4v16m8-8H4"
+                    />
+                  </svg>
+                  <span>+{dashboardStats?.inventory?.today_imports}</span>
+                </div>
+              )}
+            </div>
+            <h3 className="text-emerald-400 text-xs font-extrabold uppercase tracking-wider mb-2">
+              Total Inventory
+            </h3>
+            <p className="text-4xl font-black text-white mb-2">
+              {Math.round(dashboardStats?.inventory?.total || 0)}
+              <span className="text-xl font-bold text-slate-500 ml-2">pcs</span>
+            </p>
+            <div className="flex items-center gap-2 text-sm">
+              <span className="text-slate-400 font-medium">
+                {(dashboardStats?.inventory?.today_imports || 0) > 0
+                  ? `${dashboardStats?.inventory?.today_imports} arrived today`
+                  : "Current stock level"}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Orders Card */}
+        <div className="cursor-pointer group relative overflow-hidden bg-slate-900/50 backdrop-blur-xl rounded-2xl p-6 border border-purple-500/20 hover:border-purple-400/40 hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-300 hover:scale-[1.02]">
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5"></div>
+          <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full filter blur-3xl -mr-16 -mt-16 group-hover:bg-purple-500/20 transition-colors"></div>
+          <div className="relative z-10">
+            <div className="flex justify-between items-start mb-4">
+              <div className="p-3 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl shadow-lg shadow-purple-500/50 group-hover:scale-110 group-hover:shadow-purple-500/70 transition-all">
+                <svg
+                  className="w-7 h-7 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                  />
+                </svg>
+              </div>
+              <div className="flex items-center gap-1.5 text-xs font-bold text-purple-400 bg-purple-500/20 border border-purple-500/30 px-3 py-1.5 rounded-full shadow-sm">
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <span>{dashboardStats?.orders?.pending || 0} Pending</span>
+              </div>
+            </div>
+            <h3 className="text-purple-400 text-xs font-extrabold uppercase tracking-wider mb-2">
+              Total Orders
+            </h3>
+            <p className="text-4xl font-black text-white mb-2">
+              {dashboardStats?.orders?.total || 0}
+            </p>
+            <div className="flex items-center gap-2 text-sm">
+              <span className="text-slate-400 font-medium">Last 7 days</span>
+              <span className="text-slate-600">•</span>
+              <span className="text-slate-500 font-medium">
+                {dashboardStats?.orders?.pending || 0} awaiting
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Charts Section with Dark Theme */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Revenue Chart */}
+        <div className="lg:col-span-2 bg-slate-900/50 backdrop-blur-xl rounded-2xl p-6 border border-cyan-500/20 hover:border-cyan-400/30 hover:shadow-2xl hover:shadow-cyan-500/10 transition-all">
+          <div className="flex justify-between items-center mb-6">
+            <div>
+              <h3 className="text-xl font-black text-white">
+                Revenue Overview
+              </h3>
+              <p className="text-sm text-slate-400 font-medium mt-1">
+                Daily revenue for the past 7 days
+              </p>
+            </div>
+            <select className="cursor-pointer bg-slate-800/50 border border-slate-700/50 text-xs font-bold rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-cyan-500/50 text-cyan-300 hover:bg-slate-800/80 transition-colors">
               <option>This Week</option>
               <option>Last Week</option>
             </select>
           </div>
-          <div className="w-full h-[300px]">
+          <div className="w-full h-[320px]">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={chartData}>
                 <defs>
                   <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#136dec" stopOpacity={0.1} />
-                    <stop offset="95%" stopColor="#136dec" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.4} />
+                    <stop offset="95%" stopColor="#06b6d4" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid
                   strokeDasharray="3 3"
                   vertical={false}
-                  stroke="#f1f5f9"
+                  stroke="#1e293b"
+                  opacity={0.3}
                 />
                 <XAxis
                   dataKey="name"
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fill: "#94a3b8", fontSize: 12 }}
+                  tick={{ fill: "#64748b", fontSize: 13, fontWeight: 600 }}
+                  dy={10}
                 />
-                <YAxis hide />
+                <YAxis
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: "#64748b", fontSize: 12, fontWeight: 600 }}
+                  dx={-10}
+                />
                 <Tooltip
                   contentStyle={{
-                    borderRadius: "12px",
-                    border: "none",
-                    boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
+                    borderRadius: "16px",
+                    border: "1px solid rgba(6, 182, 212, 0.2)",
+                    boxShadow:
+                      "0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3)",
+                    padding: "12px 16px",
+                    backgroundColor: "rgba(15, 23, 42, 0.95)",
+                    backdropFilter: "blur(12px)",
+                  }}
+                  labelStyle={{
+                    color: "#f1f5f9",
+                    fontWeight: 700,
+                    fontSize: "13px",
+                    marginBottom: "4px",
+                  }}
+                  itemStyle={{
+                    color: "#06b6d4",
+                    fontWeight: 700,
+                    fontSize: "14px",
                   }}
                   formatter={(value: number) => [
                     formatCurrencyK(Number(value)),
@@ -297,33 +460,69 @@ const Dashboard: React.FC<DashboardProps> = ({ onAddOrder }) => {
                 <Area
                   type="monotone"
                   dataKey="revenue"
-                  stroke="#136dec"
+                  stroke="#06b6d4"
                   strokeWidth={3}
                   fillOpacity={1}
                   fill="url(#colorRevenue)"
+                  dot={{
+                    fill: "#06b6d4",
+                    strokeWidth: 2,
+                    r: 4,
+                    stroke: "#0f172a",
+                  }}
+                  activeDot={{
+                    r: 6,
+                    fill: "#06b6d4",
+                    stroke: "#0f172a",
+                    strokeWidth: 3,
+                    filter: "drop-shadow(0 0 8px rgba(6, 182, 212, 0.6))",
+                  }}
                 />
               </AreaChart>
             </ResponsiveContainer>
           </div>
         </div>
 
-        <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 flex flex-col">
-          <h3 className="text-lg font-bold text-slate-900 mb-6">
-            Best Selling Species
-          </h3>
+        {/* Best Selling Species */}
+        <div className="bg-slate-900/50 backdrop-blur-xl rounded-2xl p-6 border border-purple-500/20 hover:border-purple-400/30 hover:shadow-2xl hover:shadow-purple-500/10 transition-all flex flex-col">
+          <div className="mb-6">
+            <h3 className="text-xl font-black text-white">
+              Best Selling Species
+            </h3>
+            <p className="text-sm text-slate-400 font-medium mt-1">
+              Top performers this week
+            </p>
+          </div>
           <div className="flex-1 flex flex-col justify-center gap-6">
             {speciesData.map((item, idx) => (
-              <div key={`${item.name}-${idx}`} className="space-y-2">
-                <div className="flex justify-between text-sm font-bold">
-                  <span className="text-slate-900">{item.name}</span>
-                  <span className="text-slate-400">{item.percentage}%</span>
+              <div
+                key={`${item.name}-${idx}`}
+                className="space-y-3 group cursor-pointer"
+              >
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="w-3 h-3 rounded-full shadow-lg"
+                      style={{
+                        backgroundColor: item.color,
+                        boxShadow: `0 0 10px ${item.color}50`,
+                      }}
+                    ></div>
+                    <span className="text-sm font-bold text-slate-200 group-hover:text-cyan-400 transition-colors">
+                      {item.name}
+                    </span>
+                  </div>
+                  <span className="text-sm font-black text-white">
+                    {item.percentage}%
+                  </span>
                 </div>
-                <div className="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                <div className="w-full bg-slate-800/50 rounded-full h-3 overflow-hidden border border-slate-700/50">
                   <div
                     className="h-full rounded-full transition-all duration-1000"
                     style={{
                       width: `${item.percentage}%`,
                       backgroundColor: item.color,
+                      boxShadow: `0 0 15px ${item.color}50`,
                     }}
                   ></div>
                 </div>

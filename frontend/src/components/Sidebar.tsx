@@ -19,19 +19,22 @@ const Sidebar: React.FC<SidebarProps> = ({ onLogout }) => {
   ];
 
   return (
-    <aside className="hidden md:flex flex-col w-64 h-full bg-white border-r border-slate-200 transition-all shadow-sm">
+    <aside className="hidden md:flex flex-col w-64 h-full bg-slate-900/90 backdrop-blur-xl border-r border-cyan-500/10 transition-all shadow-2xl shadow-cyan-500/5 relative z-20">
+      {/* Glow effect */}
+      <div className="absolute inset-y-0 right-0 w-px bg-gradient-to-b from-transparent via-cyan-500/50 to-transparent"></div>
+
       <div className="p-6 flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary shadow-sm shadow-primary/20">
-          <span className="material-symbols-outlined text-[28px] fill-1">
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/50">
+          <span className="material-symbols-outlined text-[28px] fill-1 text-white">
             set_meal
           </span>
         </div>
         <div className="flex flex-col">
-          <h1 className="text-lg font-bold text-slate-900 leading-none tracking-tight">
+          <h1 className="text-lg font-bold text-white leading-none tracking-tight">
             FishMarket
           </h1>
-          <span className="text-xs text-slate-500 font-medium mt-1 uppercase tracking-wider">
-            Admin Panel
+          <span className="text-xs text-cyan-400 font-medium mt-1 uppercase tracking-wider">
+            Pro Dashboard
           </span>
         </div>
       </div>
@@ -42,25 +45,34 @@ const Sidebar: React.FC<SidebarProps> = ({ onLogout }) => {
             key={item.to}
             to={item.to}
             className={({ isActive }) =>
-              `flex items-center gap-3 px-4 py-3 rounded-xl transition-all group ${
+              `flex items-center gap-3 px-4 py-3 rounded-xl transition-all group cursor-pointer relative ${
                 isActive
-                  ? "bg-primary text-white shadow-lg shadow-primary/20"
-                  : "text-slate-500 hover:bg-slate-50 hover:text-primary"
+                  ? "bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-400 border border-cyan-500/30 shadow-lg shadow-cyan-500/20"
+                  : "text-slate-400 hover:bg-slate-800/50 hover:text-cyan-300 border border-transparent"
               }`
             }
           >
-            <span className="material-symbols-outlined text-[20px]">
-              {item.icon}
-            </span>
-            <span className="text-sm font-semibold">{item.label}</span>
+            {({ isActive }) => (
+              <>
+                {isActive && (
+                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 rounded-xl blur-sm"></div>
+                )}
+                <span className="material-symbols-outlined text-[20px] relative z-10">
+                  {item.icon}
+                </span>
+                <span className="text-sm font-semibold relative z-10">
+                  {item.label}
+                </span>
+              </>
+            )}
           </NavLink>
         ))}
 
-        <div className="my-4 border-t border-slate-100"></div>
+        <div className="my-4 border-t border-slate-800/50"></div>
 
         <button
           onClick={() => navigate("/settings")}
-          className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-slate-500 hover:bg-slate-50 hover:text-primary`}
+          className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-slate-400 hover:bg-slate-800/50 hover:text-cyan-300 cursor-pointer`}
         >
           <span className="material-symbols-outlined text-[20px]">
             settings

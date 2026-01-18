@@ -8,6 +8,9 @@ const inventoryController = {
       res.json({
         success: true,
         data: inventory,
+        meta: {
+          total: inventory.length,
+        },
       });
     } catch (error) {
       next(error);

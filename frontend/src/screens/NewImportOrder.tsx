@@ -260,7 +260,7 @@ const NewImportOrder: React.FC<NewImportOrderProps> = ({ onBack }) => {
   const totalWeight = items.reduce((sum, item) => sum + item.quantity, 0);
   const subtotal = items.reduce(
     (sum, item) => sum + item.quantity * item.unit_price,
-    0
+    0,
   );
   const computedTotal = subtotal + Number(extraCosts || 0);
   const grandTotal = adjustedTotal !== null ? adjustedTotal : computedTotal;
@@ -272,7 +272,7 @@ const NewImportOrder: React.FC<NewImportOrderProps> = ({ onBack }) => {
         .includes((searchFish || "").toLowerCase()) ||
       String(f.sku || "")
         .toLowerCase()
-        .includes((searchFish || "").toLowerCase())
+        .includes((searchFish || "").toLowerCase()),
   );
 
   return (
@@ -281,35 +281,35 @@ const NewImportOrder: React.FC<NewImportOrderProps> = ({ onBack }) => {
         <nav className="flex items-center text-[10px] font-bold uppercase tracking-widest text-slate-400">
           <button
             onClick={onBack}
-            className="hover:text-primary transition-colors"
+            className="hover:text-cyan-400 transition-colors"
           >
             Inventory
           </button>
-          <span className="mx-2 text-slate-300">/</span>
-          <span className="text-slate-800">New Import Order</span>
+          <span className="mx-2 text-slate-600">/</span>
+          <span className="text-cyan-400">New Import Order</span>
         </nav>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <h2 className="text-3xl font-black text-slate-900 tracking-tight">
+          <h2 className="text-3xl font-black text-white tracking-tight">
             New Import Order
           </h2>
           <div className="flex items-center gap-3">
             <button
               onClick={onBack}
-              className="px-6 py-2.5 text-sm font-bold text-slate-600 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 transition-all"
+              className="px-6 py-2.5 text-sm font-bold text-slate-300 bg-slate-800/50 border border-slate-700/50 rounded-xl hover:bg-slate-800 hover:border-slate-600 transition-all"
             >
               Cancel
             </button>
             {draftLoaded && (
               <button
                 onClick={handleClearDraft}
-                className="px-6 py-2.5 text-sm font-bold text-red-600 bg-red-50 border border-red-200 rounded-xl hover:bg-red-100 transition-all"
+                className="px-6 py-2.5 text-sm font-bold text-red-400 bg-red-500/10 border border-red-500/20 rounded-xl hover:bg-red-500/20 hover:shadow-lg hover:shadow-red-500/20 transition-all"
               >
                 Clear Draft
               </button>
             )}
             <button
               onClick={handleSaveDraft}
-              className="px-6 py-2.5 text-sm font-bold text-primary bg-primary/10 border border-primary/20 rounded-xl hover:bg-primary/20 transition-all"
+              className="px-6 py-2.5 text-sm font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 rounded-xl hover:bg-emerald-500/20 hover:shadow-lg hover:shadow-emerald-500/20 transition-all"
             >
               Save Draft
             </button>
@@ -318,23 +318,21 @@ const NewImportOrder: React.FC<NewImportOrderProps> = ({ onBack }) => {
       </header>
 
       <div className="grid grid-cols-1 gap-8">
-        <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-8">
-          <div className="flex items-center gap-3 mb-8 pb-4 border-b border-slate-50">
-            <span className="material-symbols-outlined text-primary text-2xl fill-1">
+        <div className="bg-slate-900/50 backdrop-blur-xl rounded-3xl shadow-2xl shadow-emerald-500/20 border border-emerald-500/20 p-8">
+          <div className="flex items-center gap-3 mb-8 pb-4 border-b border-slate-800/50">
+            <span className="material-symbols-outlined text-emerald-400 text-2xl fill-1">
               description
             </span>
-            <h3 className="text-xl font-black text-slate-900">
-              Import Details
-            </h3>
+            <h3 className="text-xl font-black text-white">Import Details</h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-widest text-slate-500">
+              <label className="text-xs font-bold uppercase tracking-widest text-cyan-400">
                 Supplier *
               </label>
               <div className="flex gap-2">
                 <select
-                  className="w-full rounded-xl border-none bg-slate-50 py-3 px-4 text-sm font-bold text-slate-700 focus:ring-4 focus:ring-primary/10 transition-all cursor-pointer"
+                  className="w-full rounded-xl border-none bg-slate-800/50 py-3 px-4 text-sm font-bold text-slate-100 focus:ring-4 focus:ring-emerald-500/20 transition-all cursor-pointer"
                   value={supplierId}
                   onChange={(e) => setSupplierId(Number(e.target.value))}
                 >
@@ -357,16 +355,18 @@ const NewImportOrder: React.FC<NewImportOrderProps> = ({ onBack }) => {
 
             {/* Create Supplier Modal */}
             {showCreateSupplier && (
-              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-                <div className="w-full max-w-md bg-white rounded-2xl p-6">
-                  <h4 className="text-lg font-bold mb-4">Create Supplier</h4>
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
+                <div className="w-full max-w-md bg-slate-900 border border-emerald-500/20 rounded-2xl p-6 shadow-2xl shadow-emerald-500/20">
+                  <h4 className="text-lg font-bold mb-4 text-white">
+                    Create Supplier
+                  </h4>
                   <div className="space-y-3">
                     <div>
-                      <label className="text-xs font-bold uppercase text-slate-400">
+                      <label className="text-xs font-bold uppercase text-cyan-400">
                         Name *
                       </label>
                       <input
-                        className="w-full rounded-xl border-none bg-slate-50 py-2 px-3 mt-1"
+                        className="w-full rounded-xl border border-slate-700/50 bg-slate-800/50 py-2 px-3 mt-1 text-slate-100 placeholder:text-slate-500"
                         value={newSupplierName}
                         onChange={(e) => setNewSupplierName(e.target.value)}
                       />
@@ -405,14 +405,14 @@ const NewImportOrder: React.FC<NewImportOrderProps> = ({ onBack }) => {
                   <div className="mt-6 flex justify-end gap-3">
                     <button
                       onClick={() => setShowCreateSupplier(false)}
-                      className="px-4 py-2 rounded-xl border border-slate-200 bg-white font-bold"
+                      className="px-4 py-2 rounded-xl border border-slate-700/50 bg-slate-800/50 font-bold text-slate-300 hover:bg-slate-800 hover:border-slate-600"
                     >
                       Cancel
                     </button>
                     <button
                       onClick={handleCreateSupplier}
                       disabled={creatingSupplier}
-                      className="px-4 py-2 rounded-xl bg-primary text-white font-bold"
+                      className="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold shadow-lg shadow-emerald-500/30 hover:shadow-2xl hover:shadow-emerald-500/40"
                     >
                       {creatingSupplier ? "Creating..." : "Create"}
                     </button>
@@ -421,22 +421,22 @@ const NewImportOrder: React.FC<NewImportOrderProps> = ({ onBack }) => {
               </div>
             )}
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-widest text-slate-500">
+              <label className="text-xs font-bold uppercase tracking-widest text-cyan-400">
                 Expected Delivery *
               </label>
               <input
-                className="w-full rounded-xl border-none bg-slate-50 py-3 px-4 text-sm font-bold text-slate-700 focus:ring-4 focus:ring-primary/10 transition-all"
+                className="w-full rounded-xl border-none bg-slate-800/50 py-3 px-4 text-sm font-bold text-slate-100 focus:ring-4 focus:ring-emerald-500/20 transition-all"
                 type="date"
                 value={expectedDelivery}
                 onChange={(e) => setExpectedDelivery(e.target.value)}
               />
             </div>
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-widest text-slate-500">
+              <label className="text-xs font-bold uppercase tracking-widest text-cyan-400">
                 Reference / Invoice #
               </label>
               <input
-                className="w-full rounded-xl border-none bg-slate-50 py-3 px-4 text-sm font-bold text-slate-700 focus:ring-4 focus:ring-primary/10 transition-all placeholder:text-slate-300"
+                className="w-full rounded-xl border-none bg-slate-800/50 py-3 px-4 text-sm font-bold text-slate-100 focus:ring-4 focus:ring-emerald-500/20 transition-all placeholder:text-slate-500"
                 placeholder="e.g. INV-2023-001"
                 type="text"
                 value={referenceNumber}
@@ -446,24 +446,24 @@ const NewImportOrder: React.FC<NewImportOrderProps> = ({ onBack }) => {
           </div>
         </div>
 
-        <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-8">
-          <div className="flex items-center gap-3 mb-8 pb-4 border-b border-slate-50">
-            <span className="material-symbols-outlined text-primary text-2xl fill-1">
+        <div className="bg-slate-900/50 backdrop-blur-xl rounded-3xl shadow-2xl shadow-emerald-500/20 border border-emerald-500/20 p-8">
+          <div className="flex items-center gap-3 mb-8 pb-4 border-b border-slate-800/50">
+            <span className="material-symbols-outlined text-emerald-400 text-2xl fill-1">
               add_shopping_cart
             </span>
-            <h3 className="text-xl font-black text-slate-900">Add Items</h3>
+            <h3 className="text-xl font-black text-white">Add Items</h3>
           </div>
-          <div className="flex flex-col md:flex-row gap-6 items-end bg-slate-50 p-6 rounded-2xl border border-slate-100 mb-8">
+          <div className="flex flex-col md:flex-row gap-6 items-end bg-slate-800/30 p-6 rounded-2xl border border-slate-800/50 mb-8">
             <div className="flex-[2] w-full space-y-2">
-              <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-cyan-400">
                 Fish Species
               </span>
               <div className="relative flex">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 material-symbols-outlined text-[20px]">
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-cyan-400 material-symbols-outlined text-[20px]">
                   search
                 </span>
                 <input
-                  className="w-full pl-11 rounded-xl border-none bg-white py-3 text-sm font-bold text-slate-700 focus:ring-4 focus:ring-primary/10 transition-all shadow-sm"
+                  className="w-full pl-11 rounded-xl border-none bg-slate-800/50 py-3 text-sm font-bold text-slate-100 focus:ring-4 focus:ring-emerald-500/20 transition-all shadow-sm placeholder:text-slate-500"
                   placeholder="Search product..."
                   type="text"
                   value={searchFish}
@@ -472,20 +472,20 @@ const NewImportOrder: React.FC<NewImportOrderProps> = ({ onBack }) => {
                 <button
                   type="button"
                   onClick={() => setShowCreateFish(true)}
-                  className="flex-none mx-2 px-3 py-2 text-sm font-bold text-primary bg-primary/10 border border-primary/20 rounded-xl hover:bg-primary/20 transition-all"
+                  className="flex-none mx-2 px-3 py-2 text-sm font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 rounded-xl hover:bg-emerald-500/20 transition-all"
                 >
                   Add Fish
                 </button>
                 {searchFish && (
-                  <div className="absolute z-10 w-full mt-1 bg-white rounded-xl shadow-lg border border-slate-100 max-h-48 overflow-y-auto">
+                  <div className="absolute z-10 w-full mt-1 bg-slate-800 border border-slate-700/50 rounded-xl shadow-lg max-h-48 overflow-y-auto">
                     {filteredFishes.slice(0, 5).map((fish) => (
                       <button
                         key={fish.id}
-                        className="w-full px-4 py-2 text-left hover:bg-slate-50 text-sm font-medium"
+                        className="w-full px-4 py-2 text-left hover:bg-slate-700/50 text-sm font-medium text-slate-300 hover:text-slate-100"
                         onClick={() => {
                           setSelectedFishId(fish.id);
                           setSearchFish(
-                            `${fish.name}${fish.size ? ` (${fish.size})` : ""}`
+                            `${fish.name}${fish.size ? ` (${fish.size})` : ""}`,
                           );
                           setUnitPrice(Number(fish.cost_price) || 0);
                         }}
@@ -498,54 +498,56 @@ const NewImportOrder: React.FC<NewImportOrderProps> = ({ onBack }) => {
                 )}
                 {/* Create Fish Modal */}
                 {showCreateFish && (
-                  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-                    <div className="w-full max-w-md bg-white rounded-2xl p-6">
-                      <h4 className="text-lg font-bold mb-4">Add Fish</h4>
+                  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
+                    <div className="w-full max-w-md bg-slate-900 border border-emerald-500/20 rounded-2xl p-6 shadow-2xl shadow-emerald-500/20">
+                      <h4 className="text-lg font-bold mb-4 text-white">
+                        Add Fish
+                      </h4>
                       <div className="space-y-3">
                         <div>
-                          <label className="text-xs font-bold uppercase text-slate-400">
+                          <label className="text-xs font-bold uppercase text-cyan-400">
                             Name *
                           </label>
                           <input
-                            className="w-full rounded-xl border-none bg-slate-50 py-2 px-3 mt-1"
+                            className="w-full rounded-xl border border-slate-700/50 bg-slate-800/50 py-2 px-3 mt-1 text-slate-100 placeholder:text-slate-500"
                             value={newFishName}
                             onChange={(e) => setNewFishName(e.target.value)}
                           />
                         </div>
                         <div>
-                          <label className="text-xs font-bold uppercase text-slate-400">
+                          <label className="text-xs font-bold uppercase text-cyan-400">
                             SKU
                           </label>
                           <input
-                            className="w-full rounded-xl border-none bg-slate-50 py-2 px-3 mt-1"
+                            className="w-full rounded-xl border border-slate-700/50 bg-slate-800/50 py-2 px-3 mt-1 text-slate-100 placeholder:text-slate-500"
                             value={newFishSku}
                             onChange={(e) => setNewFishSku(e.target.value)}
                           />
                         </div>
                         <div>
-                          <label className="text-xs font-bold uppercase text-slate-400">
+                          <label className="text-xs font-bold uppercase text-cyan-400">
                             Size
                           </label>
                           <input
-                            className="w-full rounded-xl border-none bg-slate-50 py-2 px-3 mt-1"
+                            className="w-full rounded-xl border border-slate-700/50 bg-slate-800/50 py-2 px-3 mt-1 text-slate-100 placeholder:text-slate-500"
                             value={newFishSize}
                             onChange={(e) => setNewFishSize(e.target.value)}
                           />
                         </div>
                         <div>
-                          <label className="text-xs font-bold uppercase text-slate-400">
+                          <label className="text-xs font-bold uppercase text-cyan-400">
                             Cost Price
                           </label>
                           <input
                             type="number"
                             step="0.01"
-                            className="w-full rounded-xl border-none bg-slate-50 py-2 px-3 mt-1"
+                            className="w-full rounded-xl border border-slate-700/50 bg-slate-800/50 py-2 px-3 mt-1 text-slate-100 placeholder:text-slate-500"
                             value={newFishCost}
                             onChange={(e) =>
                               setNewFishCost(
                                 e.target.value === ""
                                   ? ""
-                                  : parseFloat(e.target.value)
+                                  : parseFloat(e.target.value),
                               )
                             }
                           />
@@ -554,14 +556,14 @@ const NewImportOrder: React.FC<NewImportOrderProps> = ({ onBack }) => {
                       <div className="mt-6 flex justify-end gap-3">
                         <button
                           onClick={() => setShowCreateFish(false)}
-                          className="px-4 py-2 rounded-xl border border-slate-200 bg-white font-bold"
+                          className="px-4 py-2 rounded-xl border border-slate-700/50 bg-slate-800/50 font-bold text-slate-300 hover:bg-slate-800 hover:border-slate-600"
                         >
                           Cancel
                         </button>
                         <button
                           onClick={handleCreateFish}
                           disabled={creatingFish}
-                          className="px-4 py-2 rounded-xl bg-primary text-white font-bold"
+                          className="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold shadow-lg shadow-emerald-500/30 hover:shadow-2xl hover:shadow-emerald-500/40"
                         >
                           {creatingFish ? "Creating..." : "Create"}
                         </button>
@@ -572,11 +574,11 @@ const NewImportOrder: React.FC<NewImportOrderProps> = ({ onBack }) => {
               </div>
             </div>
             <div className="flex-1 w-full space-y-2">
-              <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-cyan-400">
                 Quantity (pieces)
               </span>
               <input
-                className="w-full rounded-xl border-none bg-white py-3 px-4 text-sm font-bold text-slate-700 focus:ring-4 focus:ring-primary/10 transition-all shadow-sm"
+                className="w-full rounded-xl border-none bg-slate-800/50 py-3 px-4 text-sm font-bold text-slate-100 focus:ring-4 focus:ring-emerald-500/20 transition-all shadow-sm placeholder:text-slate-500"
                 placeholder="0"
                 type="number"
                 value={quantity || ""}
@@ -584,11 +586,11 @@ const NewImportOrder: React.FC<NewImportOrderProps> = ({ onBack }) => {
               />
             </div>
             <div className="flex-1 w-full space-y-2">
-              <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-cyan-400">
                 Unit Cost (K)
               </span>
               <input
-                className="w-full rounded-xl border-none bg-white py-3 px-4 text-sm font-bold text-slate-700 focus:ring-4 focus:ring-primary/10 transition-all shadow-sm"
+                className="w-full rounded-xl border-none bg-slate-800/50 py-3 px-4 text-sm font-bold text-slate-100 focus:ring-4 focus:ring-emerald-500/20 transition-all shadow-sm placeholder:text-slate-500"
                 placeholder="0.00"
                 type="number"
                 step="0.01"
@@ -598,7 +600,7 @@ const NewImportOrder: React.FC<NewImportOrderProps> = ({ onBack }) => {
             </div>
             <button
               onClick={handleAddItem}
-              className="flex items-center justify-center gap-2 bg-primary hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-xl shadow-lg shadow-primary/30 transition-all"
+              className="flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg shadow-emerald-500/30 transition-all hover:shadow-2xl hover:shadow-emerald-500/40"
             >
               <span className="material-symbols-outlined text-[20px]">add</span>
               Add
@@ -678,24 +680,24 @@ const NewImportOrder: React.FC<NewImportOrderProps> = ({ onBack }) => {
         </div>
 
         <div className="flex flex-col md:flex-row gap-8 justify-end">
-          <div className="w-full md:w-1/3 bg-white rounded-3xl shadow-xl border border-slate-100 p-8">
-            <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">
+          <div className="w-full md:w-1/3 bg-slate-900/50 backdrop-blur-xl rounded-3xl shadow-2xl shadow-emerald-500/20 border border-emerald-500/20 p-8">
+            <h4 className="text-xs font-bold text-cyan-400 uppercase tracking-widest mb-6">
               Order Summary
             </h4>
-            <div className="space-y-4 pb-6 border-b border-slate-50">
+            <div className="space-y-4 pb-6 border-b border-slate-800/50">
               <div className="flex justify-between text-sm font-bold">
                 <span className="text-slate-400">Total Items</span>
-                <span className="text-slate-900">{totalItems}</span>
+                <span className="text-slate-100">{totalItems}</span>
               </div>
               <div className="flex justify-between text-sm font-bold">
                 <span className="text-slate-400">Total Weight</span>
-                <span className="text-slate-900">
+                <span className="text-slate-100">
                   {totalWeight.toFixed(1)} pieces
                 </span>
               </div>
               <div className="flex justify-between text-sm font-bold">
                 <span className="text-slate-400">Subtotal</span>
-                <span className="text-slate-900">
+                <span className="text-slate-100">
                   {formatCurrencyK(subtotal)}
                 </span>
               </div>
@@ -708,7 +710,7 @@ const NewImportOrder: React.FC<NewImportOrderProps> = ({ onBack }) => {
                   onChange={(e) =>
                     setExtraCosts(parseFloat(e.target.value) || 0)
                   }
-                  className="w-28 text-right px-2 bg-transparent"
+                  className="w-28 text-right px-2 bg-transparent text-slate-100"
                 />
               </div>
               <div className="flex justify-between text-sm font-bold">
@@ -722,17 +724,17 @@ const NewImportOrder: React.FC<NewImportOrderProps> = ({ onBack }) => {
                   onChange={(e) =>
                     setAdjustedTotal(parseFloat(e.target.value) || 0)
                   }
-                  className="w-28 text-right px-2 bg-transparent"
+                  className="w-28 text-right px-2 bg-transparent text-slate-100"
                 />
               </div>
               {/* Tax removed */}
             </div>
             <div className="pt-6 mb-8">
               <div className="flex justify-between items-end">
-                <span className="text-sm font-bold text-slate-900">
+                <span className="text-sm font-bold text-slate-100">
                   Grand Total
                 </span>
-                <span className="text-3xl font-black text-primary">
+                <span className="text-3xl font-black text-emerald-400">
                   {formatCurrencyK(grandTotal)}
                 </span>
               </div>
@@ -740,7 +742,7 @@ const NewImportOrder: React.FC<NewImportOrderProps> = ({ onBack }) => {
             <button
               onClick={handleSubmit}
               disabled={submitting}
-              className="w-full bg-primary hover:bg-blue-600 text-white font-bold py-4 px-4 rounded-xl shadow-xl shadow-primary/30 transition-all flex items-center justify-center gap-3 group disabled:opacity-50"
+              className="w-full bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-bold py-4 px-4 rounded-xl shadow-xl shadow-emerald-500/30 transition-all flex items-center justify-center gap-3 group disabled:opacity-50 hover:shadow-2xl hover:shadow-emerald-500/40"
             >
               <span className="material-symbols-outlined group-hover:scale-110 transition-transform">
                 check_circle

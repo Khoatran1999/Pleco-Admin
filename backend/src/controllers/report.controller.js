@@ -93,7 +93,7 @@ const reportController = {
       res.json({
         success: true,
         data: {
-          summary,
+          ...summary,
           revenue_by_date: revenueByDate,
         },
       });

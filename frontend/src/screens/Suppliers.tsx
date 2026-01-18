@@ -28,7 +28,7 @@ const Suppliers: React.FC = () => {
   }, [dispatch]);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -97,8 +97,8 @@ const Suppliers: React.FC = () => {
     } else {
       setAvatarPreview(
         `https://ui-avatars.com/api/?name=${encodeURIComponent(
-          s.name
-        )}&background=E5E7EB&color=111827`
+          s.name,
+        )}&background=E5E7EB&color=111827`,
       );
       setAvatarFile(null);
     }
@@ -124,20 +124,20 @@ const Suppliers: React.FC = () => {
     <div className="max-w-7xl mx-auto flex flex-col gap-8">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-3xl font-black text-slate-900">Suppliers</h2>
-          <p className="text-slate-500 mt-1">
-            Manage your suppliers and contacts.
+          <h2 className="text-3xl font-black text-white">Suppliers</h2>
+          <p className="text-cyan-300 mt-1">
+            Manage your suppliers and contacts ({suppliers.length} items).
           </p>
         </div>
       </div>
 
-      <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+      <div className="bg-slate-900/50 backdrop-blur-xl rounded-2xl p-6 shadow-sm border border-cyan-500/20 hover:border-cyan-400/40 hover:shadow-2xl hover:shadow-cyan-500/20 transition-all">
         <form
           onSubmit={handleSubmit}
           className="grid grid-cols-1 md:grid-cols-3 gap-4"
         >
           <div className="flex items-center gap-3">
-            <div className="w-14 h-14 rounded-full overflow-hidden border border-slate-200 bg-slate-100">
+            <div className="w-14 h-14 rounded-full overflow-hidden border border-cyan-500/30 bg-slate-800/50">
               {avatarPreview ? (
                 <img
                   src={avatarPreview}
@@ -155,7 +155,7 @@ const Suppliers: React.FC = () => {
               name="avatar"
               accept="image/*"
               onChange={handleFileChange}
-              className="text-sm"
+              className="text-sm text-cyan-300"
             />
           </div>
           <input
@@ -163,39 +163,39 @@ const Suppliers: React.FC = () => {
             value={form.name}
             onChange={handleChange}
             placeholder="Supplier Name"
-            className="p-3 rounded-xl border bg-slate-50"
+            className="p-3 rounded-xl border border-slate-700/50 bg-slate-800/50 text-slate-100 placeholder:text-slate-500 focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 transition-all"
           />
           <input
             name="contact_person"
             value={form.contact_person}
             onChange={handleChange}
             placeholder="Contact Person"
-            className="p-3 rounded-xl border bg-slate-50"
+            className="p-3 rounded-xl border border-slate-700/50 bg-slate-800/50 text-slate-100 placeholder:text-slate-500 focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 transition-all"
           />
           <input
             name="email"
             value={form.email}
             onChange={handleChange}
             placeholder="Email"
-            className="p-3 rounded-xl border bg-slate-50"
+            className="p-3 rounded-xl border border-slate-700/50 bg-slate-800/50 text-slate-100 placeholder:text-slate-500 focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 transition-all"
           />
           <input
             name="phone"
             value={form.phone}
             onChange={handleChange}
             placeholder="Phone"
-            className="p-3 rounded-xl border bg-slate-50"
+            className="p-3 rounded-xl border border-slate-700/50 bg-slate-800/50 text-slate-100 placeholder:text-slate-500 focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 transition-all"
           />
           <input
             name="address"
             value={form.address}
             onChange={handleChange}
             placeholder="Address"
-            className="p-3 rounded-xl border bg-slate-50 md:col-span-2"
+            className="p-3 rounded-xl border border-slate-700/50 bg-slate-800/50 text-slate-100 placeholder:text-slate-500 focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 transition-all md:col-span-2"
           />
           <div className="flex items-center gap-3 md:col-span-3">
             <button
-              className="bg-primary text-white px-6 py-3 rounded-xl font-bold"
+              className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-6 py-3 rounded-xl font-bold hover:shadow-2xl hover:shadow-cyan-500/30 transition-all"
               type="submit"
             >
               {editingId ? "Update Supplier" : "Add Supplier"}
@@ -204,7 +204,7 @@ const Suppliers: React.FC = () => {
               <button
                 type="button"
                 onClick={handleCancelEdit}
-                className="px-4 py-3 rounded-xl border"
+                className="px-4 py-3 rounded-xl border border-slate-700/50 text-slate-300 hover:border-cyan-500/50 hover:text-cyan-300 transition-all"
               >
                 Cancel
               </button>
@@ -214,10 +214,10 @@ const Suppliers: React.FC = () => {
         {error && <p className="text-red-500 mt-3">{error}</p>}
       </div>
 
-      <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 overflow-x-auto">
+      <div className="bg-slate-900/50 backdrop-blur-xl rounded-2xl p-6 shadow-sm border border-cyan-500/20 hover:border-cyan-400/40 hover:shadow-2xl hover:shadow-cyan-500/20 transition-all overflow-x-auto">
         <table className="w-full text-left">
           <thead>
-            <tr className="text-slate-500 text-xs font-bold uppercase tracking-widest">
+            <tr className="text-cyan-400 text-xs font-bold uppercase tracking-widest border-b border-slate-800/50">
               <th className="px-4 py-2">Avatar</th>
               <th className="px-4 py-2">Name</th>
               <th className="px-4 py-2">Contact</th>
@@ -227,7 +227,7 @@ const Suppliers: React.FC = () => {
               <th className="px-4 py-2 text-right">Actions</th>
             </tr>
           </thead>
-          <tbody className="text-sm text-slate-700">
+          <tbody className="text-sm text-slate-300">
             {loading ? (
               <tr>
                 <td colSpan={7} className="px-4 py-8 text-center">
@@ -257,13 +257,16 @@ const Suppliers: React.FC = () => {
                     return `${backendBase}/${s.avatar}`;
                   }
                   return `https://ui-avatars.com/api/?name=${encodeURIComponent(
-                    s.name
+                    s.name,
                   )}&background=E5E7EB&color=111827`;
                 })();
                 return (
-                  <tr key={s.id} className="border-t">
+                  <tr
+                    key={s.id}
+                    className="border-t border-slate-800/30 hover:bg-slate-800/30 transition-colors"
+                  >
                     <td className="px-4 py-3">
-                      <div className="w-10 h-10 rounded-full overflow-hidden border border-slate-200">
+                      <div className="w-10 h-10 rounded-full overflow-hidden border border-cyan-500/30">
                         <img
                           src={avatarUrl}
                           alt={s.name}
@@ -271,21 +274,23 @@ const Suppliers: React.FC = () => {
                         />
                       </div>
                     </td>
-                    <td className="px-4 py-3 font-bold">{s.name}</td>
-                    <td className="px-4 py-3">{s.contact_person}</td>
-                    <td className="px-4 py-3">{s.email}</td>
-                    <td className="px-4 py-3">{s.phone}</td>
-                    <td className="px-4 py-3">{s.address}</td>
+                    <td className="px-4 py-3 font-bold text-white">{s.name}</td>
+                    <td className="px-4 py-3 text-slate-300">
+                      {s.contact_person}
+                    </td>
+                    <td className="px-4 py-3 text-slate-300">{s.email}</td>
+                    <td className="px-4 py-3 text-slate-300">{s.phone}</td>
+                    <td className="px-4 py-3 text-slate-300">{s.address}</td>
                     <td className="px-4 py-3 text-right flex justify-end gap-3">
                       <button
                         onClick={() => handleEdit(s)}
-                        className="text-primary font-bold"
+                        className="text-cyan-400 font-bold hover:text-cyan-300 transition-colors"
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => handleDelete(s.id)}
-                        className="text-red-500 font-bold"
+                        className="text-red-400 font-bold hover:text-red-300 transition-colors"
                       >
                         Delete
                       </button>
