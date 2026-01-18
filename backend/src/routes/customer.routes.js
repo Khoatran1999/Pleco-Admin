@@ -1,10 +1,10 @@
 const express = require("express");
 const customerController = require("../controllers/customer.controller");
-const { authMiddleware } = require("../middlewares/auth.middleware");
+const { authenticate } = require("../middlewares/supabase-auth.middleware");
 
 const router = express.Router();
 
-router.use(authMiddleware);
+router.use(authenticate);
 
 router.get("/", customerController.getAll);
 router.get("/search", customerController.search);

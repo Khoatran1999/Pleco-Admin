@@ -1,6 +1,6 @@
 const express = require("express");
 const supplierController = require("../controllers/supplier.controller");
-const { authMiddleware } = require("../middlewares/auth.middleware");
+const { authenticate } = require("../middlewares/supabase-auth.middleware");
 const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
@@ -24,7 +24,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-router.use(authMiddleware);
+router.use(authenticate);
 
 router.get("/", supplierController.getAll);
 router.get("/:id", supplierController.getById);

@@ -187,9 +187,30 @@ Thêm patterns để ignore:
 ## 🎯 Next Steps
 
 1. ✅ Source code đã clean
-2. ⏭️ Run tests để đảm bảo không có breaking changes
-3. ⏭️ Commit changes: `git add . && git commit -m "Clean source code and remove unused files"`
-4. ⏭️ Test full workflow (start backend & frontend)
+2. ✅ Backend dependencies đã clean install
+3. ✅ Git commit đã tạo
+4. ⏭️ Test full workflow:
+
+   ```bash
+   # Terminal 1: Start backend
+   cd backend
+   npm run dev
+
+   # Terminal 2: Start frontend
+   cd frontend
+   npm run dev
+   ```
+
+5. ⏭️ Verify các chức năng chính:
+   - Dashboard
+   - Quản lý customers (kiểm tra cột social)
+   - Quản lý products
+   - Tạo orders
+   - Inventory tracking
+6. ⏭️ Push to repository:
+   ```bash
+   git push origin main
+   ```
 
 ---
 
@@ -198,6 +219,8 @@ Thêm patterns để ignore:
 - Tất cả migration scripts và fix scripts đã backup trong git history
 - Có thể restore bất kỳ file nào từ git history nếu cần
 - Database backups đã xóa nhưng data vẫn an toàn trong Supabase
+- Git commit hash: `97e65f1`
+- Total changes: 69 files changed, 7796 insertions(+), 3125 deletions(-)
 
 ---
 

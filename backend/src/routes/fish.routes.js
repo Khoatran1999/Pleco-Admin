@@ -1,10 +1,10 @@
 const express = require("express");
 const fishController = require("../controllers/fish.controller");
-const { authMiddleware } = require("../middlewares/auth.middleware");
+const { authenticate } = require("../middlewares/supabase-auth.middleware");
 
 const router = express.Router();
 
-router.use(authMiddleware);
+router.use(authenticate);
 
 router.get("/", fishController.getAll);
 router.get("/:id", fishController.getById);

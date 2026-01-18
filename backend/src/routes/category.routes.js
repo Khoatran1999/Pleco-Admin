@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const categoryController = require("../controllers/category.controller");
-const { authMiddleware } = require("../middlewares/auth.middleware");
+const { authenticate } = require("../middlewares/supabase-auth.middleware");
 
 // All routes require authentication
-router.use(authMiddleware);
+router.use(authenticate);
 
 router.get("/", categoryController.getAll);
 router.get("/:id", categoryController.getById);
