@@ -9,6 +9,7 @@ const {
   applyFilters,
   softDelete,
 } = require("../utils/supabase-query");
+const { sanitizeForLike } = require("../utils/security");
 
 const Category = {
   /**
@@ -30,9 +31,8 @@ const Category = {
 
       // Apply search filter
       if (filters.search) {
-        query = query.or(
-          `name.ilike.%${filters.search}%,description.ilike.%${filters.search}%`,
-        );
+        const s = sanitizeForLike(filters.search);
+        query = query.or(`name.ilike.%${s}%,description.ilike.%${s}%`);
       }
 
       return query;

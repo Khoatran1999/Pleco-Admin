@@ -10,6 +10,7 @@ const {
   applyPagination,
   softDelete,
 } = require("../utils/supabase-query");
+const { sanitizeForLike } = require("../utils/security");
 
 const Fish = {
   /**
@@ -52,8 +53,9 @@ const Fish = {
 
       // Apply search filter
       if (filters.search) {
+        const s = sanitizeForLike(filters.search);
         query = query.or(
-          `name.ilike.%${filters.search}%,scientific_name.ilike.%${filters.search}%,sku.ilike.%${filters.search}%,size.ilike.%${filters.search}%`,
+          `name.ilike.%${s}%,scientific_name.ilike.%${s}%,sku.ilike.%${s}%,size.ilike.%${s}%`,
         );
       }
 
@@ -137,8 +139,9 @@ const Fish = {
 
       // Apply search filter
       if (filters.search) {
+        const s = sanitizeForLike(filters.search);
         query = query.or(
-          `name.ilike.%${filters.search}%,scientific_name.ilike.%${filters.search}%,sku.ilike.%${filters.search}%,size.ilike.%${filters.search}%`,
+          `name.ilike.%${s}%,scientific_name.ilike.%${s}%,sku.ilike.%${s}%,size.ilike.%${s}%`,
         );
       }
 

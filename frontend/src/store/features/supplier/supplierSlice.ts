@@ -8,6 +8,7 @@ interface Supplier {
   email: string;
   phone: string;
   address: string;
+  avatar?: string;
   is_active: boolean;
   created_at: string;
 }
@@ -34,10 +35,10 @@ export const fetchSuppliers = createAsyncThunk(
       return response.data.data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to fetch suppliers"
+        error.response?.data?.message || "Failed to fetch suppliers",
       );
     }
-  }
+  },
 );
 
 export const createSupplier = createAsyncThunk(
@@ -50,10 +51,10 @@ export const createSupplier = createAsyncThunk(
       return response.data.data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to create supplier"
+        error.response?.data?.message || "Failed to create supplier",
       );
     }
-  }
+  },
 );
 
 export const updateSupplier = createAsyncThunk(
@@ -66,10 +67,10 @@ export const updateSupplier = createAsyncThunk(
       return response.data.data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to update supplier"
+        error.response?.data?.message || "Failed to update supplier",
       );
     }
-  }
+  },
 );
 
 export const deleteSupplier = createAsyncThunk(
@@ -80,10 +81,10 @@ export const deleteSupplier = createAsyncThunk(
       return id;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to delete supplier"
+        error.response?.data?.message || "Failed to delete supplier",
       );
     }
-  }
+  },
 );
 
 const supplierSlice = createSlice({

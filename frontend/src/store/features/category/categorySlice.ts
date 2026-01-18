@@ -5,6 +5,7 @@ export interface Category {
   id: number;
   name: string;
   description: string;
+  is_active?: boolean;
   fish_count?: number;
   created_at: string;
   updated_at: string;
@@ -32,10 +33,10 @@ export const fetchCategories = createAsyncThunk(
       return response.data.data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to fetch categories"
+        error.response?.data?.message || "Failed to fetch categories",
       );
     }
-  }
+  },
 );
 
 export const fetchCategoryById = createAsyncThunk(
@@ -46,44 +47,44 @@ export const fetchCategoryById = createAsyncThunk(
       return response.data.data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to fetch category"
+        error.response?.data?.message || "Failed to fetch category",
       );
     }
-  }
+  },
 );
 
 export const createCategory = createAsyncThunk(
   "category/create",
   async (
     categoryData: { name: string; description?: string },
-    { rejectWithValue }
+    { rejectWithValue },
   ) => {
     try {
       const response = await api.post("/categories", categoryData);
       return response.data.data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to create category"
+        error.response?.data?.message || "Failed to create category",
       );
     }
-  }
+  },
 );
 
 export const updateCategory = createAsyncThunk(
   "category/update",
   async (
     { id, data }: { id: number; data: { name?: string; description?: string } },
-    { rejectWithValue }
+    { rejectWithValue },
   ) => {
     try {
       const response = await api.put(`/categories/${id}`, data);
       return response.data.data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to update category"
+        error.response?.data?.message || "Failed to update category",
       );
     }
-  }
+  },
 );
 
 export const deleteCategory = createAsyncThunk(
@@ -94,10 +95,10 @@ export const deleteCategory = createAsyncThunk(
       return id;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to delete category"
+        error.response?.data?.message || "Failed to delete category",
       );
     }
-  }
+  },
 );
 
 const categorySlice = createSlice({

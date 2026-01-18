@@ -1,60 +1,30 @@
 # 🔐 BÁO CÁO KIỂM TRA BẢO MẬT - Fishmarket Pro Dashboard
 
 **Ngày kiểm tra:** 18/01/2026  
-**Trạng thái:** ⚠️ CẦN SỬA NGAY TRƯỚC KHI DEPLOY
+**Trạng thái:** ✅ SẴN SÀNG DEPLOY (chỉ còn 1 vấn đề cần xử lý)
 
 ---
 
 ## ✅ CÁC VẤN ĐỀ ĐÃ SỬA
 
-| Vấn đề                         | Trạng thái                           |
-| ------------------------------ | ------------------------------------ |
-| Hardcoded localhost URLs       | ✅ Đã sửa - Sử dụng env variable     |
-| SQL Injection trong user model | ✅ Đã sửa - Thêm sanitization        |
-| Thiếu rate limiting            | ✅ Đã thêm express-rate-limit        |
-| Thiếu security headers         | ✅ Đã thêm helmet                    |
-| File upload không validate     | ✅ Đã thêm file type/size validation |
-| CORS không an toàn             | ✅ Đã cập nhật cho production        |
+| Vấn đề                            | Trạng thái                           |
+| --------------------------------- | ------------------------------------ |
+| File .env trong git               | ✅ Đã xóa khỏi tracking              |
+| Hardcoded localhost URLs          | ✅ Đã sửa - Sử dụng env variable     |
+| SQL Injection trong tất cả models | ✅ Đã sửa - Thêm sanitization        |
+| Thiếu rate limiting               | ✅ Đã thêm express-rate-limit        |
+| Thiếu security headers            | ✅ Đã thêm helmet                    |
+| File upload không validate        | ✅ Đã thêm file type/size validation |
+| CORS không an toàn                | ✅ Đã cập nhật cho production        |
 
 ---
 
-## 🚨 VẤN ĐỀ CẦN XỬ LÝ THỦ CÔNG (CRITICAL)
+## ⚠️ VẤN ĐỀ CÒN LẠI CẦN XỬ LÝ
 
-### 1. ❌ FILE .ENV ĐANG ĐƯỢC TRACK TRONG GIT
-
-**Mức độ: CRITICAL**
-
-Các file chứa thông tin nhạy cảm đang được commit vào repository:
-
-- `.env` (root)
-- `backend/.env`
-- `frontend/.env`
-
-**Thông tin bị lộ:**
-
-- `SUPABASE_SERVICE_KEY` - Key có toàn quyền truy cập database
-- `SUPABASE_JWT_SECRET` - Secret để ký JWT tokens
-- `SUPABASE_ANON_KEY` - Public key (ít nghiêm trọng hơn)
-
-**⚠️ HÀNH ĐỘNG CẦN THIẾT:**
-
-```bash
-# 1. Xóa khỏi git cache (giữ file local)
-git rm --cached .env backend/.env frontend/.env
-
-# 2. Commit thay đổi
-git commit -m "Remove sensitive .env files from tracking"
-
-# 3. QUAN TRỌNG: Đổi tất cả API keys trên Supabase Dashboard ngay lập tức!
-# https://supabase.com/dashboard/project/mfahdirntoitcrgfexdp/settings/api
-```
-
-### 2. ⚠️ NPM VULNERABILITIES
-
-**Mức độ: HIGH**
+### 1. NPM VULNERABILITIES (HIGH)
 
 ```
-bcrypt 5.0.1 - 5.1.1 có lỗ hổng bảo mật thông qua tar package
+bcrypt 5.0.1 - 5.1.1 có lỗ hổng bảo mật thông qua tar package (3 high severity)
 ```
 
 **Cách khắc phục:**
@@ -65,25 +35,32 @@ npm audit fix --force
 # Hoặc nâng cấp lên bcrypt@6.0.0 (có thể có breaking changes)
 ```
 
+### 2. ĐỔI SUPABASE API KEYS (QUAN TRỌNG!)
+
+Vì các keys đã từng bị commit trong git history, **PHẢI đổi tất cả API keys** trên Supabase Dashboard:
+
+- https://supabase.com/dashboard/project/mfahdirntoitcrgfexdp/settings/api
+
 ---
 
-## ❌ VẤN ĐỀ ĐÃ ĐƯỢC PHÁT HIỆN (ĐÃ SỬA)
+## 📝 CHECKLIST TRƯỚC KHI DEPLOY
 
-### ~~URL API HARDCODED LOCALHOST~~ ✅ ĐÃ SỬA
-
-// frontend/src/services/api.ts
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
-
-````
-
-### 3. ❌ SQL INJECTION VULNERABILITIES
-**Mức độ: CRITICAL**
+- [x] File .env đã xóa khỏi git tracking
+- [x] Hardcoded URLs đã thay bằng env variables
+- [x] SQL injection đã được fix
+- [x] Rate limiting đã thêm
+- [x] Security headers (helmet) đã thêm
+- [x] File upload validation đã thêm
+- [x] CORS đã cấu hình cho production
+- [ ] **Đổi Supabase API keys**
+- [ ] **Fix npm vulnerabilities**
 
 **File: [backend/src/models/user.model.supabase.js](backend/src/models/user.model.supabase.js#L27)**
+
 ```javascript
 // VULNERABLE - Dùng trong authentication!
 .or(`username.eq.${username},email.eq.${username}`)
-````
+```
 
 Attacker có thể bypass authentication bằng cách inject vào username.
 

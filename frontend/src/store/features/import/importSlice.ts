@@ -17,6 +17,9 @@ interface ImportOrder {
   order_number: string;
   supplier_id: number;
   supplier_name: string;
+  supplier_contact: string | null;
+  supplier_phone: string | null;
+  supplier_email: string | null;
   expected_delivery: string;
   delivery_date: string | null;
   status: "pending" | "confirmed" | "delivered" | "cancelled";
@@ -25,6 +28,7 @@ interface ImportOrder {
   item_count: number;
   items?: ImportOrderItem[];
   created_at: string;
+  created_by_name: string | null;
 }
 
 interface ImportState {
@@ -45,7 +49,7 @@ export const fetchImportOrders = createAsyncThunk(
   "import/fetchAll",
   async (
     filters: { status?: string; supplier_id?: number } = {},
-    { rejectWithValue }
+    { rejectWithValue },
   ) => {
     try {
       const params = new URLSearchParams();
@@ -57,10 +61,10 @@ export const fetchImportOrders = createAsyncThunk(
       return response.data.data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to fetch import orders"
+        error.response?.data?.message || "Failed to fetch import orders",
       );
     }
-  }
+  },
 );
 
 export const fetchImportOrderById = createAsyncThunk(
@@ -71,10 +75,10 @@ export const fetchImportOrderById = createAsyncThunk(
       return response.data.data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to fetch import order"
+        error.response?.data?.message || "Failed to fetch import order",
       );
     }
-  }
+  },
 );
 
 export const createImportOrder = createAsyncThunk(
@@ -87,17 +91,17 @@ export const createImportOrder = createAsyncThunk(
       total_amount?: number;
       items: { fish_id: number; quantity: number; unit_price: number }[];
     },
-    { rejectWithValue }
+    { rejectWithValue },
   ) => {
     try {
       const response = await api.post("/import-orders", orderData);
       return response.data.data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to create import order"
+        error.response?.data?.message || "Failed to create import order",
       );
     }
-  }
+  },
 );
 
 export const updateImportOrderStatus = createAsyncThunk(
@@ -108,7 +112,7 @@ export const updateImportOrderStatus = createAsyncThunk(
       status,
       total_amount,
     }: { id: number; status: string; total_amount?: number },
-    { rejectWithValue }
+    { rejectWithValue },
   ) => {
     try {
       const response = await api.patch(`/import-orders/${id}/status`, {
@@ -118,10 +122,10 @@ export const updateImportOrderStatus = createAsyncThunk(
       return response.data.data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to update import order status"
+        error.response?.data?.message || "Failed to update import order status",
       );
     }
-  }
+  },
 );
 
 export const deleteImportOrder = createAsyncThunk(
@@ -132,10 +136,10 @@ export const deleteImportOrder = createAsyncThunk(
       return id;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to delete import order"
+        error.response?.data?.message || "Failed to delete import order",
       );
     }
-  }
+  },
 );
 
 const importSlice = createSlice({

@@ -5,7 +5,7 @@
 
 const supabase = require("../config/supabase");
 const { executeQuery, applyPagination } = require("../utils/supabase-query");
-const { sanitizeForPostgrest } = require("../utils/security");
+const { sanitizeForPostgrest, sanitizeForLike } = require("../utils/security");
 
 const User = {
   /**
@@ -124,8 +124,9 @@ const User = {
 
       // Apply search
       if (filters.search) {
+        const s = sanitizeForLike(filters.search);
         query = query.or(
-          `username.ilike.%${filters.search}%,email.ilike.%${filters.search}%,full_name.ilike.%${filters.search}%`,
+          `username.ilike.%${s}%,email.ilike.%${s}%,full_name.ilike.%${s}%`,
         );
       }
 

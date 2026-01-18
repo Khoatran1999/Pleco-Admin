@@ -53,7 +53,12 @@ const Inventory = {
             ...inv,
             status,
             fish_name: inv.fishes?.name,
+            sku: inv.fishes?.sku,
             fish_sku: inv.fishes?.sku,
+            size: inv.fishes?.size,
+            min_stock: inv.fishes?.min_stock,
+            retail_price: inv.fishes?.retail_price,
+            wholesale_price: inv.fishes?.wholesale_price,
             category_name: inv.fishes?.fish_categories?.name,
           };
         });
@@ -259,7 +264,20 @@ const Inventory = {
         query = query.limit(filters.limit);
       }
 
-      return query;
+      const result = await query;
+
+      // Flatten results to include fish and user info directly
+      if (result.data) {
+        result.data = result.data.map((log) => ({
+          ...log,
+          fish_name: log.fishes?.name || null,
+          sku: log.fishes?.sku || null,
+          fish_size: log.fishes?.size || null,
+          created_by_name: log.users?.full_name || log.users?.username || null,
+        }));
+      }
+
+      return result;
     });
   },
 

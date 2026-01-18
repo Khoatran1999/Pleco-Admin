@@ -1,5 +1,22 @@
 const SaleOrder = require("../models/saleOrder.model.supabase");
 
+/**
+ * Transform raw order data to include flattened customer info
+ */
+function transformOrder(order) {
+  if (!order) return order;
+  return {
+    ...order,
+    customer_name: order.customers?.name || order.customer_name || null,
+    customer_social: order.customers?.social || null,
+    customer_phone: order.customers?.phone || null,
+    customer_email: order.customers?.email || null,
+    customer_address: order.customers?.address || null,
+    customer_type: order.customers?.customer_type || null,
+    created_by_name: order.users?.full_name || order.users?.username || null,
+  };
+}
+
 const saleOrderController = {
   async getAll(req, res, next) {
     try {
@@ -8,12 +25,15 @@ const saleOrderController = {
 
       const orders = await SaleOrder.getAll(filters);
 
+      // Transform orders to flatten nested customer/user data
+      const transformedOrders = orders.map(transformOrder);
+
       res.json({
         success: true,
-        data: orders,
+        data: transformedOrders,
         meta: {
-          total: orders.length,
-          filtered: orders.length,
+          total: transformedOrders.length,
+          filtered: transformedOrders.length,
         },
       });
     } catch (error) {
@@ -34,7 +54,7 @@ const saleOrderController = {
 
       res.json({
         success: true,
-        data: order,
+        data: transformOrder(order),
       });
     } catch (error) {
       next(error);

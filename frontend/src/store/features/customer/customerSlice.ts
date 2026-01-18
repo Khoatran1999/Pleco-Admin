@@ -8,6 +8,7 @@ interface Customer {
   social?: string;
   phone: string;
   address: string;
+  customer_type?: string;
   is_active: boolean;
   created_at: string;
 }
@@ -36,10 +37,10 @@ export const fetchCustomers = createAsyncThunk(
       return response.data.data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to fetch customers"
+        error.response?.data?.message || "Failed to fetch customers",
       );
     }
-  }
+  },
 );
 
 export const searchCustomers = createAsyncThunk(
@@ -47,15 +48,15 @@ export const searchCustomers = createAsyncThunk(
   async (query: string, { rejectWithValue }) => {
     try {
       const response = await api.get(
-        `/customers/search?q=${encodeURIComponent(query)}`
+        `/customers/search?q=${encodeURIComponent(query)}`,
       );
       return response.data.data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to search customers"
+        error.response?.data?.message || "Failed to search customers",
       );
     }
-  }
+  },
 );
 
 export const createCustomer = createAsyncThunk(
@@ -66,27 +67,27 @@ export const createCustomer = createAsyncThunk(
       return response.data.data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to create customer"
+        error.response?.data?.message || "Failed to create customer",
       );
     }
-  }
+  },
 );
 
 export const updateCustomer = createAsyncThunk(
   "customer/update",
   async (
     { id, data }: { id: number; data: Partial<Customer> },
-    { rejectWithValue }
+    { rejectWithValue },
   ) => {
     try {
       const response = await api.put(`/customers/${id}`, data);
       return response.data.data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to update customer"
+        error.response?.data?.message || "Failed to update customer",
       );
     }
-  }
+  },
 );
 
 export const deleteCustomer = createAsyncThunk(
@@ -97,10 +98,10 @@ export const deleteCustomer = createAsyncThunk(
       return id;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to delete customer"
+        error.response?.data?.message || "Failed to delete customer",
       );
     }
-  }
+  },
 );
 
 const customerSlice = createSlice({

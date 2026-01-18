@@ -21,7 +21,9 @@ const SaleOrder = {
             name,
             customer_type,
             phone,
-            email
+            email,
+            social,
+            address
           ),
           users:created_by (
             id,
@@ -91,7 +93,8 @@ const SaleOrder = {
             customer_type,
             phone,
             email,
-            address
+            address,
+            social
           ),
           users:created_by (
             id,
@@ -127,10 +130,20 @@ const SaleOrder = {
 
       if (itemsError) throw itemsError;
 
+      // Flatten items to include fish info directly
+      const flattenedItems = items?.map((item) => ({
+        ...item,
+        fish_name: item.fishes?.name || null,
+        sku: item.fishes?.sku || null,
+        fish_size: item.fishes?.size || null,
+        fish_unit: item.fishes?.unit || null,
+        fish_image: item.fishes?.image || null,
+      }));
+
       return {
         data: {
           ...order,
-          items,
+          items: flattenedItems,
         },
       };
     });

@@ -9,6 +9,7 @@ const {
   applyPagination,
   softDelete,
 } = require("../utils/supabase-query");
+const { sanitizeForLike } = require("../utils/security");
 
 const Customer = {
   /**
@@ -32,8 +33,9 @@ const Customer = {
 
       // Apply search filter
       if (filters.search) {
+        const s = sanitizeForLike(filters.search);
         query = query.or(
-          `name.ilike.%${filters.search}%,email.ilike.%${filters.search}%,phone.ilike.%${filters.search}%`,
+          `name.ilike.%${s}%,email.ilike.%${s}%,phone.ilike.%${s}%`,
         );
       }
 

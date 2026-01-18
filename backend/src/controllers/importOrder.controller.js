@@ -1,5 +1,20 @@
 const ImportOrder = require("../models/importOrder.model.supabase");
 
+/**
+ * Transform raw order data to include flattened supplier info
+ */
+function transformOrder(order) {
+  if (!order) return order;
+  return {
+    ...order,
+    supplier_name: order.suppliers?.name || null,
+    supplier_contact: order.suppliers?.contact_person || null,
+    supplier_phone: order.suppliers?.phone || null,
+    supplier_email: order.suppliers?.email || null,
+    created_by_name: order.users?.full_name || order.users?.username || null,
+  };
+}
+
 const importOrderController = {
   async getAll(req, res, next) {
     try {
@@ -8,12 +23,15 @@ const importOrderController = {
 
       const orders = await ImportOrder.getAll(filters);
 
+      // Transform orders to flatten nested supplier/user data
+      const transformedOrders = orders.map(transformOrder);
+
       res.json({
         success: true,
-        data: orders,
+        data: transformedOrders,
         meta: {
-          total: orders.length,
-          filtered: orders.length,
+          total: transformedOrders.length,
+          filtered: transformedOrders.length,
         },
       });
     } catch (error) {
@@ -34,7 +52,7 @@ const importOrderController = {
 
       res.json({
         success: true,
-        data: order,
+        data: transformOrder(order),
       });
     } catch (error) {
       next(error);

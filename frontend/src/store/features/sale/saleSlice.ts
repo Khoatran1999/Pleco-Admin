@@ -16,6 +16,11 @@ interface SaleOrder {
   order_number: string;
   customer_id: number | null;
   customer_name: string | null;
+  customer_social: string | null;
+  customer_phone: string | null;
+  customer_email: string | null;
+  customer_address: string | null;
+  customer_type: string | null;
   order_date: string;
   status: "pending" | "processing" | "completed" | "cancelled";
   sale_type: "retail" | "wholesale";
@@ -27,6 +32,7 @@ interface SaleOrder {
   item_count: number;
   items?: SaleOrderItem[];
   created_at: string;
+  created_by_name: string | null;
 }
 
 interface SaleState {
@@ -60,7 +66,7 @@ export const fetchSaleOrders = createAsyncThunk(
       date_from?: string;
       date_to?: string;
     } = {},
-    { rejectWithValue }
+    { rejectWithValue },
   ) => {
     try {
       const params = new URLSearchParams();
@@ -74,10 +80,10 @@ export const fetchSaleOrders = createAsyncThunk(
       return response.data.data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to fetch sale orders"
+        error.response?.data?.message || "Failed to fetch sale orders",
       );
     }
-  }
+  },
 );
 
 export const fetchSaleOrderById = createAsyncThunk(
@@ -88,10 +94,10 @@ export const fetchSaleOrderById = createAsyncThunk(
       return response.data.data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to fetch sale order"
+        error.response?.data?.message || "Failed to fetch sale order",
       );
     }
-  }
+  },
 );
 
 export const fetchTodaySales = createAsyncThunk(
@@ -102,10 +108,10 @@ export const fetchTodaySales = createAsyncThunk(
       return response.data.data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to fetch today sales"
+        error.response?.data?.message || "Failed to fetch today sales",
       );
     }
-  }
+  },
 );
 
 export const createSaleOrder = createAsyncThunk(
@@ -120,24 +126,24 @@ export const createSaleOrder = createAsyncThunk(
       notes?: string;
       items: { fish_id: number; quantity: number; unit_price: number }[];
     },
-    { rejectWithValue }
+    { rejectWithValue },
   ) => {
     try {
       const response = await api.post("/sale-orders", orderData);
       return response.data.data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to create sale order"
+        error.response?.data?.message || "Failed to create sale order",
       );
     }
-  }
+  },
 );
 
 export const updateSaleOrderStatus = createAsyncThunk(
   "sale/updateStatus",
   async (
     { id, status }: { id: number; status: string },
-    { rejectWithValue }
+    { rejectWithValue },
   ) => {
     try {
       await api.patch(`/sale-orders/${id}/status`, { status });
@@ -146,10 +152,10 @@ export const updateSaleOrderStatus = createAsyncThunk(
       return res.data.data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to update sale order status"
+        error.response?.data?.message || "Failed to update sale order status",
       );
     }
-  }
+  },
 );
 
 export const updateSaleOrderDetails = createAsyncThunk(
@@ -160,10 +166,10 @@ export const updateSaleOrderDetails = createAsyncThunk(
       return response.data.data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to update sale order"
+        error.response?.data?.message || "Failed to update sale order",
       );
     }
-  }
+  },
 );
 
 const saleSlice = createSlice({

@@ -5,6 +5,7 @@ interface InventoryItem {
   id: number;
   fish_id: number;
   fish_name: string;
+  fish_sku?: string;
   sku: string;
   size: string;
   category_id: number;
@@ -14,6 +15,7 @@ interface InventoryItem {
   quantity: number;
   min_stock: number;
   status: string;
+  last_updated?: string;
 }
 
 interface InventoryLog {
@@ -74,10 +76,10 @@ export const fetchInventory = createAsyncThunk(
       return response.data.data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to fetch inventory"
+        error.response?.data?.message || "Failed to fetch inventory",
       );
     }
-  }
+  },
 );
 
 export const fetchInventoryTotal = createAsyncThunk(
@@ -88,10 +90,10 @@ export const fetchInventoryTotal = createAsyncThunk(
       return response.data.data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to fetch inventory total"
+        error.response?.data?.message || "Failed to fetch inventory total",
       );
     }
-  }
+  },
 );
 
 export const fetchInventoryLogs = createAsyncThunk(
@@ -105,10 +107,10 @@ export const fetchInventoryLogs = createAsyncThunk(
       return response.data.data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to fetch inventory logs"
+        error.response?.data?.message || "Failed to fetch inventory logs",
       );
     }
-  }
+  },
 );
 
 export const adjustStock = createAsyncThunk(
@@ -120,17 +122,17 @@ export const adjustStock = createAsyncThunk(
       type: "add" | "reduce";
       note?: string;
     },
-    { rejectWithValue }
+    { rejectWithValue },
   ) => {
     try {
       const response = await api.post("/inventory/adjust", data);
       return response.data.data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to adjust stock"
+        error.response?.data?.message || "Failed to adjust stock",
       );
     }
-  }
+  },
 );
 
 export const recordLoss = createAsyncThunk(
@@ -142,17 +144,17 @@ export const recordLoss = createAsyncThunk(
       loss_reason: string;
       note?: string;
     },
-    { rejectWithValue }
+    { rejectWithValue },
   ) => {
     try {
       const response = await api.post("/inventory/record-loss", data);
       return response.data.data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to record loss"
+        error.response?.data?.message || "Failed to record loss",
       );
     }
-  }
+  },
 );
 
 export const fetchLossLogs = createAsyncThunk(
@@ -166,10 +168,10 @@ export const fetchLossLogs = createAsyncThunk(
       return response.data.data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to fetch loss logs"
+        error.response?.data?.message || "Failed to fetch loss logs",
       );
     }
-  }
+  },
 );
 
 const inventorySlice = createSlice({
@@ -206,7 +208,7 @@ const inventorySlice = createSlice({
       })
       .addCase(adjustStock.fulfilled, (state, action) => {
         const index = state.data.findIndex(
-          (i) => i.fish_id === action.payload.fish_id
+          (i) => i.fish_id === action.payload.fish_id,
         );
         if (index !== -1) {
           state.data[index].quantity = action.payload.new_quantity;
@@ -214,7 +216,7 @@ const inventorySlice = createSlice({
       })
       .addCase(recordLoss.fulfilled, (state, action) => {
         const index = state.data.findIndex(
-          (i) => i.fish_id === action.payload.fish_id
+          (i) => i.fish_id === action.payload.fish_id,
         );
         if (index !== -1) {
           state.data[index].quantity = action.payload.new_quantity;
