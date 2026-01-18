@@ -1,4 +1,4 @@
-const Category = require("../models/category.model");
+const Category = require("../models/category.model.supabase");
 
 const categoryController = {
   async getAll(req, res, next) {

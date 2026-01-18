@@ -1,4 +1,4 @@
-const Supplier = require("../models/supplier.model");
+const Supplier = require("../models/supplier.model.supabase");
 
 const supplierController = {
   async getAll(req, res, next) {

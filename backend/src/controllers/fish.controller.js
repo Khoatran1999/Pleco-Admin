@@ -1,4 +1,4 @@
-const Fish = require("../models/fish.model");
+const Fish = require("../models/fish.model.supabase");
 
 const fishController = {
   async getAll(req, res, next) {

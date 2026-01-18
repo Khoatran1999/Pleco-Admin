@@ -1,4 +1,4 @@
-const Report = require("../models/report.model");
+const Report = require("../models/report.model.supabase");
 
 const reportController = {
   async getDashboardStats(req, res, next) {
@@ -86,7 +86,7 @@ const reportController = {
 
       const summary = await Report.getReportSummaryWithComparison(
         date_from,
-        date_to
+        date_to,
       );
       const revenueByDate = await Report.getRevenueByDate(date_from, date_to);
 

@@ -1,5 +1,6 @@
 const express = require("express");
 
+const authRoutes = require("./supabase-auth.routes");
 const fishRoutes = require("./fish.routes");
 const categoryRoutes = require("./category.routes");
 const inventoryRoutes = require("./inventory.routes");
@@ -10,6 +11,11 @@ const saleOrderRoutes = require("./saleOrder.routes");
 const reportRoutes = require("./report.routes");
 
 const router = express.Router();
+
+// Public auth routes
+router.use("/auth", authRoutes);
+
+// Protected routes (authentication will be applied in individual route files if needed)
 router.use("/fishes", fishRoutes);
 router.use("/categories", categoryRoutes);
 router.use("/inventory", inventoryRoutes);

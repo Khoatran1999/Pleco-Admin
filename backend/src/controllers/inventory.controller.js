@@ -1,4 +1,4 @@
-const Inventory = require("../models/inventory.model");
+const Inventory = require("../models/inventory.model.supabase");
 
 const inventoryController = {
   async getAll(req, res, next) {
@@ -53,7 +53,7 @@ const inventoryController = {
           req.user.id,
           note,
           "adjustment",
-          null
+          null,
         );
       } else if (type === "reduce") {
         newQuantity = await Inventory.reduceStock(
@@ -62,7 +62,7 @@ const inventoryController = {
           req.user.id,
           note,
           "adjustment",
-          null
+          null,
         );
       } else {
         return res.status(400).json({
@@ -125,7 +125,7 @@ const inventoryController = {
         quantity,
         req.user.id,
         loss_reason,
-        note
+        note,
       );
 
       res.json({
@@ -144,7 +144,7 @@ const inventoryController = {
       const { fish_id, limit } = req.query;
       const logs = await Inventory.getLossLogs(
         fish_id ? parseInt(fish_id) : null,
-        parseInt(limit) || 50
+        parseInt(limit) || 50,
       );
 
       res.json({

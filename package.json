@@ -1,61 +1,18 @@
 {
   "name": "fishmarket-pro-dashboard",
   "private": true,
-  "version": "1.0.0",
-  "description": "FishMarket Pro Dashboard - Desktop Application",
-  "main": "electron.js",
+  "version": "2.0.0",
+  "description": "FishMarket Pro Dashboard - Web Application with Supabase",
   "scripts": {
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
     "dev:frontend": "cd frontend && npm run dev",
     "dev:backend": "cd backend && npm run dev",
-    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
-    "start:frontend": "cd frontend && npm run preview",
+    "start": "npm run start:backend",
     "start:backend": "cd backend && npm start",
-    "build": "cd frontend && npm run build",
+    "build": "npm run build:frontend",
     "build:frontend": "cd frontend && npm run build",
-    "electron:dev": "cross-env NODE_ENV=development ELECTRON=1 concurrently \"npm run dev:frontend\" \"wait-on http://localhost:5173 && electron .\"",
-    "electron:build": "npm run build:frontend && electron-builder --win",
-    "electron:build:dir": "npm run build:frontend && electron-builder --win --dir",
-    "migrate": "node scripts/migrate-mysql-to-sqlite.js",
-    "test:smoke": "node scripts/smoke/reports.js",
-    "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install"
-  },
-  "build": {
-    "appId": "com.fishmarket.dashboard",
-    "productName": "FishMarket Pro Dashboard",
-    "asar": false,
-    "directories": {
-      "output": "dist",
-      "buildResources": "build"
-    },
-    "files": [
-      "electron.js",
-      "preload.js",
-      "package.json",
-      "backend/**/*",
-      "frontend/dist/**/*",
-      "database/**/*",
-      "!backend/uploads"
-    ],
-    "win": {
-      "target": [
-        {
-          "target": "nsis",
-          "arch": [
-            "x64"
-          ]
-        }
-      ],
-      "icon": "build/icon.ico",
-      "signAndEditExecutable": false,
-      "sign": null
-    },
-    "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true,
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true
-    }
+    "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install",
+    "test": "cd backend && npm test"
   },
   "devDependencies": {
     "concurrently": "^8.2.2",

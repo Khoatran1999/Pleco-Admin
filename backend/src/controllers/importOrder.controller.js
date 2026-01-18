@@ -1,4 +1,4 @@
-const ImportOrder = require("../models/importOrder.model");
+const ImportOrder = require("../models/importOrder.model.supabase");
 
 const importOrderController = {
   async getAll(req, res, next) {
@@ -62,7 +62,7 @@ const importOrderController = {
       const orderId = await ImportOrder.create(
         { supplier_id, expected_delivery, notes, total_amount },
         items,
-        req.user.id
+        req.user.id,
       );
 
       const order = await ImportOrder.findById(orderId);
@@ -103,7 +103,7 @@ const importOrderController = {
         req.params.id,
         status,
         req.user.id,
-        total_amount
+        total_amount,
       );
 
       const updatedOrder = await ImportOrder.findById(req.params.id);

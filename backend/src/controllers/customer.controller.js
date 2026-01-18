@@ -1,4 +1,4 @@
-const Customer = require("../models/customer.model");
+const Customer = require("../models/customer.model.supabase");
 
 const customerController = {
   async getAll(req, res, next) {

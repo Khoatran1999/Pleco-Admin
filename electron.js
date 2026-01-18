@@ -17,9 +17,48 @@ const PORT = 5000;
 // Import backend server
 // Ensure backend uses the same DB file as Electron when desired.
 // You can override by setting DATABASE_PATH to an absolute path.
-process.env.DATABASE_PATH =
-  process.env.DATABASE_PATH ||
-  require("path").join(process.cwd(), "database", "fishmarket.db");
+if (!process.env.DATABASE_PATH) {
+  const isDev = process.env.NODE_ENV !== "production" && !app.isPackaged;
+
+  if (isDev) {
+    // Development: use project database folder
+    process.env.DATABASE_PATH = require("path").join(
+      process.cwd(),
+      "database",
+      "fishmarket.db",
+    );
+  } else {
+    // Production: use app userData folder for persistent data
+    const userDataPath = app.getPath("userData");
+    const dbDir = require("path").join(userDataPath, "database");
+
+    // Ensure directory exists
+    if (!require("fs").existsSync(dbDir)) {
+      require("fs").mkdirSync(dbDir, { recursive: true });
+    }
+
+    process.env.DATABASE_PATH = require("path").join(dbDir, "fishmarket.db");
+
+    // Copy initial database if it doesn't exist
+    const initialDbPath = require("path").join(
+      process.resourcesPath || process.cwd(),
+      "database",
+      "fishmarket.db",
+    );
+
+    if (
+      !require("fs").existsSync(process.env.DATABASE_PATH) &&
+      require("fs").existsSync(initialDbPath)
+    ) {
+      console.log(
+        `📋 Copying initial database to: ${process.env.DATABASE_PATH}`,
+      );
+      require("fs").copyFileSync(initialDbPath, process.env.DATABASE_PATH);
+    }
+  }
+}
+
+console.log(`📀 Database path: ${process.env.DATABASE_PATH}`);
 const backendApp = require("./backend/src/server");
 
 function startBackendServer() {

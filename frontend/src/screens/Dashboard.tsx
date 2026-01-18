@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   AreaChart,
@@ -33,20 +33,23 @@ const Dashboard: React.FC<DashboardProps> = ({ onAddOrder }) => {
     dispatch(fetchSpeciesSales({ limit: 4 }));
   }, [dispatch]);
 
-  const chartData =
-    weeklyRevenue.length > 0
-      ? weeklyRevenue
-      : [
-          { name: "Mon", revenue: 0 },
-          { name: "Tue", revenue: 0 },
-          { name: "Wed", revenue: 0 },
-          { name: "Thu", revenue: 0 },
-          { name: "Fri", revenue: 0 },
-          { name: "Sat", revenue: 0 },
-          { name: "Sun", revenue: 0 },
-        ];
+  const chartData = useMemo(
+    () =>
+      weeklyRevenue.length > 0
+        ? weeklyRevenue
+        : [
+            { name: "Mon", revenue: 0 },
+            { name: "Tue", revenue: 0 },
+            { name: "Wed", revenue: 0 },
+            { name: "Thu", revenue: 0 },
+            { name: "Fri", revenue: 0 },
+            { name: "Sat", revenue: 0 },
+            { name: "Sun", revenue: 0 },
+          ],
+    [weeklyRevenue]
+  );
 
-  const speciesData = (() => {
+  const speciesData = useMemo(() => {
     if (!speciesSales || speciesSales.length === 0) {
       return [{ name: "No Data", percentage: 100, color: "#94a3b8" }];
     }
@@ -61,11 +64,11 @@ const Dashboard: React.FC<DashboardProps> = ({ onAddOrder }) => {
       color:
         item.color || ["#136dec", "#2dd4bf", "#818cf8", "#94a3b8"][index % 4],
     }));
-  })();
+  }, [speciesSales]);
 
   // Use K-format for currency display (e.g. 600.00 -> 600K)
 
-  const handleExportReport = () => {
+  const handleExportReport = useCallback(() => {
     const csvRows = [];
 
     csvRows.push("FishMarket Pro - Dashboard Report");
@@ -121,7 +124,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onAddOrder }) => {
     }.csv`;
     link.click();
     URL.revokeObjectURL(link.href);
-  };
+  }, [dashboardStats, chartData, speciesData]);
 
   return (
     <div className="max-w-7xl mx-auto flex flex-col gap-8">

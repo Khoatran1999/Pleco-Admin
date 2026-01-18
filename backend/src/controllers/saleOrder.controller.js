@@ -1,4 +1,4 @@
-const SaleOrder = require("../models/saleOrder.model");
+const SaleOrder = require("../models/saleOrder.model.supabase");
 
 const saleOrderController = {
   async getAll(req, res, next) {
@@ -80,7 +80,7 @@ const saleOrderController = {
           notes,
         },
         items,
-        req.user.id
+        req.user.id,
       );
 
       const order = await SaleOrder.findById(orderId);
@@ -149,7 +149,7 @@ const saleOrderController = {
       await SaleOrder.updateOrder(
         req.params.id,
         { customer_id, customer_name, notes },
-        req.user.id
+        req.user.id,
       );
 
       const updated = await SaleOrder.findById(req.params.id);

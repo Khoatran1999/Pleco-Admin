@@ -30,3 +30,21 @@ dist/
 *.sqlite-shm
 *.sqlite-wal
 build/*.ico
+
+# Database files
+*.db
+database/backups/
+database/fishmarket.db
+
+# Temporary scripts
+check-*.js
+test-*.js
+test-*.ps1
+fix-*.js
+*-STATUS.md
+*-MIGRATION*.md
+*-COMPLETE.md
+*-RESULTS*.md
+
+# Environment
+.env.local

@@ -37,8 +37,7 @@ Hệ thống quản lý cửa hàng cá cảnh toàn diện với theo dõi tồ
 ### Backend
 
 - Node.js + Express
-- SQLite (Production/Electron)
-- MySQL (Development - optional)
+- Supabase (PostgreSQL Database)
 - JWT Authentication
 - Multer (File uploads)
 
@@ -57,15 +56,17 @@ fishmarket-pro-dashboard/
 │
 ├── backend/                 # Backend API
 │   ├── package.json
+│   ├── migrate-sqlite-to-supabase.js  # Migration tool
+│   ├── fix-customer-social.js         # Hotfix script
 │   └── src/
 │       ├── server.js        # Express server
 │       ├── config/
-│       │   ├── db.js        # MySQL config (dev)
-│       │   └── db.sqlite.js # SQLite config (production)
+│       │   └── supabase.js  # Supabase client config
 │       ├── controllers/     # Request handlers
-│       ├── models/          # Database models
+│       ├── models/          # Supabase models (*.model.supabase.js)
 │       ├── routes/          # API routes
-│       └── middlewares/     # Auth, error handlers
+│       ├── middlewares/     # Auth, error handlers
+│       └── utils/           # Supabase query helpers
 │
 ├── frontend/                # React frontend
 │   ├── package.json
@@ -78,16 +79,27 @@ fishmarket-pro-dashboard/
 │       └── utils/           # Helper functions
 │
 ├── database/
-│   ├── fishmarket.db        # SQLite database
-│   ├── schema.sql           # MySQL schema
-│   └── schema.sqlite.sql    # SQLite schema
+│   └── schema.postgresql.sql  # PostgreSQL schema (Supabase)
 │
 ├── scripts/
-│   └── migrate-mysql-to-sqlite.js  # Migration script
+│   ├── backup-database.js   # Database backup utility
+│   └── check-db.js          # DB connection checker
 │
 └── build/                   # Electron build resources
     └── icon.png
 ```
+
+│ ├── fishmarket.db # SQLite database
+│ ├── schema.sql # MySQL schema
+│ └── schema.sqlite.sql # SQLite schema
+│
+├── scripts/
+│ └── migrate-mysql-to-sqlite.js # Migration script
+│
+└── build/ # Electron build resources
+└── icon.png
+
+````
 
 ## 🚀 Cài đặt
 
@@ -101,7 +113,7 @@ fishmarket-pro-dashboard/
 ```bash
 # Cài đặt tất cả dependencies (root, frontend, backend)
 npm run install:all
-```
+````
 
 Hoặc cài đặt từng phần:
 
@@ -118,17 +130,29 @@ cd backend && npm install
 
 ### Bước 2: Cấu hình môi trường
 
-File `.env` ở thư mục root (cho migration từ MySQL):
+Tạo file `.env` trong thư mục `backend/`:
 
 ```env
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=
-DB_NAME=fishmarket_db
-DB_PORT=3306
-JWT_SECRET=your-secret-key
+# Supabase Configuration
+SUPABASE_URL=your_supabase_project_url
+SUPABASE_KEY=your_supabase_anon_key
+SUPABASE_SERVICE_KEY=your_supabase_service_role_key
+
+# Server Configuration
 PORT=5000
+NODE_ENV=development
+
+# JWT Configuration
+JWT_SECRET=your-jwt-secret-key
+JWT_EXPIRES_IN=24h
 ```
+
+**Lấy Supabase credentials:**
+
+1. Đăng ký/đăng nhập tại [supabase.com](https://supabase.com)
+2. Tạo project mới
+3. Vào Settings > API để lấy URL và keys
+4. Chạy schema: Copy nội dung `database/schema.postgresql.sql` vào SQL Editor và execute
 
 File `backend/.env`:
 
