@@ -9,10 +9,9 @@
     "dev:backend": "cd backend && npm run dev",
     "start": "npm run start:backend",
     "start:backend": "cd backend && npm start",
-    "build": "npm run build:frontend && npm run build:backend",
+    "build": "echo 'Using pre-built frontend dist'",
     "build:frontend": "cd frontend && npm run build",
     "build:backend": "cd backend && npm install",
-    "vercel-build": "cd frontend && npm install && npm run build",
     "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install",
     "test": "cd backend && npm test"
   },
