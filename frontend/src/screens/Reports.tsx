@@ -71,7 +71,12 @@ const Reports: React.FC = () => {
     return `${sign}${value.toFixed(1)}%`;
   };
 
-  const changes: { revenue?: number; orders?: number; quantity?: number; avg_order_value?: number } = safeSummary.changes || {};
+  const changes: {
+    revenue?: number;
+    orders?: number;
+    quantity?: number;
+    avg_order_value?: number;
+  } = safeSummary.changes || {};
 
   const stats = [
     {
