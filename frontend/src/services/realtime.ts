@@ -1,6 +1,7 @@
 /**
  * Frontend Real-time Service for Supabase
  * Manages subscriptions and real-time updates
+ * NOTE: Realtime features only work when Supabase env variables are set
  */
 
 import { supabase } from "./supabase";
@@ -34,6 +35,15 @@ type PresenceState = {
   }>;
 };
 
+// Dummy channel for when Supabase is not available
+const createDummyChannel = (): RealtimeChannel => {
+  return {
+    subscribe: () => ({ status: "SUBSCRIBED" }),
+    unsubscribe: () => Promise.resolve("ok"),
+    on: () => ({ subscribe: () => ({}) }),
+  } as unknown as RealtimeChannel;
+};
+
 class RealtimeService {
   private channels: Map<string, RealtimeChannel> = new Map();
 
@@ -41,6 +51,10 @@ class RealtimeService {
    * Subscribe to inventory changes
    */
   subscribeToInventory(callback: (payload: any) => void): RealtimeChannel {
+    if (!supabase) {
+      console.warn("Supabase not initialized - realtime disabled");
+      return createDummyChannel();
+    }
     const channel = supabase
       .channel("inventory-changes")
       .on(
@@ -67,6 +81,9 @@ class RealtimeService {
    * Subscribe to sale orders
    */
   subscribeToSaleOrders(callback: (payload: any) => void): RealtimeChannel {
+    if (!supabase) {
+      return createDummyChannel();
+    }
     const channel = supabase
       .channel("sale-orders-changes")
       .on(
@@ -93,6 +110,9 @@ class RealtimeService {
    * Subscribe to import orders
    */
   subscribeToImportOrders(callback: (payload: any) => void): RealtimeChannel {
+    if (!supabase) {
+      return createDummyChannel();
+    }
     const channel = supabase
       .channel("import-orders-changes")
       .on(
@@ -121,6 +141,9 @@ class RealtimeService {
   subscribeToLowStock(
     callback: (alert: LowStockAlert) => void,
   ): RealtimeChannel {
+    if (!supabase) {
+      return createDummyChannel();
+    }
     const channel = supabase
       .channel("low-stock-alerts")
       .on(
@@ -173,6 +196,9 @@ class RealtimeService {
       onLeave?: (key: string, leftPresences: any) => void;
     },
   ): RealtimeChannel {
+    if (!supabase) {
+      return createDummyChannel();
+    }
     const channel = supabase.channel(roomId, {
       config: {
         presence: {
@@ -241,7 +267,7 @@ class RealtimeService {
    */
   async unsubscribe(channelName: string): Promise<void> {
     const channel = this.channels.get(channelName);
-    if (channel) {
+    if (channel && supabase) {
       await supabase.removeChannel(channel);
       this.channels.delete(channelName);
       console.log(`Unsubscribed from channel: ${channelName}`);
@@ -252,6 +278,7 @@ class RealtimeService {
    * Unsubscribe from all channels
    */
   async unsubscribeAll(): Promise<void> {
+    if (!supabase) return;
     for (const [name, channel] of this.channels.entries()) {
       await supabase.removeChannel(channel);
       console.log(`Unsubscribed from channel: ${name}`);
