@@ -97,6 +97,17 @@ app.get("/health", (req, res) => {
     });
 });
 
+// Debug endpoint to check environment (remove in production)
+app.get("/api/debug/env", (req, res) => {
+  res.json({
+    hasSupabaseUrl: !!process.env.SUPABASE_URL,
+    hasSupabaseKey: !!process.env.SUPABASE_SERVICE_KEY,
+    hasJwtSecret: !!process.env.JWT_SECRET,
+    nodeEnv: process.env.NODE_ENV,
+    supabaseUrlPrefix: process.env.SUPABASE_URL?.substring(0, 30) + "...",
+  });
+});
+
 // Error handler
 app.use(errorHandler);
 
