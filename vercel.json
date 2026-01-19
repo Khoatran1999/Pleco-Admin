@@ -1,25 +1,20 @@
 {
   "version": 2,
-  "buildCommand": "",
-  "installCommand": "npm install --prefix backend",
-  "builds": [
+  "public": true,
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "routes": [
     {
-      "src": "api/index.js",
-      "use": "@vercel/node"
+      "src": "/api/(.*)",
+      "dest": "/api/index.js"
     },
     {
-      "src": "frontend/dist/**",
-      "use": "@vercel/static"
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/api"
+      "src": "/assets/(.*)",
+      "dest": "/frontend/dist/assets/$1"
     },
     {
-      "source": "/((?!api/).*)",
-      "destination": "/frontend/dist/index.html"
+      "src": "/(.*)",
+      "dest": "/frontend/dist/index.html"
     }
   ]
 }

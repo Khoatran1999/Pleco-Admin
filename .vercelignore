@@ -1,0 +1,9 @@
+frontend/src
+frontend/node_modules
+frontend/tests
+frontend/*.config.*
+frontend/tsconfig.json
+database
+scripts
+build
+*.md
