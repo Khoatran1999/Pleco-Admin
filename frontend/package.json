@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "vercel-build": "npm install && npm run build",
     "preview": "vite preview",
     "test:unit": "vitest",
     "test:unit:watch": "vitest --watch",
