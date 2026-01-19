@@ -9,15 +9,23 @@ require("dotenv").config();
 // Validate environment variables with helpful error messages
 if (!process.env.SUPABASE_URL) {
   console.error("❌ Missing SUPABASE_URL environment variable");
-  console.error("   Please add SUPABASE_URL to your Vercel environment variables");
-  console.error("   Find it at: Supabase Dashboard → Settings → API → Project URL");
+  console.error(
+    "   Please add SUPABASE_URL to your Vercel environment variables",
+  );
+  console.error(
+    "   Find it at: Supabase Dashboard → Settings → API → Project URL",
+  );
   throw new Error("Missing SUPABASE_URL environment variable");
 }
 
 if (!process.env.SUPABASE_SERVICE_KEY) {
   console.error("❌ Missing SUPABASE_SERVICE_KEY environment variable");
-  console.error("   Please add SUPABASE_SERVICE_KEY to your Vercel environment variables");
-  console.error("   Find it at: Supabase Dashboard → Settings → API → service_role key");
+  console.error(
+    "   Please add SUPABASE_SERVICE_KEY to your Vercel environment variables",
+  );
+  console.error(
+    "   Find it at: Supabase Dashboard → Settings → API → service_role key",
+  );
   console.error("   ⚠️  Note: Use 'service_role' key, NOT 'anon' key");
   throw new Error("Missing SUPABASE_SERVICE_KEY environment variable");
 }
