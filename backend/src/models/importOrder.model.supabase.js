@@ -140,14 +140,16 @@ const ImportOrder = {
    * Create new import order with items
    */
   async create(orderData, userId) {
-    const {
-      order_number,
-      supplier_id,
-      expected_delivery,
-      delivery_date,
-      notes,
-      items,
-    } = orderData;
+    const { supplier_id, expected_delivery, delivery_date, notes, items } =
+      orderData;
+
+    // Generate order number if not provided
+    const randomSuffix = Math.random()
+      .toString(36)
+      .substring(2, 8)
+      .toUpperCase();
+    const order_number =
+      orderData.order_number || `IO-${Date.now()}-${randomSuffix}`;
 
     return executeQuery(async () => {
       // Calculate total amount

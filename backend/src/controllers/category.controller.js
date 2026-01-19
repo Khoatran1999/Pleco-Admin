@@ -54,8 +54,7 @@ const categoryController = {
         });
       }
 
-      const categoryId = await Category.create({ name, description });
-      const category = await Category.findById(categoryId);
+      const category = await Category.create({ name, description });
 
       res.status(201).json({
         success: true,

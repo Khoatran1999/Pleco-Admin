@@ -92,7 +92,7 @@ const saleOrderController = {
         }
       }
 
-      const orderId = await SaleOrder.create(
+      const result = await SaleOrder.create(
         {
           customer_id,
           customer_name,
@@ -102,12 +102,13 @@ const saleOrderController = {
           payment_method,
           discount_amount,
           notes,
+          items,
         },
-        items,
         req.user.id,
       );
 
-      const order = await SaleOrder.findById(orderId);
+      // result is the order object directly from model
+      const order = result;
 
       res.status(201).json({
         success: true,

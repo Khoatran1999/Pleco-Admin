@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import formatCurrencyK from "../utils/format";
 import {
@@ -56,6 +56,15 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
   const [submitting, setSubmitting] = useState(false);
   const [customerSearch, setCustomerSearch] = useState("");
   const [draftLoaded, setDraftLoaded] = useState(false);
+  const [discountAmount, setDiscountAmount] = useState<number>(0);
+
+  // Dropdown open states
+  const [showCustomerDropdown, setShowCustomerDropdown] = useState(false);
+  const [showFishDropdown, setShowFishDropdown] = useState(false);
+
+  // Refs for click outside handling
+  const customerDropdownRef = useRef<HTMLDivElement>(null);
+  const fishDropdownRef = useRef<HTMLDivElement>(null);
 
   // Customer modal state
   const [showCustomerModal, setShowCustomerModal] = useState(false);
@@ -65,6 +74,27 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
   const [newCustomerAddress, setNewCustomerAddress] = useState("");
   const [newCustomerSocial, setNewCustomerSocial] = useState("");
   const [creatingCustomer, setCreatingCustomer] = useState(false);
+
+  // Click outside handler to close dropdowns
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        customerDropdownRef.current &&
+        !customerDropdownRef.current.contains(event.target as Node)
+      ) {
+        setShowCustomerDropdown(false);
+      }
+      if (
+        fishDropdownRef.current &&
+        !fishDropdownRef.current.contains(event.target as Node)
+      ) {
+        setShowFishDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   useEffect(() => {
     dispatch(fetchCustomers({}));
@@ -226,6 +256,7 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
         status: orderStatus,
         sale_type: saleType,
         payment_method: paymentMethod,
+        discount_amount: discountAmount > 0 ? discountAmount : undefined,
         notes: notes || undefined,
         items: items.map((item) => ({
           fish_id: item.fish_id,
@@ -259,7 +290,7 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
     (sum, item) => sum + item.quantity * item.unit_price,
     0,
   );
-  const grandTotal = subtotal;
+  const grandTotal = Math.max(0, subtotal - discountAmount);
 
   const filteredFishes = fishes.filter(
     (f) =>
@@ -354,8 +385,8 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
                 <label className="text-xs font-bold uppercase tracking-widest text-cyan-400">
                   Customer
                 </label>
-                <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-cyan-400">
+                <div className="relative" ref={customerDropdownRef}>
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-cyan-400 z-10">
                     <span className="material-symbols-outlined text-[20px]">
                       person_search
                     </span>
@@ -365,15 +396,20 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
                     placeholder="Search customer..."
                     type="text"
                     value={customerSearch}
-                    onChange={(e) => setCustomerSearch(e.target.value)}
+                    onChange={(e) => {
+                      setCustomerSearch(e.target.value);
+                      setShowCustomerDropdown(true);
+                    }}
+                    onFocus={() => setShowCustomerDropdown(true)}
                   />
-                  {customerSearch && (
-                    <div className="absolute z-10 w-full mt-1 bg-slate-800 border border-slate-700/50 rounded-xl shadow-lg max-h-48 overflow-y-auto">
+                  {showCustomerDropdown && customerSearch && (
+                    <div className="absolute z-[100] w-full mt-1 bg-slate-800 border border-slate-700/50 rounded-xl shadow-2xl max-h-48 overflow-y-auto">
                       <button
                         className="w-full px-4 py-2 text-left hover:bg-slate-700/50 text-sm font-medium text-slate-300"
                         onClick={() => {
                           setCustomerId(0);
                           setCustomerSearch("Walk-in Customer");
+                          setShowCustomerDropdown(false);
                         }}
                       >
                         Walk-in Customer
@@ -385,6 +421,7 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
                           onClick={() => {
                             setCustomerId(customer.id);
                             setCustomerSearch(customer.name);
+                            setShowCustomerDropdown(false);
                           }}
                         >
                           {customer.name}
@@ -498,6 +535,37 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
 
               <div className="space-y-2">
                 <label className="text-xs font-bold uppercase tracking-widest text-cyan-400">
+                  Discount Amount
+                </label>
+                <div className="relative">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-cyan-400 text-sm font-bold">
+                    ₫
+                  </span>
+                  <input
+                    type="number"
+                    min="0"
+                    className="w-full bg-slate-800/50 border border-slate-700/50 text-slate-100 placeholder:text-slate-500 rounded-xl pl-8 pr-4 py-3 text-sm font-bold focus:ring-4 focus:ring-cyan-500/20 transition-all outline-none"
+                    placeholder="0"
+                    value={discountAmount || ""}
+                    onChange={(e) =>
+                      setDiscountAmount(
+                        Math.max(0, parseInt(e.target.value) || 0),
+                      )
+                    }
+                  />
+                </div>
+                {discountAmount > subtotal && (
+                  <p className="text-xs text-amber-400 flex items-center gap-1">
+                    <span className="material-symbols-outlined text-[14px]">
+                      warning
+                    </span>
+                    Discount exceeds subtotal
+                  </p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-bold uppercase tracking-widest text-cyan-400">
                   Notes
                 </label>
                 <textarea
@@ -530,7 +598,7 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
         </div>
 
         <div className="lg:col-span-8 flex flex-col gap-8">
-          <div className="bg-slate-900/50 backdrop-blur-xl rounded-3xl shadow-sm border border-purple-500/20 hover:border-purple-400/40 hover:shadow-2xl hover:shadow-purple-500/20 transition-all p-8">
+          <div className="bg-slate-900/50 backdrop-blur-xl rounded-3xl shadow-sm border border-purple-500/20 hover:border-purple-400/40 hover:shadow-2xl hover:shadow-purple-500/20 transition-all p-8 z-10">
             <h3 className="text-xl font-black text-white mb-6 flex items-center gap-3">
               <span className="material-symbols-outlined text-cyan-400 fill-1">
                 shopping_basket
@@ -543,17 +611,21 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
                 <label className="text-[10px] font-bold uppercase tracking-widest text-cyan-400">
                   Select Fish / Product
                 </label>
-                <div className="relative group">
+                <div className="relative group" ref={fishDropdownRef}>
                   <div className="flex items-center w-full bg-slate-800/50 border border-slate-700/50 rounded-xl px-4 py-3 shadow-sm focus-within:ring-4 focus-within:ring-cyan-500/20 transition-all">
                     <span className="material-symbols-outlined text-cyan-400 mr-3 text-[20px]">
                       set_meal
                     </span>
                     <input
-                      className="w-full bg-transparent border-none p-0 text-sm font-bold text-slate-100 placeholder:text-slate-500 focus:ring-0"
+                      className="w-full bg-transparent border-none p-0 text-sm font-bold text-slate-100 placeholder:text-slate-500 focus:ring-0 outline-none"
                       placeholder="Start typing product name..."
                       type="text"
                       value={searchFish}
-                      onChange={(e) => setSearchFish(e.target.value)}
+                      onChange={(e) => {
+                        setSearchFish(e.target.value);
+                        setShowFishDropdown(true);
+                      }}
+                      onFocus={() => setShowFishDropdown(true)}
                     />
                     {selectedFishId > 0 &&
                       getStockForFish(selectedFishId) < 30 && (
@@ -562,8 +634,8 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
                         </span>
                       )}
                   </div>
-                  {searchFish && (
-                    <div className="absolute z-10 w-full mt-1 bg-slate-800 border border-slate-700/50 rounded-xl shadow-lg max-h-48 overflow-y-auto">
+                  {showFishDropdown && searchFish && (
+                    <div className="absolute z-[100] w-full mt-1 bg-slate-800 border border-slate-700/50 rounded-xl shadow-2xl max-h-48 overflow-y-auto">
                       {filteredFishes.slice(0, 5).map((fish) => {
                         const stock = getStockForFish(fish.id);
                         const price =
@@ -591,6 +663,7 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
                                 }`,
                               );
                               setUnitPrice(price);
+                              setShowFishDropdown(false);
                             }}
                           >
                             <span>
@@ -801,10 +874,10 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
                       {formatCurrencyK(subtotal)}
                     </span>
                   </div>
-                  {/* Tax removed */}
+                  {/* Discount */}
                   <div className="flex justify-between text-xs font-black text-emerald-400 uppercase tracking-widest">
                     <span>Discount</span>
-                    <span>-{formatCurrencyK(0)}</span>
+                    <span>-{formatCurrencyK(discountAmount)}</span>
                   </div>
                   <div className="h-px bg-slate-700/50 my-2"></div>
                   <div className="flex justify-between items-end">

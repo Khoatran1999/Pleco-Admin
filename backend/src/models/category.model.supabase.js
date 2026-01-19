@@ -58,15 +58,14 @@ const Category = {
    * Get category by name
    */
   async findByName(name) {
-    return executeQuery(async () => {
-      const result = await supabase
-        .from("fish_categories")
-        .select("*")
-        .eq("name", name)
-        .single();
+    const { data, error } = await supabase
+      .from("fish_categories")
+      .select("*")
+      .eq("name", name)
+      .maybeSingle();
 
-      return result;
-    });
+    if (error) throw error;
+    return data; // Returns null if not found
   },
 
   /**

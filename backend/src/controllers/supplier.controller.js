@@ -52,7 +52,7 @@ const supplierController = {
         });
       }
 
-      const supplierId = await Supplier.create({
+      const supplier = await Supplier.create({
         name,
         contact_person,
         email,
@@ -60,8 +60,6 @@ const supplierController = {
         address,
         avatar: avatarPath,
       });
-
-      const supplier = await Supplier.findById(supplierId);
 
       res.status(201).json({
         success: true,

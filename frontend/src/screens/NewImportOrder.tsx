@@ -107,11 +107,6 @@ const NewImportOrder: React.FC<NewImportOrderProps> = ({ onBack }) => {
     }
   };
 
-  useEffect(() => {
-    dispatch(fetchSuppliers());
-    dispatch(fetchFishes({}));
-  }, [dispatch]);
-
   const handleAddItem = () => {
     if (!selectedFishId || quantity <= 0 || unitPrice < 0) {
       alert("Please fill in all item fields (Price can be 0 for free imports)");

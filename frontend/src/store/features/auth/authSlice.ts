@@ -4,7 +4,7 @@ import {
   getCurrentUser,
   getSession,
 } from "../../../services/supabase";
-import { API_BASE_URL } from "../../../services/api";
+import api, { API_BASE_URL } from "../../../services/api";
 
 interface User {
   id: string;
@@ -44,20 +44,12 @@ export const signUp = createAsyncThunk(
     { rejectWithValue },
   ) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/auth/signup`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(credentials),
-      });
-
-      const data = await response.json();
-      if (!response.ok) {
-        return rejectWithValue(data.message || "Sign up failed");
-      }
-
-      return data;
+      const response = await api.post("/auth/signup", credentials);
+      return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.message || "Sign up failed");
+      return rejectWithValue(
+        error.response?.data?.message || error.message || "Sign up failed",
+      );
     }
   },
 );
@@ -69,16 +61,8 @@ export const signIn = createAsyncThunk(
     { rejectWithValue },
   ) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/auth/signin`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(credentials),
-      });
-
-      const data = await response.json();
-      if (!response.ok) {
-        return rejectWithValue(data.message || "Sign in failed");
-      }
+      const response = await api.post("/auth/signin", credentials);
+      const data = response.data;
 
       // Store tokens
       if (data.session) {
@@ -88,7 +72,9 @@ export const signIn = createAsyncThunk(
 
       return data;
     } catch (error: any) {
-      return rejectWithValue(error.message || "Sign in failed");
+      return rejectWithValue(
+        error.response?.data?.message || error.message || "Sign in failed",
+      );
     }
   },
 );
@@ -97,17 +83,7 @@ export const signOut = createAsyncThunk(
   "auth/signOut",
   async (_, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("access_token");
-      const response = await fetch(`${API_BASE_URL}/auth/signout`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Sign out failed");
-      }
+      await api.post("/auth/signout");
 
       // Clear local storage
       localStorage.removeItem("access_token");
@@ -115,6 +91,9 @@ export const signOut = createAsyncThunk(
 
       return null;
     } catch (error: any) {
+      // Still clear tokens even if API fails
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("refresh_token");
       return rejectWithValue(error.message || "Sign out failed");
     }
   },
@@ -129,20 +108,14 @@ export const getProfile = createAsyncThunk(
         return rejectWithValue("No access token found");
       }
 
-      const response = await fetch(`${API_BASE_URL}/auth/profile`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const data = await response.json();
-      if (!response.ok) {
-        return rejectWithValue(data.message || "Failed to fetch profile");
-      }
-
-      return data.user;
+      const response = await api.get("/auth/profile");
+      return response.data.user;
     } catch (error: any) {
-      return rejectWithValue(error.message || "Failed to fetch profile");
+      return rejectWithValue(
+        error.response?.data?.message ||
+          error.message ||
+          "Failed to fetch profile",
+      );
     }
   },
 );

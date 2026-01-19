@@ -81,12 +81,27 @@ const importOrderController = {
         }
       }
 
-      const orderId = await ImportOrder.create(
-        { supplier_id, expected_delivery, notes, total_amount },
-        items,
+      // Generate order number
+      const randomSuffix = Math.random()
+        .toString(36)
+        .substring(2, 8)
+        .toUpperCase();
+      const order_number = `IO-${Date.now()}-${randomSuffix}`;
+
+      const result = await ImportOrder.create(
+        {
+          order_number,
+          supplier_id,
+          expected_delivery,
+          notes,
+          total_amount,
+          items,
+        },
         req.user.id,
       );
 
+      // result can be the order object directly or wrapped in data property
+      const orderId = result?.id || result?.data?.id;
       const order = await ImportOrder.findById(orderId);
 
       res.status(201).json({

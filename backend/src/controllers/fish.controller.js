@@ -67,7 +67,7 @@ const fishController = {
         });
       }
 
-      const fishId = await Fish.create({
+      const result = await Fish.create({
         sku,
         name,
         scientific_name,
@@ -84,6 +84,8 @@ const fishController = {
         userId: req.user?.id,
       });
 
+      // result is the fish object (or result.data if wrapped), fetch full details with category
+      const fishId = result?.id || result?.data?.id;
       const fish = await Fish.findById(fishId);
 
       res.status(201).json({

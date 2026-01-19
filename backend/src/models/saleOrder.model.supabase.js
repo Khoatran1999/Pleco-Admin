@@ -154,7 +154,6 @@ const SaleOrder = {
    */
   async create(orderData, userId) {
     const {
-      order_number,
       customer_id,
       sale_type,
       order_date,
@@ -163,6 +162,14 @@ const SaleOrder = {
       notes,
       items,
     } = orderData;
+
+    // Generate order number if not provided - use timestamp + random for uniqueness
+    const randomSuffix = Math.random()
+      .toString(36)
+      .substring(2, 8)
+      .toUpperCase();
+    const order_number =
+      orderData.order_number || `SO-${Date.now()}-${randomSuffix}`;
 
     return executeQuery(async () => {
       // Validate inventory availability

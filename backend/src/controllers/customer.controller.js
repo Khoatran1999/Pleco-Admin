@@ -70,15 +70,13 @@ const customerController = {
         });
       }
 
-      const customerId = await Customer.create({
+      const customer = await Customer.create({
         name,
         email,
         phone,
         address,
         social,
       });
-
-      const customer = await Customer.findById(customerId);
 
       res.status(201).json({
         success: true,
