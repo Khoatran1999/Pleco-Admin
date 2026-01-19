@@ -96,13 +96,6 @@ const Login: React.FC = () => {
               {loading ? "Signing in..." : "Sign In"}
             </button>
           </form>
-
-          <div className="mt-6 text-center text-sm text-slate-400">
-            <p>Demo credentials:</p>
-            <p className="font-mono text-xs mt-1 text-cyan-400/70">
-              admin@fishmarket.com / admin123
-            </p>
-          </div>
         </div>
       </div>
     </div>
