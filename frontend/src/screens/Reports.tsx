@@ -71,13 +71,13 @@ const Reports: React.FC = () => {
     return `${sign}${value.toFixed(1)}%`;
   };
 
-  const changes = safeSummary.changes || {};
+  const changes: { revenue?: number; orders?: number; quantity?: number; avg_order_value?: number } = safeSummary.changes || {};
 
   const stats = [
     {
       label: "Total Revenue",
       value: `${formatCurrencyK(Number(safeSummary.total_revenue || 0))}`,
-      change: formatChange(changes.revenue),
+      change: formatChange(changes.revenue || 0),
       changeValue: changes.revenue || 0,
       icon: "attach_money",
       bg: "bg-emerald-50",
@@ -86,7 +86,7 @@ const Reports: React.FC = () => {
     {
       label: "Total Orders",
       value: safeSummary.total_orders?.toString() || "0",
-      change: formatChange(changes.orders),
+      change: formatChange(changes.orders || 0),
       changeValue: changes.orders || 0,
       icon: "shopping_cart",
       bg: "bg-blue-50",
@@ -95,7 +95,7 @@ const Reports: React.FC = () => {
     {
       label: "Fish Sold (pieces)",
       value: `${Number(safeSummary.total_quantity || 0).toFixed(0)} pieces`,
-      change: formatChange(changes.quantity),
+      change: formatChange(changes.quantity || 0),
       changeValue: changes.quantity || 0,
       icon: "scale",
       bg: "bg-cyan-50",
@@ -104,7 +104,7 @@ const Reports: React.FC = () => {
     {
       label: "Avg Order Value",
       value: `${formatCurrencyK(Number(safeSummary.avg_order_value || 0))}`,
-      change: formatChange(changes.avg_order_value),
+      change: formatChange(changes.avg_order_value || 0),
       changeValue: changes.avg_order_value || 0,
       icon: "account_balance_wallet",
       bg: "bg-purple-50",

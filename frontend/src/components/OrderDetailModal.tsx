@@ -372,7 +372,7 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
             ) : (
               <button
                 onClick={async () => {
-                  if (!order) return;
+                  if (!order || order.id === undefined) return;
                   try {
                     // dispatch update
                     const payload: any = { notes: editNotes };
@@ -385,7 +385,7 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                       updateSaleOrderDetails({ id: order.id, data: payload }),
                     ).unwrap();
                     setEditing(false);
-                  } catch (err) {
+                  } catch (err: any) {
                     alert(err?.message || "Failed to update order");
                   }
                 }}

@@ -1,16 +1,22 @@
 {
   "version": 2,
-  "framework": null,
-  "buildCommand": "",
-  "outputDirectory": "public",
-  "installCommand": "cd backend && npm install",
-  "functions": {
-    "api/index.js": {
-      "includeFiles": "backend/**"
+  "builds": [
+    {
+      "src": "frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist",
+        "installCommand": "npm install"
+      }
+    },
+    {
+      "src": "api/index.js",
+      "use": "@vercel/node"
     }
-  },
-  "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api" },
-    { "source": "/(.*)", "destination": "/index.html" }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api/index.js" },
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/frontend/dist/index.html" }
   ]
 }

@@ -1,4 +1,5 @@
 import "@testing-library/jest-dom";
+import { beforeAll, afterEach, afterAll } from "vitest";
 
 // MSW setup
 import { setupServer } from "msw/node";

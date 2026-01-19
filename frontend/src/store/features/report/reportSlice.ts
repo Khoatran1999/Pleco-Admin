@@ -18,7 +18,8 @@ interface DashboardStats {
 }
 
 interface WeeklyRevenue {
-  day: string;
+  name: string;
+  day?: string;
   revenue: number;
 }
 

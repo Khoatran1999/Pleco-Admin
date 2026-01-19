@@ -42,7 +42,7 @@ const Imports: React.FC<ImportsProps> = ({ onNewImport }) => {
   };
 
   useEffect(() => {
-    dispatch(fetchImportOrders());
+    dispatch(fetchImportOrders({}));
   }, [dispatch]);
 
   const handleDelete = async (id: number) => {

@@ -16,7 +16,7 @@ import {
 
 interface InventoryProps {
   onAddItem: () => void;
-  onEditItem?: () => void;
+  onEditItem?: (id: number) => void;
 }
 
 const ITEMS_PER_PAGE = 10;

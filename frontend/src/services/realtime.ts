@@ -155,6 +155,7 @@ class RealtimeService {
         },
         async (payload: any) => {
           // Check if inventory is now low stock
+          if (!supabase) return;
           const { data: fish } = await supabase
             .from("fishes")
             .select("min_stock, name")
@@ -212,7 +213,7 @@ class RealtimeService {
         const state = channel.presenceState();
         console.log("Presence sync:", state);
         if (callbacks?.onSync) {
-          callbacks.onSync(state);
+          callbacks.onSync(state as PresenceState);
         }
       })
       .on("presence", { event: "join" }, ({ key, newPresences }) => {
