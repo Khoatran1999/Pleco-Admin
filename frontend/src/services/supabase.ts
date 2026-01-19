@@ -29,7 +29,7 @@ if (supabaseUrl && supabaseAnonKey) {
   });
 } else {
   console.warn(
-    "Supabase environment variables not set - realtime features disabled"
+    "Supabase environment variables not set - realtime features disabled",
   );
 }
 
