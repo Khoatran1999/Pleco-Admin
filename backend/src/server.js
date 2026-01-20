@@ -19,6 +19,8 @@ app.use(
   }),
 );
 
+app.set("trust proxy", 1); // hoặc true
+
 // Rate limiting
 const generalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
