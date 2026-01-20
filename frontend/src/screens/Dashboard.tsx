@@ -128,17 +128,12 @@ const Dashboard: React.FC<DashboardProps> = ({ onAddOrder }) => {
 
   return (
     <div className="max-w-7xl mx-auto flex flex-col gap-6">
-      {/* Header Section with Crypto Neon Theme */}
-      <div className="relative overflow-hidden bg-slate-900/50 backdrop-blur-xl border border-cyan-500/20 rounded-2xl p-8 shadow-2xl shadow-cyan-500/10">
-        {/* Animated gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-blue-500/10 to-purple-500/10"></div>
-        <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/20 rounded-full filter blur-3xl opacity-20 animate-pulse"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-500/20 rounded-full filter blur-3xl opacity-20 animate-pulse delay-1000"></div>
-
-        <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+      {/* Header Section */}
+      <div className="relative overflow-hidden bg-white border border-slate-200 rounded-card p-8 shadow-soft-lg">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
             <div className="flex items-center gap-3 mb-3">
-              <div className="p-2 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl shadow-lg shadow-cyan-500/50">
+              <div className="p-2 bg-primary-500 rounded-button shadow-soft">
                 <svg
                   className="w-6 h-6 text-white"
                   fill="none"
@@ -153,18 +148,18 @@ const Dashboard: React.FC<DashboardProps> = ({ onAddOrder }) => {
                   />
                 </svg>
               </div>
-              <h2 className="text-4xl font-black text-white tracking-tight">
+              <h2 className="text-4xl font-black text-primary tracking-tight">
                 Dashboard Overview
               </h2>
             </div>
-            <p className="text-cyan-300/80 text-lg font-medium">
+            <p className="text-secondary text-lg font-medium">
               Welcome back, here's what's happening at FishMarket today.
             </p>
           </div>
           <div className="flex gap-3">
             <button
               onClick={handleExportReport}
-              className="cursor-pointer flex items-center gap-2 px-5 py-3 bg-slate-800/50 backdrop-blur-sm border border-cyan-500/30 rounded-xl text-sm font-bold text-cyan-300 hover:bg-slate-800/80 hover:border-cyan-400/50 transition-all shadow-lg hover:shadow-cyan-500/20 hover:scale-105 active:scale-95"
+              className="cursor-pointer flex items-center gap-2 px-5 py-3 bg-white border border-slate-200 rounded-button text-sm font-bold text-secondary hover:bg-background-soft hover:border-primary-500 transition-all shadow-soft hover:shadow-soft-lg"
             >
               <svg
                 className="w-5 h-5"
@@ -186,7 +181,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onAddOrder }) => {
                 if (onAddOrder) onAddOrder();
                 else navigate("/orders/new");
               }}
-              className="cursor-pointer flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl text-sm font-bold text-white hover:from-cyan-400 hover:to-blue-500 transition-all shadow-lg shadow-cyan-500/50 hover:shadow-cyan-500/70 hover:scale-105 active:scale-95"
+              className="cursor-pointer flex items-center gap-2 px-6 py-3 bg-primary-500 rounded-button text-sm font-bold text-white hover:bg-primary-600 transition-all shadow-soft hover:shadow-soft-lg"
             >
               <svg
                 className="w-5 h-5"
@@ -207,15 +202,13 @@ const Dashboard: React.FC<DashboardProps> = ({ onAddOrder }) => {
         </div>
       </div>
 
-      {/* KPI Cards with Crypto Dark Theme */}
+      {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Revenue Card */}
-        <div className="cursor-pointer group relative overflow-hidden bg-slate-900/50 backdrop-blur-xl rounded-2xl p-6 border border-cyan-500/20 hover:border-cyan-400/40 hover:shadow-2xl hover:shadow-cyan-500/20 transition-all duration-300 hover:scale-[1.02]">
-          <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-blue-500/5"></div>
-          <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full filter blur-3xl -mr-16 -mt-16 group-hover:bg-cyan-500/20 transition-colors"></div>
-          <div className="relative z-10">
+        <div className="cursor-pointer group relative overflow-hidden bg-white rounded-card p-6 border border-slate-200 hover:border-primary-500 hover:shadow-soft-lg transition-all duration-300">
+          <div>
             <div className="flex justify-between items-start mb-4">
-              <div className="p-3 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl shadow-lg shadow-cyan-500/50 group-hover:scale-110 group-hover:shadow-cyan-500/70 transition-all">
+              <div className="p-3 bg-primary-500 rounded-button shadow-soft group-hover:scale-110 transition-all">
                 <svg
                   className="w-7 h-7 text-white"
                   fill="none"
@@ -233,9 +226,9 @@ const Dashboard: React.FC<DashboardProps> = ({ onAddOrder }) => {
               <div
                 className={`flex items-center gap-1.5 text-xs font-bold ${
                   (dashboardStats?.revenue?.change || 0) >= 0
-                    ? "text-emerald-400 bg-emerald-500/20 border border-emerald-500/30"
-                    : "text-red-400 bg-red-500/20 border border-red-500/30"
-                } px-3 py-1.5 rounded-full shadow-sm`}
+                    ? "text-secondary-600 bg-secondary-100 border border-secondary-200"
+                    : "text-red-600 bg-red-100 border border-red-200"
+                } px-3 py-1.5 rounded-full shadow-soft`}
               >
                 <svg
                   className="w-4 h-4"
@@ -257,16 +250,16 @@ const Dashboard: React.FC<DashboardProps> = ({ onAddOrder }) => {
                 <span>{Math.abs(dashboardStats?.revenue?.change || 0)}%</span>
               </div>
             </div>
-            <h3 className="text-cyan-400 text-xs font-extrabold uppercase tracking-wider mb-2">
+            <h3 className="text-muted text-xs font-extrabold uppercase tracking-wider mb-2">
               Total Revenue
             </h3>
-            <p className="text-4xl font-black text-white mb-2">
+            <p className="text-4xl font-black text-primary mb-2">
               {formatCurrencyK(dashboardStats?.revenue?.current || 0)}
             </p>
             <div className="flex items-center gap-2 text-sm">
-              <span className="text-slate-400 font-medium">Last 7 days</span>
-              <span className="text-slate-600">•</span>
-              <span className="text-slate-500 font-medium">
+              <span className="text-secondary font-medium">Last 7 days</span>
+              <span className="text-muted">•</span>
+              <span className="text-muted font-medium">
                 {formatCurrencyK(dashboardStats?.revenue?.previous || 0)} prev
               </span>
             </div>
@@ -274,12 +267,10 @@ const Dashboard: React.FC<DashboardProps> = ({ onAddOrder }) => {
         </div>
 
         {/* Inventory Card */}
-        <div className="cursor-pointer group relative overflow-hidden bg-slate-900/50 backdrop-blur-xl rounded-2xl p-6 border border-emerald-500/20 hover:border-emerald-400/40 hover:shadow-2xl hover:shadow-emerald-500/20 transition-all duration-300 hover:scale-[1.02]">
-          <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-teal-500/5"></div>
-          <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full filter blur-3xl -mr-16 -mt-16 group-hover:bg-emerald-500/20 transition-colors"></div>
-          <div className="relative z-10">
+        <div className="cursor-pointer group relative overflow-hidden bg-white rounded-card p-6 border border-slate-200 hover:border-secondary-500 hover:shadow-soft-lg transition-all duration-300">
+          <div>
             <div className="flex justify-between items-start mb-4">
-              <div className="p-3 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl shadow-lg shadow-emerald-500/50 group-hover:scale-110 group-hover:shadow-emerald-500/70 transition-all">
+              <div className="p-3 bg-secondary-500 rounded-button shadow-soft group-hover:scale-110 transition-all">
                 <svg
                   className="w-7 h-7 text-white"
                   fill="none"
@@ -295,7 +286,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onAddOrder }) => {
                 </svg>
               </div>
               {(dashboardStats?.inventory?.today_imports || 0) > 0 && (
-                <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-400 bg-emerald-500/20 border border-emerald-500/30 px-3 py-1.5 rounded-full shadow-sm">
+                <div className="flex items-center gap-1.5 text-xs font-bold text-secondary-600 bg-secondary-100 border border-secondary-200 px-3 py-1.5 rounded-full shadow-soft">
                   <svg
                     className="w-4 h-4"
                     fill="none"
@@ -313,15 +304,15 @@ const Dashboard: React.FC<DashboardProps> = ({ onAddOrder }) => {
                 </div>
               )}
             </div>
-            <h3 className="text-emerald-400 text-xs font-extrabold uppercase tracking-wider mb-2">
+            <h3 className="text-muted text-xs font-extrabold uppercase tracking-wider mb-2">
               Total Inventory
             </h3>
-            <p className="text-4xl font-black text-white mb-2">
+            <p className="text-4xl font-black text-primary mb-2">
               {Math.round(dashboardStats?.inventory?.total || 0)}
-              <span className="text-xl font-bold text-slate-500 ml-2">pcs</span>
+              <span className="text-xl font-bold text-muted ml-2">pcs</span>
             </p>
             <div className="flex items-center gap-2 text-sm">
-              <span className="text-slate-400 font-medium">
+              <span className="text-secondary font-medium">
                 {(dashboardStats?.inventory?.today_imports || 0) > 0
                   ? `${dashboardStats?.inventory?.today_imports} arrived today`
                   : "Current stock level"}
@@ -331,12 +322,10 @@ const Dashboard: React.FC<DashboardProps> = ({ onAddOrder }) => {
         </div>
 
         {/* Orders Card */}
-        <div className="cursor-pointer group relative overflow-hidden bg-slate-900/50 backdrop-blur-xl rounded-2xl p-6 border border-purple-500/20 hover:border-purple-400/40 hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-300 hover:scale-[1.02]">
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5"></div>
-          <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full filter blur-3xl -mr-16 -mt-16 group-hover:bg-purple-500/20 transition-colors"></div>
-          <div className="relative z-10">
+        <div className="cursor-pointer group relative overflow-hidden bg-white rounded-card p-6 border border-slate-200 hover:border-accent-500 hover:shadow-soft-lg transition-all duration-300">
+          <div>
             <div className="flex justify-between items-start mb-4">
-              <div className="p-3 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl shadow-lg shadow-purple-500/50 group-hover:scale-110 group-hover:shadow-purple-500/70 transition-all">
+              <div className="p-3 bg-accent-500 rounded-button shadow-soft group-hover:scale-110 transition-all">
                 <svg
                   className="w-7 h-7 text-white"
                   fill="none"
@@ -351,7 +340,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onAddOrder }) => {
                   />
                 </svg>
               </div>
-              <div className="flex items-center gap-1.5 text-xs font-bold text-purple-400 bg-purple-500/20 border border-purple-500/30 px-3 py-1.5 rounded-full shadow-sm">
+              <div className="flex items-center gap-1.5 text-xs font-bold text-accent-600 bg-accent-100 border border-accent-200 px-3 py-1.5 rounded-full shadow-soft">
                 <svg
                   className="w-4 h-4"
                   fill="none"
@@ -368,16 +357,16 @@ const Dashboard: React.FC<DashboardProps> = ({ onAddOrder }) => {
                 <span>{dashboardStats?.orders?.pending || 0} Pending</span>
               </div>
             </div>
-            <h3 className="text-purple-400 text-xs font-extrabold uppercase tracking-wider mb-2">
+            <h3 className="text-muted text-xs font-extrabold uppercase tracking-wider mb-2">
               Total Orders
             </h3>
-            <p className="text-4xl font-black text-white mb-2">
+            <p className="text-4xl font-black text-primary mb-2">
               {dashboardStats?.orders?.total || 0}
             </p>
             <div className="flex items-center gap-2 text-sm">
-              <span className="text-slate-400 font-medium">Last 7 days</span>
-              <span className="text-slate-600">•</span>
-              <span className="text-slate-500 font-medium">
+              <span className="text-secondary font-medium">Last 7 days</span>
+              <span className="text-muted">•</span>
+              <span className="text-muted font-medium">
                 {dashboardStats?.orders?.pending || 0} awaiting
               </span>
             </div>
@@ -385,20 +374,20 @@ const Dashboard: React.FC<DashboardProps> = ({ onAddOrder }) => {
         </div>
       </div>
 
-      {/* Charts Section with Dark Theme */}
+      {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Revenue Chart */}
-        <div className="lg:col-span-2 bg-slate-900/50 backdrop-blur-xl rounded-2xl p-6 border border-cyan-500/20 hover:border-cyan-400/30 hover:shadow-2xl hover:shadow-cyan-500/10 transition-all">
+        <div className="lg:col-span-2 bg-white rounded-card p-6 border border-slate-200 hover:border-primary-500 hover:shadow-soft-lg transition-all">
           <div className="flex justify-between items-center mb-6">
             <div>
-              <h3 className="text-xl font-black text-white">
+              <h3 className="text-xl font-black text-primary">
                 Revenue Overview
               </h3>
-              <p className="text-sm text-slate-400 font-medium mt-1">
+              <p className="text-sm text-secondary font-medium mt-1">
                 Daily revenue for the past 7 days
               </p>
             </div>
-            <select className="cursor-pointer bg-slate-800/50 border border-slate-700/50 text-xs font-bold rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-cyan-500/50 text-cyan-300 hover:bg-slate-800/80 transition-colors">
+            <select className="cursor-pointer bg-white border border-slate-200 text-xs font-bold rounded-button py-2.5 px-4 focus:ring-2 focus:ring-primary-500 text-secondary hover:bg-background-soft transition-colors">
               <option>This Week</option>
               <option>Last Week</option>
             </select>
@@ -408,15 +397,15 @@ const Dashboard: React.FC<DashboardProps> = ({ onAddOrder }) => {
               <AreaChart data={chartData}>
                 <defs>
                   <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.4} />
-                    <stop offset="95%" stopColor="#06b6d4" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid
                   strokeDasharray="3 3"
                   vertical={false}
-                  stroke="#1e293b"
-                  opacity={0.3}
+                  stroke="#e2e8f0"
+                  opacity={0.5}
                 />
                 <XAxis
                   dataKey="name"
@@ -433,22 +422,21 @@ const Dashboard: React.FC<DashboardProps> = ({ onAddOrder }) => {
                 />
                 <Tooltip
                   contentStyle={{
-                    borderRadius: "16px",
-                    border: "1px solid rgba(6, 182, 212, 0.2)",
+                    borderRadius: "12px",
+                    border: "1px solid #e2e8f0",
                     boxShadow:
-                      "0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3)",
+                      "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
                     padding: "12px 16px",
-                    backgroundColor: "rgba(15, 23, 42, 0.95)",
-                    backdropFilter: "blur(12px)",
+                    backgroundColor: "#ffffff",
                   }}
                   labelStyle={{
-                    color: "#f1f5f9",
+                    color: "#1e293b",
                     fontWeight: 700,
                     fontSize: "13px",
                     marginBottom: "4px",
                   }}
                   itemStyle={{
-                    color: "#06b6d4",
+                    color: "#3b82f6",
                     fontWeight: 700,
                     fontSize: "14px",
                   }}
@@ -460,22 +448,21 @@ const Dashboard: React.FC<DashboardProps> = ({ onAddOrder }) => {
                 <Area
                   type="monotone"
                   dataKey="revenue"
-                  stroke="#06b6d4"
+                  stroke="#3b82f6"
                   strokeWidth={3}
                   fillOpacity={1}
                   fill="url(#colorRevenue)"
                   dot={{
-                    fill: "#06b6d4",
+                    fill: "#3b82f6",
                     strokeWidth: 2,
                     r: 4,
-                    stroke: "#0f172a",
+                    stroke: "#ffffff",
                   }}
                   activeDot={{
                     r: 6,
-                    fill: "#06b6d4",
-                    stroke: "#0f172a",
+                    fill: "#3b82f6",
+                    stroke: "#ffffff",
                     strokeWidth: 3,
-                    filter: "drop-shadow(0 0 8px rgba(6, 182, 212, 0.6))",
                   }}
                 />
               </AreaChart>
@@ -484,12 +471,12 @@ const Dashboard: React.FC<DashboardProps> = ({ onAddOrder }) => {
         </div>
 
         {/* Best Selling Species */}
-        <div className="bg-slate-900/50 backdrop-blur-xl rounded-2xl p-6 border border-purple-500/20 hover:border-purple-400/30 hover:shadow-2xl hover:shadow-purple-500/10 transition-all flex flex-col">
+        <div className="bg-white rounded-card p-6 border border-slate-200 hover:border-accent-500 hover:shadow-soft-lg transition-all flex flex-col">
           <div className="mb-6">
-            <h3 className="text-xl font-black text-white">
+            <h3 className="text-xl font-black text-primary">
               Best Selling Species
             </h3>
-            <p className="text-sm text-slate-400 font-medium mt-1">
+            <p className="text-sm text-secondary font-medium mt-1">
               Top performers this week
             </p>
           </div>
@@ -502,27 +489,25 @@ const Dashboard: React.FC<DashboardProps> = ({ onAddOrder }) => {
                 <div className="flex justify-between items-center">
                   <div className="flex items-center gap-3">
                     <div
-                      className="w-3 h-3 rounded-full shadow-lg"
+                      className="w-3 h-3 rounded-full shadow-soft"
                       style={{
                         backgroundColor: item.color,
-                        boxShadow: `0 0 10px ${item.color}50`,
                       }}
                     ></div>
-                    <span className="text-sm font-bold text-slate-200 group-hover:text-cyan-400 transition-colors">
+                    <span className="text-sm font-bold text-secondary group-hover:text-primary transition-colors">
                       {item.name}
                     </span>
                   </div>
-                  <span className="text-sm font-black text-white">
+                  <span className="text-sm font-black text-primary">
                     {item.percentage}%
                   </span>
                 </div>
-                <div className="w-full bg-slate-800/50 rounded-full h-3 overflow-hidden border border-slate-700/50">
+                <div className="w-full bg-background-soft rounded-full h-3 overflow-hidden border border-slate-200">
                   <div
                     className="h-full rounded-full transition-all duration-1000"
                     style={{
                       width: `${item.percentage}%`,
                       backgroundColor: item.color,
-                      boxShadow: `0 0 15px ${item.color}50`,
                     }}
                   ></div>
                 </div>

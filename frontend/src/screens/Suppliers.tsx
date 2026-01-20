@@ -124,20 +124,20 @@ const Suppliers: React.FC = () => {
     <div className="max-w-7xl mx-auto flex flex-col gap-8">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-3xl font-black text-white">Suppliers</h2>
-          <p className="text-cyan-300 mt-1">
+          <h2 className="text-3xl font-black text-text-primary">Suppliers</h2>
+          <p className="text-text-secondary mt-1">
             Manage your suppliers and contacts ({suppliers.length} items).
           </p>
         </div>
       </div>
 
-      <div className="bg-slate-900/50 backdrop-blur-xl rounded-2xl p-6 shadow-sm border border-cyan-500/20 hover:border-cyan-400/40 hover:shadow-2xl hover:shadow-cyan-500/20 transition-all">
+      <div className="bg-white backdrop-blur-sm rounded-card p-6 shadow-soft border border-slate-200 hover:border-primary-300 hover:shadow-soft-lg transition-all">
         <form
           onSubmit={handleSubmit}
           className="grid grid-cols-1 md:grid-cols-3 gap-4"
         >
           <div className="flex items-center gap-3">
-            <div className="w-14 h-14 rounded-full overflow-hidden border border-cyan-500/30 bg-slate-800/50">
+            <div className="w-14 h-14 rounded-full overflow-hidden border border-primary-200 bg-background-soft">
               {avatarPreview ? (
                 <img
                   src={avatarPreview}
@@ -145,7 +145,7 @@ const Suppliers: React.FC = () => {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <span className="flex items-center justify-center text-slate-400">
+                <span className="flex items-center justify-center text-text-muted">
                   No
                 </span>
               )}
@@ -155,7 +155,7 @@ const Suppliers: React.FC = () => {
               name="avatar"
               accept="image/*"
               onChange={handleFileChange}
-              className="text-sm text-cyan-300"
+              className="text-sm text-primary-600"
             />
           </div>
           <input
@@ -163,39 +163,39 @@ const Suppliers: React.FC = () => {
             value={form.name}
             onChange={handleChange}
             placeholder="Supplier Name"
-            className="p-3 rounded-xl border border-slate-700/50 bg-slate-800/50 text-slate-100 placeholder:text-slate-500 focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 transition-all"
+            className="p-3 rounded-button border border-slate-200 bg-white text-text-primary placeholder:text-text-muted focus:border-primary-400 focus:ring-2 focus:ring-primary-400/30 transition-all"
           />
           <input
             name="contact_person"
             value={form.contact_person}
             onChange={handleChange}
             placeholder="Contact Person"
-            className="p-3 rounded-xl border border-slate-700/50 bg-slate-800/50 text-slate-100 placeholder:text-slate-500 focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 transition-all"
+            className="p-3 rounded-button border border-slate-200 bg-white text-text-primary placeholder:text-text-muted focus:border-primary-400 focus:ring-2 focus:ring-primary-400/30 transition-all"
           />
           <input
             name="email"
             value={form.email}
             onChange={handleChange}
             placeholder="Email"
-            className="p-3 rounded-xl border border-slate-700/50 bg-slate-800/50 text-slate-100 placeholder:text-slate-500 focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 transition-all"
+            className="p-3 rounded-button border border-slate-200 bg-white text-text-primary placeholder:text-text-muted focus:border-primary-400 focus:ring-2 focus:ring-primary-400/30 transition-all"
           />
           <input
             name="phone"
             value={form.phone}
             onChange={handleChange}
             placeholder="Phone"
-            className="p-3 rounded-xl border border-slate-700/50 bg-slate-800/50 text-slate-100 placeholder:text-slate-500 focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 transition-all"
+            className="p-3 rounded-button border border-slate-200 bg-white text-text-primary placeholder:text-text-muted focus:border-primary-400 focus:ring-2 focus:ring-primary-400/30 transition-all"
           />
           <input
             name="address"
             value={form.address}
             onChange={handleChange}
             placeholder="Address"
-            className="p-3 rounded-xl border border-slate-700/50 bg-slate-800/50 text-slate-100 placeholder:text-slate-500 focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 transition-all md:col-span-2"
+            className="p-3 rounded-button border border-slate-200 bg-white text-text-primary placeholder:text-text-muted focus:border-primary-400 focus:ring-2 focus:ring-primary-400/30 transition-all md:col-span-2"
           />
           <div className="flex items-center gap-3 md:col-span-3">
             <button
-              className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-6 py-3 rounded-xl font-bold hover:shadow-2xl hover:shadow-cyan-500/30 transition-all"
+              className="bg-gradient-to-r from-primary-500 to-secondary-500 text-white px-6 py-3 rounded-button font-bold hover:shadow-soft-lg transition-all"
               type="submit"
             >
               {editingId ? "Update Supplier" : "Add Supplier"}
@@ -204,7 +204,7 @@ const Suppliers: React.FC = () => {
               <button
                 type="button"
                 onClick={handleCancelEdit}
-                className="px-4 py-3 rounded-xl border border-slate-700/50 text-slate-300 hover:border-cyan-500/50 hover:text-cyan-300 transition-all"
+                className="px-4 py-3 rounded-button border border-slate-200 text-text-secondary hover:border-primary-400 hover:text-primary-600 transition-all"
               >
                 Cancel
               </button>
@@ -214,10 +214,10 @@ const Suppliers: React.FC = () => {
         {error && <p className="text-red-500 mt-3">{error}</p>}
       </div>
 
-      <div className="bg-slate-900/50 backdrop-blur-xl rounded-2xl p-6 shadow-sm border border-cyan-500/20 hover:border-cyan-400/40 hover:shadow-2xl hover:shadow-cyan-500/20 transition-all overflow-x-auto">
+      <div className="bg-white backdrop-blur-sm rounded-card p-6 shadow-soft-lg border border-slate-200 hover:border-primary-300 hover:shadow-soft-xl transition-all overflow-x-auto">
         <table className="w-full text-left">
           <thead>
-            <tr className="text-cyan-400 text-xs font-bold uppercase tracking-widest border-b border-slate-800/50">
+            <tr className="text-primary-600 text-xs font-bold uppercase tracking-widest border-b border-slate-200">
               <th className="px-4 py-2">Avatar</th>
               <th className="px-4 py-2">Name</th>
               <th className="px-4 py-2">Contact</th>
@@ -227,7 +227,7 @@ const Suppliers: React.FC = () => {
               <th className="px-4 py-2 text-right">Actions</th>
             </tr>
           </thead>
-          <tbody className="text-sm text-slate-300">
+          <tbody className="text-sm text-text-primary">
             {loading ? (
               <tr>
                 <td colSpan={7} className="px-4 py-8 text-center">
@@ -238,7 +238,7 @@ const Suppliers: React.FC = () => {
               <tr>
                 <td
                   colSpan={7}
-                  className="px-4 py-8 text-center text-slate-400"
+                  className="px-4 py-8 text-center text-text-muted"
                 >
                   No suppliers
                 </td>
@@ -263,10 +263,10 @@ const Suppliers: React.FC = () => {
                 return (
                   <tr
                     key={s.id}
-                    className="border-t border-slate-800/30 hover:bg-slate-800/30 transition-colors"
+                    className="border-t border-slate-200 hover:bg-slate-50 transition-colors"
                   >
                     <td className="px-4 py-3">
-                      <div className="w-10 h-10 rounded-full overflow-hidden border border-cyan-500/30">
+                      <div className="w-10 h-10 rounded-full overflow-hidden border border-primary-200">
                         <img
                           src={avatarUrl}
                           alt={s.name}
@@ -274,23 +274,27 @@ const Suppliers: React.FC = () => {
                         />
                       </div>
                     </td>
-                    <td className="px-4 py-3 font-bold text-white">{s.name}</td>
-                    <td className="px-4 py-3 text-slate-300">
+                    <td className="px-4 py-3 font-bold text-text-primary">
+                      {s.name}
+                    </td>
+                    <td className="px-4 py-3 text-text-secondary">
                       {s.contact_person}
                     </td>
-                    <td className="px-4 py-3 text-slate-300">{s.email}</td>
-                    <td className="px-4 py-3 text-slate-300">{s.phone}</td>
-                    <td className="px-4 py-3 text-slate-300">{s.address}</td>
+                    <td className="px-4 py-3 text-text-secondary">{s.email}</td>
+                    <td className="px-4 py-3 text-text-secondary">{s.phone}</td>
+                    <td className="px-4 py-3 text-text-secondary">
+                      {s.address}
+                    </td>
                     <td className="px-4 py-3 text-right flex justify-end gap-3">
                       <button
                         onClick={() => handleEdit(s)}
-                        className="text-cyan-400 font-bold hover:text-cyan-300 transition-colors"
+                        className="text-primary-600 font-bold hover:text-primary-700 transition-colors"
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => handleDelete(s.id)}
-                        className="text-red-400 font-bold hover:text-red-300 transition-colors"
+                        className="text-red-500 font-bold hover:text-red-600 transition-colors"
                       >
                         Delete
                       </button>

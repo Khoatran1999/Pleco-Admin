@@ -75,23 +75,23 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-slate-900 border border-purple-500/20 rounded-2xl shadow-2xl shadow-purple-500/20 max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="bg-white border border-slate-200 rounded-2xl shadow-soft-xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-slate-800/50">
+        <div className="flex items-center justify-between p-6 border-b border-slate-200">
           <div>
-            <h3 className="text-xl font-bold text-white">
+            <h3 className="text-xl font-bold text-text-primary">
               {type === "sale" ? "Sale Order Details" : "Import Order Details"}
             </h3>
             {order && (
-              <p className="text-cyan-400 text-sm font-medium mt-1">
+              <p className="text-primary-600 text-sm font-medium mt-1">
                 {order.order_number}
               </p>
             )}
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+            className="p-2 text-text-secondary hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
           >
             <span className="material-symbols-outlined">close</span>
           </button>
@@ -104,7 +104,7 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
             </div>
           ) : !order ? (
-            <div className="text-center py-12 text-slate-400">
+            <div className="text-center py-12 text-text-secondary">
               Order not found
             </div>
           ) : (
@@ -112,7 +112,7 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
               {/* Order Info */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                  <p className="text-xs font-bold text-text-secondary uppercase tracking-wider">
                     Status
                   </p>
                   <span
@@ -124,11 +124,11 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                   </span>
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                  <p className="text-xs font-bold text-text-secondary uppercase tracking-wider">
                     {type === "sale" ? "Customer" : "Supplier"}
                   </p>
                   {!editing ? (
-                    <p className="text-sm font-bold text-slate-100 mt-1">
+                    <p className="text-sm font-bold text-text-primary mt-1">
                       {type === "sale"
                         ? order.customer_name || "Walk-in"
                         : order.supplier_name}
@@ -137,7 +137,7 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                     <div>
                       <input
                         list="customers-list"
-                        className="w-full bg-slate-50 border border-slate-100 rounded-xl px-3 py-2 text-sm font-bold"
+                        className="w-full bg-background-soft border border-slate-200 rounded-xl px-3 py-2 text-sm font-bold"
                         value={editCustomer}
                         onChange={(e) => {
                           const val = e.target.value;
@@ -159,7 +159,7 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                     </div>
                   )}
                   {type === "sale" && !editing && (
-                    <div className="mt-2 text-sm text-slate-600">
+                    <div className="mt-2 text-sm text-text-secondary">
                       {order.customer_phone && (
                         <div className="mb-1">
                           <span className="font-bold">Phone: </span>
@@ -199,7 +199,7 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                                   alert("Copy failed");
                                 }
                               }}
-                              className="px-2 py-1 rounded-lg bg-slate-50 text-slate-700 text-xs"
+                              className="px-2 py-1 rounded-lg bg-background-soft text-slate-700 text-xs"
                             >
                               Copy
                             </button>
@@ -212,10 +212,10 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                   )}
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                  <p className="text-xs font-bold text-text-secondary uppercase tracking-wider">
                     {type === "sale" ? "Order Date" : "Expected Delivery"}
                   </p>
-                  <p className="text-sm font-medium text-slate-600 mt-1">
+                  <p className="text-sm font-medium text-text-secondary mt-1">
                     {type === "sale"
                       ? order.order_date
                         ? new Date(order.order_date).toLocaleDateString()
@@ -225,20 +225,20 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                 </div>
                 {type === "import" && (
                   <div>
-                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                    <p className="text-xs font-bold text-text-secondary uppercase tracking-wider">
                       Delivery Date
                     </p>
-                    <p className="text-sm font-medium text-slate-600 mt-1">
+                    <p className="text-sm font-medium text-text-secondary mt-1">
                       {order.delivery_date || "-"}
                     </p>
                   </div>
                 )}
                 {type === "sale" && order.payment_method && (
                   <div>
-                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                    <p className="text-xs font-bold text-text-secondary uppercase tracking-wider">
                       Payment Method
                     </p>
-                    <p className="text-sm font-medium text-slate-600 mt-1">
+                    <p className="text-sm font-medium text-text-secondary mt-1">
                       {order.payment_method}
                     </p>
                   </div>
@@ -247,13 +247,13 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
 
               {/* Order Items */}
               <div>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
+                <p className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">
                   Items ({order.items?.length || 0})
                 </p>
-                <div className="border border-slate-100 rounded-xl overflow-hidden">
+                <div className="border border-slate-200 rounded-xl overflow-hidden">
                   <table className="w-full text-left">
                     <thead>
-                      <tr className="bg-slate-50 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                      <tr className="bg-background-soft text-[10px] font-bold text-slate-500 uppercase tracking-wider">
                         <th className="px-4 py-3">Product</th>
                         <th className="px-4 py-3 text-right">Qty</th>
                         <th className="px-4 py-3 text-right">Unit Price</th>
@@ -265,23 +265,23 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                         order.items.map((item) => (
                           <tr
                             key={item.id}
-                            className="border-t border-slate-50"
+                            className="border-t border-slate-200"
                           >
                             <td className="px-4 py-3">
-                              <p className="font-bold text-slate-100">
+                              <p className="font-bold text-text-primary">
                                 {item.fish_name}
                               </p>
-                              <p className="text-xs text-slate-400">
+                              <p className="text-xs text-text-secondary">
                                 {item.sku}
                               </p>
                             </td>
-                            <td className="px-4 py-3 text-right font-medium text-slate-600">
+                            <td className="px-4 py-3 text-right font-medium text-text-secondary">
                               {item.quantity}
                             </td>
-                            <td className="px-4 py-3 text-right font-medium text-slate-600">
+                            <td className="px-4 py-3 text-right font-medium text-text-secondary">
                               {formatCurrencyK(Number(item.unit_price))}
                             </td>
-                            <td className="px-4 py-3 text-right font-bold text-slate-100">
+                            <td className="px-4 py-3 text-right font-bold text-text-primary">
                               {formatCurrencyK(Number(item.total_price))}
                             </td>
                           </tr>
@@ -290,7 +290,7 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                         <tr>
                           <td
                             colSpan={4}
-                            className="px-4 py-6 text-center text-slate-400"
+                            className="px-4 py-6 text-center text-text-secondary"
                           >
                             No items
                           </td>
@@ -302,11 +302,11 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
               </div>
 
               {/* Order Totals */}
-              <div className="bg-slate-800/30 rounded-xl p-4 space-y-2">
+              <div className="bg-background-soft rounded-xl p-4 space-y-2">
                 {type === "sale" && order.subtotal !== undefined && (
                   <div className="flex justify-between text-sm">
-                    <span className="text-slate-400">Subtotal</span>
-                    <span className="font-medium text-slate-100">
+                    <span className="text-text-secondary">Subtotal</span>
+                    <span className="font-medium text-text-primary">
                       {formatCurrencyK(Number(order.subtotal))}
                     </span>
                   </div>
@@ -321,9 +321,9 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                       </span>
                     </div>
                   )}
-                <div className="flex justify-between text-base pt-2 border-t border-slate-700/50">
-                  <span className="font-bold text-slate-100">Total</span>
-                  <span className="font-black text-slate-100">
+                <div className="flex justify-between text-base pt-2 border-t border-slate-200">
+                  <span className="font-bold text-text-primary">Total</span>
+                  <span className="font-black text-text-primary">
                     {formatCurrencyK(Number(order.total_amount))}
                   </span>
                 </div>
@@ -331,20 +331,20 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
 
               {/* Notes */}
               <div>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">
+                <p className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-2">
                   Notes
                 </p>
                 {!editing ? (
                   order.notes ? (
-                    <p className="text-sm text-slate-600 bg-slate-50 rounded-xl p-4">
+                    <p className="text-sm text-text-secondary bg-background-soft rounded-xl p-4">
                       {order.notes}
                     </p>
                   ) : (
-                    <p className="text-sm text-slate-400">No notes</p>
+                    <p className="text-sm text-text-secondary">No notes</p>
                   )
                 ) : (
                   <textarea
-                    className="w-full bg-slate-50 border border-slate-100 rounded-xl px-3 py-2 text-sm font-bold"
+                    className="w-full bg-background-soft border border-slate-200 rounded-xl px-3 py-2 text-sm font-bold"
                     rows={3}
                     value={editNotes}
                     onChange={(e) => setEditNotes(e.target.value)}
@@ -356,7 +356,7 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="p-6 border-t border-slate-100">
+        <div className="p-6 border-t border-slate-200">
           <div className="flex gap-3">
             {!editing ? (
               <button

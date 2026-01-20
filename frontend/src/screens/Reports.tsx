@@ -166,20 +166,20 @@ const Reports: React.FC = () => {
     <div className="max-w-7xl mx-auto flex flex-col gap-8">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-black text-white tracking-tight">
+          <h2 className="text-3xl font-black text-text-primary tracking-tight">
             Sales & Inventory Reports
           </h2>
-          <p className="text-cyan-300 font-medium mt-1">
+          <p className="text-text-secondary font-medium mt-1">
             Performance overview for the fish store.
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 bg-slate-900/50 backdrop-blur-xl border border-cyan-500/20 rounded-xl px-3 py-2">
+          <div className="flex items-center gap-2 bg-white backdrop-blur-sm border border-slate-200 rounded-xl px-3 py-2">
             <input
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              className="text-sm font-bold text-cyan-300 bg-transparent border-none focus:ring-0"
+              className="text-sm font-bold text-primary-700 bg-transparent border-none focus:ring-0"
             />
             <span className="text-cyan-500">-</span>
             <input
@@ -191,7 +191,7 @@ const Reports: React.FC = () => {
           </div>
           <button
             onClick={handleExportCSV}
-            className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-xl text-sm font-bold hover:shadow-2xl hover:shadow-cyan-500/30 transition-all shadow-lg shadow-cyan-500/20"
+            className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-button text-sm font-bold hover:shadow-soft-lg transition-all shadow-soft"
           >
             <span className="material-symbols-outlined text-[20px]">
               download
@@ -211,10 +211,10 @@ const Reports: React.FC = () => {
             {stats.map((stat, i) => (
               <div
                 key={i}
-                className="bg-slate-900/50 backdrop-blur-xl p-6 rounded-3xl border border-cyan-500/20 shadow-sm hover:shadow-2xl hover:shadow-cyan-500/20 hover:border-cyan-400/40 transition-all cursor-pointer group"
+                className="bg-white backdrop-blur-sm p-6 rounded-card border border-slate-200 shadow-soft hover:shadow-soft-lg hover:border-primary-300 transition-all cursor-pointer group"
               >
                 <div className="flex items-center justify-between mb-4">
-                  <span className="text-cyan-400 text-xs font-bold uppercase tracking-widest">
+                  <span className="text-primary-700 text-xs font-bold uppercase tracking-widest">
                     {stat.label}
                   </span>
                   <div
@@ -225,7 +225,7 @@ const Reports: React.FC = () => {
                     </span>
                   </div>
                 </div>
-                <p className="text-3xl font-black text-white tracking-tight">
+                <p className="text-3xl font-black text-text-primary tracking-tight">
                   {stat.value}
                 </p>
                 <div className="flex items-center gap-1 mt-2">
@@ -256,9 +256,9 @@ const Reports: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 bg-slate-900/50 backdrop-blur-xl p-8 rounded-3xl border border-cyan-500/20 shadow-sm flex flex-col h-[400px] hover:border-cyan-400/40 hover:shadow-2xl hover:shadow-cyan-500/20 transition-all">
+            <div className="lg:col-span-2 bg-white backdrop-blur-sm p-8 rounded-card border border-slate-200 shadow-soft flex flex-col h-[500px] hover:border-primary-300 hover:shadow-soft-lg transition-all">
               <div className="flex items-center justify-between mb-8">
-                <h3 className="text-lg font-black text-white">
+                <h3 className="text-lg font-black text-text-primary">
                   Revenue Trends (Last 7 Days)
                 </h3>
                 <div className="flex items-center gap-4">
@@ -318,7 +318,7 @@ const Reports: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-slate-900/50 backdrop-blur-xl p-8 rounded-3xl border border-purple-500/20 shadow-sm flex flex-col h-[400px] hover:border-purple-400/40 hover:shadow-2xl hover:shadow-purple-500/20 transition-all">
+            <div className="bg-white backdrop-blur-xl p-8 rounded-3xl border border-purple-500/20 shadow-sm flex flex-col h-[500px] hover:border-purple-400/40 hover:shadow-2xl hover:shadow-purple-500/20 transition-all">
               <h3 className="text-lg font-black text-white mb-6">
                 Sales by Species
               </h3>

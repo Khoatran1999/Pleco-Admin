@@ -55,20 +55,20 @@ const Categories: React.FC = () => {
     <div className="max-w-6xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-3xl font-black text-white">Categories</h2>
-          <p className="text-sm text-cyan-300">
+          <h2 className="text-3xl font-black text-text-primary">Categories</h2>
+          <p className="text-sm text-text-secondary">
             Manage fish categories ({categories.length} items)
           </p>
         </div>
         <button
           onClick={openNew}
-          className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-xl hover:shadow-2xl hover:shadow-cyan-500/30 transition-all"
+          className="px-4 py-2 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-button hover:shadow-soft-lg transition-all"
         >
           New Category
         </button>
       </div>
 
-      <div className="bg-slate-900/50 backdrop-blur-xl rounded-2xl shadow-sm border border-cyan-500/20 p-4 hover:border-cyan-400/40 hover:shadow-2xl hover:shadow-cyan-500/20 transition-all">
+      <div className="bg-white backdrop-blur-sm rounded-card shadow-soft border border-slate-200 p-4 hover:border-primary-300 hover:shadow-soft-lg transition-all">
         {loading ? (
           <div className="p-6 text-center">Loading...</div>
         ) : (
@@ -76,31 +76,31 @@ const Categories: React.FC = () => {
             {categories.map((c: any) => (
               <div
                 key={c.id}
-                className="p-4 border border-slate-700/50 bg-slate-800/50 rounded-lg flex flex-col gap-2 hover:border-cyan-500/50 hover:bg-slate-800/70 transition-all"
+                className="p-4 border border-slate-200 bg-white rounded-card flex flex-col gap-2 hover:border-primary-300 hover:shadow-soft transition-all"
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="font-bold text-white">{c.name}</div>
-                    <div className="text-xs text-cyan-400">
+                    <div className="font-bold text-text-primary">{c.name}</div>
+                    <div className="text-xs text-primary-600 font-medium">
                       {c.fish_count ?? 0} products
                     </div>
                   </div>
                   <div className="flex gap-2">
                     <button
                       onClick={() => openEdit(c)}
-                      className="text-sm text-slate-300 hover:text-cyan-400 transition-colors"
+                      className="text-sm text-primary-600 hover:text-primary-700 font-medium transition-colors cursor-pointer"
                     >
                       Edit
                     </button>
                     <button
                       onClick={() => handleDelete(c.id)}
-                      className="text-sm text-red-400 hover:text-red-300 transition-colors"
+                      className="text-sm text-red-600 hover:text-red-700 font-medium transition-colors cursor-pointer"
                     >
                       Delete
                     </button>
                   </div>
                 </div>
-                <div className="text-xs text-slate-400">{c.description}</div>
+                <div className="text-xs text-text-muted">{c.description}</div>
               </div>
             ))}
           </div>
@@ -108,42 +108,42 @@ const Categories: React.FC = () => {
       </div>
 
       {showModal && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="bg-slate-900 border border-cyan-500/20 rounded-2xl p-6 w-full max-w-lg shadow-2xl shadow-cyan-500/20">
-            <h3 className="text-xl font-bold mb-4 text-white">
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-white border border-slate-200 rounded-card p-6 w-full max-w-lg shadow-soft-xl">
+            <h3 className="text-xl font-bold mb-4 text-text-primary">
               {editing ? "Edit" : "New"} Category
             </h3>
             <div className="space-y-3">
               <div>
-                <label className="text-xs font-bold uppercase text-cyan-400">
+                <label className="text-sm font-semibold text-text-primary">
                   Name
                 </label>
                 <input
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-700/50 bg-slate-800/50 text-slate-100 rounded-lg focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 transition-all"
+                  className="w-full px-3 py-2 border border-slate-200 bg-background-soft text-text-primary rounded-button focus:border-primary-400 focus:ring-2 focus:ring-primary-400/30 transition-all"
                 />
               </div>
               <div>
-                <label className="text-xs font-bold uppercase text-cyan-400">
+                <label className="text-sm font-semibold text-text-primary">
                   Description
                 </label>
                 <textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-700/50 bg-slate-800/50 text-slate-100 rounded-lg focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 transition-all"
+                  className="w-full px-3 py-2 border border-slate-200 bg-background-soft text-text-primary rounded-button focus:border-primary-400 focus:ring-2 focus:ring-primary-400/30 transition-all"
                 />
               </div>
               <div className="flex justify-end gap-3 mt-4">
                 <button
                   onClick={() => setShowModal(false)}
-                  className="px-4 py-2 border border-slate-700/50 text-slate-300 rounded-lg hover:border-cyan-500/50 hover:text-cyan-300 transition-all"
+                  className="px-4 py-2 border border-slate-200 text-text-secondary rounded-button hover:border-slate-300 hover:bg-background-muted transition-all cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleSave}
-                  className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg hover:shadow-2xl hover:shadow-cyan-500/30 transition-all"
+                  className="px-4 py-2 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-button hover:from-primary-600 hover:to-secondary-600 hover:shadow-soft-lg transition-all cursor-pointer"
                 >
                   Save
                 </button>

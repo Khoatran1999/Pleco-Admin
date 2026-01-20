@@ -58,10 +58,10 @@ const Orders: React.FC<OrdersProps> = ({ onAddOrder }) => {
     <div className="max-w-7xl mx-auto flex flex-col gap-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-black text-white tracking-tight">
+          <h2 className="text-3xl font-black text-text-primary tracking-tight">
             Orders
           </h2>
-          <p className="text-cyan-300/70 font-medium mt-1">
+          <p className="text-text-secondary font-medium mt-1">
             View and manage customer orders ({orders.length} items).
           </p>
         </div>
@@ -71,7 +71,7 @@ const Orders: React.FC<OrdersProps> = ({ onAddOrder }) => {
               if (onAddOrder) onAddOrder();
               else navigate("/orders/new");
             }}
-            className="cursor-pointer bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white px-6 py-3 rounded-xl shadow-lg shadow-cyan-500/50 hover:shadow-cyan-500/70 flex items-center gap-2 font-bold transition-all active:scale-95 hover:scale-105"
+            className="cursor-pointer bg-gradient-to-r from-primary-500 to-secondary-500 hover:from-primary-600 hover:to-secondary-600 text-white px-6 py-3 rounded-button shadow-soft hover:shadow-soft-lg flex items-center gap-2 font-bold transition-all"
           >
             <span className="material-symbols-outlined text-xl">add</span>
             New Order
@@ -79,13 +79,13 @@ const Orders: React.FC<OrdersProps> = ({ onAddOrder }) => {
         </div>
       </div>
 
-      <div className="bg-slate-900/50 backdrop-blur-xl p-4 rounded-2xl border border-cyan-500/20 flex flex-col md:flex-row gap-4 items-center">
+      <div className="bg-white backdrop-blur-sm p-4 rounded-card border border-slate-200 flex flex-col md:flex-row gap-4 items-center">
         <div className="relative flex-1 w-full">
-          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-cyan-400">
+          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-primary-600">
             search
           </span>
           <input
-            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-700/50 bg-slate-800/50 focus:bg-slate-800/80 focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all text-sm font-medium text-slate-100 placeholder-slate-500"
+            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white focus:bg-white focus:ring-2 focus:ring-primary-400/30 focus:border-primary-400 transition-all text-sm font-medium text-text-primary placeholder-text-muted"
             placeholder="Search order number or customer..."
             type="text"
             value={search}
@@ -94,7 +94,7 @@ const Orders: React.FC<OrdersProps> = ({ onAddOrder }) => {
         </div>
         <div className="flex gap-3 w-full md:w-auto">
           <select
-            className="cursor-pointer flex-1 md:min-w-[160px] pl-4 pr-10 py-2.5 rounded-xl border border-slate-700/50 bg-slate-800/50 text-cyan-300 text-sm font-bold focus:ring-2 focus:ring-cyan-500/50 appearance-none"
+            className="cursor-pointer flex-1 md:min-w-[160px] pl-4 pr-10 py-2.5 rounded-xl border border-slate-200 bg-white text-text-primary text-sm font-bold focus:ring-2 focus:ring-primary-400/30 appearance-none"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
           >
@@ -107,11 +107,11 @@ const Orders: React.FC<OrdersProps> = ({ onAddOrder }) => {
         </div>
       </div>
 
-      <div className="bg-slate-900/50 backdrop-blur-xl rounded-2xl border border-cyan-500/20 overflow-hidden">
+      <div className="bg-white backdrop-blur-sm rounded-card border border-slate-200 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-slate-800/50 border-b border-cyan-500/10 text-cyan-400 text-[10px] font-bold uppercase tracking-widest">
+              <tr className="bg-background-soft border-b border-slate-200 text-primary-700 text-[10px] font-bold uppercase tracking-widest">
                 <th className="px-6 py-4">Order #</th>
                 <th className="px-6 py-4">Customer</th>
                 <th className="px-6 py-4">Social</th>
@@ -122,7 +122,7 @@ const Orders: React.FC<OrdersProps> = ({ onAddOrder }) => {
                 <th className="px-6 py-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="text-sm font-medium text-slate-300">
+            <tbody className="text-sm font-medium text-text-primary">
               {loading ? (
                 <tr>
                   <td
@@ -145,19 +145,19 @@ const Orders: React.FC<OrdersProps> = ({ onAddOrder }) => {
                 orders.map((o: any) => (
                   <tr
                     key={o.id}
-                    className="border-b border-slate-800/50 hover:bg-slate-800/30 transition-colors group"
+                    className="border-b border-slate-100 hover:bg-slate-50 transition-colors group"
                   >
-                    <td className="px-6 py-4 font-bold text-white">
+                    <td className="px-6 py-4 font-bold text-text-primary">
                       {o.order_number}
                     </td>
-                    <td className="px-6 py-4 text-slate-300">
+                    <td className="px-6 py-4 text-text-secondary">
                       {o.customer_name || "Walk-in"}
                     </td>
                     <td className="px-6 py-4 relative">
                       {o.customer_name ? (
                         <div className="inline-block">
                           <button
-                            className="cursor-pointer p-1 rounded-full text-slate-400 hover:text-cyan-400 hover:bg-slate-800/50 transition-colors"
+                            className="cursor-pointer p-1 rounded-full text-slate-400 hover:text-primary-600 hover:bg-slate-50 transition-colors"
                             onClick={() =>
                               setOpenSocialId(
                                 openSocialId === o.id ? null : o.id,
@@ -170,7 +170,7 @@ const Orders: React.FC<OrdersProps> = ({ onAddOrder }) => {
                             </span>
                           </button>
                           {openSocialId === o.id && (
-                            <div className="absolute z-20 left-0 mt-2 w-56 bg-slate-800/95 backdrop-blur-xl border border-cyan-500/30 rounded-xl shadow-2xl shadow-black/50 p-3 text-sm">
+                            <div className="absolute z-20 left-0 mt-2 w-56 bg-white backdrop-blur-xl border border-primary-200 rounded-xl shadow-2xl shadow-black/50 p-3 text-sm">
                               <div className="mb-2 break-words">
                                 {o.customer_social ? (
                                   <a
@@ -183,7 +183,7 @@ const Orders: React.FC<OrdersProps> = ({ onAddOrder }) => {
                                     }
                                     target="_blank"
                                     rel="noreferrer"
-                                    className="text-cyan-400 underline hover:text-cyan-300"
+                                    className="text-primary-600 underline hover:text-primary-700"
                                   >
                                     {o.customer_social}
                                   </a>
@@ -205,13 +205,13 @@ const Orders: React.FC<OrdersProps> = ({ onAddOrder }) => {
                                       alert("Copy failed");
                                     }
                                   }}
-                                  className="cursor-pointer px-3 py-1 rounded-lg bg-slate-700/50 text-cyan-300 text-xs hover:bg-slate-700 transition-colors"
+                                  className="cursor-pointer px-3 py-1 rounded-lg bg-primary-50 text-primary-600 text-xs hover:bg-primary-100 transition-colors"
                                 >
                                   Copy
                                 </button>
                                 <button
                                   onClick={() => setOpenSocialId(null)}
-                                  className="cursor-pointer px-3 py-1 rounded-lg bg-slate-600/50 text-slate-300 text-xs hover:bg-slate-600 transition-colors"
+                                  className="cursor-pointer px-3 py-1 rounded-lg bg-slate-100 text-slate-600 text-xs hover:bg-slate-200 transition-colors"
                                 >
                                   Close
                                 </button>
@@ -223,18 +223,18 @@ const Orders: React.FC<OrdersProps> = ({ onAddOrder }) => {
                         <span className="text-slate-600">-</span>
                       )}
                     </td>
-                    <td className="px-6 py-4 text-slate-400">
+                    <td className="px-6 py-4 text-text-secondary">
                       {new Date(o.order_date).toLocaleDateString()}
                     </td>
-                    <td className="px-6 py-4 text-slate-400">{o.item_count}</td>
-                    <td className="px-6 py-4 font-bold text-white">
+                    <td className="px-6 py-4 text-text-secondary">{o.item_count}</td>
+                    <td className="px-6 py-4 font-bold text-text-primary">
                       {formatCurrencyK(Number(o.total_amount))}
                     </td>
                     <td className="px-6 py-4">
                       {editingId === o.id ? (
                         <div className="flex items-center gap-2">
                           <select
-                            className="cursor-pointer pl-2 pr-4 py-1 rounded-lg border border-slate-700/50 bg-slate-800/50 text-slate-200 text-sm focus:ring-2 focus:ring-cyan-500/50"
+                            className="cursor-pointer pl-2 pr-4 py-1 rounded-lg border border-slate-200 bg-white text-text-primary text-sm focus:ring-2 focus:ring-primary-400/30"
                             value={editingStatus}
                             onChange={(e) => setEditingStatus(e.target.value)}
                           >
@@ -244,7 +244,7 @@ const Orders: React.FC<OrdersProps> = ({ onAddOrder }) => {
                             <option value="cancelled">cancelled</option>
                           </select>
                           <button
-                            className="cursor-pointer px-3 py-1 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg text-xs font-bold hover:from-cyan-400 hover:to-blue-500 transition-all shadow-lg shadow-cyan-500/30"
+                            className="cursor-pointer px-3 py-1 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-lg text-xs font-bold hover:from-primary-600 hover:to-secondary-600 transition-all shadow-lg shadow-primary-500/30"
                             onClick={async () => {
                               try {
                                 setSavingId(o.id);
@@ -268,7 +268,7 @@ const Orders: React.FC<OrdersProps> = ({ onAddOrder }) => {
                             {savingId === o.id ? "Saving..." : "Save"}
                           </button>
                           <button
-                            className="cursor-pointer px-3 py-1 bg-slate-700/50 text-slate-300 rounded-lg text-xs font-bold hover:bg-slate-700 transition-colors"
+                            className="cursor-pointer px-3 py-1 bg-slate-100 text-slate-600 rounded-lg text-xs font-bold hover:bg-slate-200 transition-colors"
                             onClick={() => setEditingId(null)}
                           >
                             Cancel
@@ -289,7 +289,7 @@ const Orders: React.FC<OrdersProps> = ({ onAddOrder }) => {
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-all">
                         <button
-                          className="cursor-pointer p-2 text-slate-500 hover:text-cyan-400 hover:bg-slate-800/50 rounded-lg transition-colors"
+                          className="cursor-pointer p-2 text-slate-400 hover:text-primary hover:bg-blue-50 rounded-lg transition-colors"
                           onClick={() => handleViewOrder(o.id)}
                         >
                           <span className="material-symbols-outlined text-[20px]">
@@ -297,7 +297,7 @@ const Orders: React.FC<OrdersProps> = ({ onAddOrder }) => {
                           </span>
                         </button>
                         <button
-                          className="cursor-pointer p-2 text-slate-500 hover:text-purple-400 hover:bg-purple-500/10 rounded-lg transition-colors"
+                          className="cursor-pointer p-2 text-slate-400 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors"
                           onClick={() => {
                             setEditingId(o.id);
                             setEditingStatus(o.status);

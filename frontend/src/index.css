@@ -14,45 +14,78 @@
   font-variation-settings: "FILL" 1;
 }
 
-/* Custom scrollbar - Crypto theme */
+/* Custom scrollbar - Approachable theme */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0f172a;
+  background: #f1f5f9;
+  border-radius: 8px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #06b6d4, #3b82f6);
-  border-radius: 4px;
+  background: linear-gradient(180deg, #3b82f6, #10b981);
+  border-radius: 8px;
+  border: 2px solid #f1f5f9;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #22d3ee, #60a5fa);
+  background: linear-gradient(180deg, #2563eb, #059669);
 }
 
 /* Background colors */
 .bg-background-light {
-  background-color: #020617;
+  background-color: #ffffff;
 }
 
-.bg-background-dark {
-  background-color: #020617;
+.bg-background-soft {
+  background-color: #f8fafc;
 }
 
-/* Crypto glow animations */
-@keyframes neon-pulse {
+.bg-background-muted {
+  background-color: #f1f5f9;
+}
+
+/* Smooth animations */
+@keyframes soft-pulse {
   0%,
   100% {
-    box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
   }
   50% {
-    box-shadow: 0 0 30px rgba(6, 182, 212, 0.6);
+    box-shadow: 0 0 0 8px rgba(59, 130, 246, 0);
   }
 }
 
-.neon-glow {
-  animation: neon-pulse 2s ease-in-out infinite;
+@keyframes gentle-float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.animate-soft-pulse {
+  animation: soft-pulse 2s ease-in-out infinite;
+}
+
+.animate-gentle-float {
+  animation: gentle-float 3s ease-in-out infinite;
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #3b82f6 0%, #10b981 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Smooth transitions */
+* {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }

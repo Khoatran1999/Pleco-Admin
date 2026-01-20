@@ -33,10 +33,10 @@ const AppInner: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-slate-950 dark:bg-slate-950 light:bg-slate-50 relative">
-      {/* Animated gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-blue-950/20 to-cyan-950/20 dark:from-slate-950 dark:via-blue-950/20 dark:to-cyan-950/20 light:from-slate-50 light:via-blue-50 light:to-cyan-50"></div>
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNnptLTEyIDBjMy4zMTQgMCA2IDIuNjg2IDYgNnMtMi42ODYgNi02IDYtNi0yLjY4Ni02LTYgMi42ODYtNiA2LTZ6IiBmaWxsPSIjMDZiNmQ0IiBvcGFjaXR5PSIuMDMiLz48L2c+PC9zdmc+')] opacity-50"></div>
+    <div className="flex h-screen w-full overflow-hidden bg-background-soft relative">
+      {/* Soft gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary-50/30 via-white to-secondary-50/30"></div>
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNnptLTEyIDBjMy4zMTQgMCA2IDIuNjg2IDYgNnMtMi42ODYgNi02IDYtNi0yLjY4Ni02LTYgMi42ODYtNiA2LTZ6IiBmaWxsPSIjM2I4MmY2IiBvcGFjaXR5PSIuMDIiLz48L2c+PC9zdmc+')] opacity-40"></div>
       <Sidebar onLogout={handleLogout} />
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden relative z-10">
         <Header />

@@ -311,10 +311,10 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
   return (
     <div className="max-w-7xl mx-auto flex flex-col gap-8">
       <div className="flex flex-col gap-4">
-        <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-slate-400">
+        <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-text-secondary">
           <button
             onClick={onBack}
-            className="hover:text-cyan-400 transition-colors"
+            className="hover:text-primary-600 transition-colors"
           >
             Home
           </button>
@@ -325,14 +325,14 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
           <span className="material-symbols-outlined text-xs">
             chevron_right
           </span>
-          <span className="text-cyan-400">New Sale Order</span>
+          <span className="text-primary-600">New Sale Order</span>
         </div>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-black text-white tracking-tight font-manrope">
+            <h1 className="text-3xl font-black text-text-primary tracking-tight font-manrope">
               New Sale Order
             </h1>
-            <p className="text-cyan-300 font-medium text-sm mt-1">
+            <p className="text-text-secondary font-medium text-sm mt-1">
               Create a new order and manage inventory allocation.
             </p>
           </div>
@@ -340,7 +340,7 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
             {draftLoaded && (
               <button
                 onClick={handleClearDraft}
-                className="px-5 py-2.5 rounded-xl border border-red-500/30 text-red-400 font-bold text-sm hover:bg-red-500/20 transition-all flex items-center gap-2 bg-slate-800/50"
+                className="px-5 py-2.5 rounded-button border border-red-300 text-red-600 font-bold text-sm hover:bg-red-50 transition-all flex items-center gap-2 bg-white"
               >
                 <span className="material-symbols-outlined text-[20px]">
                   delete
@@ -350,7 +350,7 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
             )}
             <button
               onClick={handleSaveDraft}
-              className="px-5 py-2.5 rounded-xl border border-slate-700/50 text-slate-300 font-bold text-sm hover:bg-slate-700/50 transition-all flex items-center gap-2 bg-slate-800/50"
+              className="px-5 py-2.5 rounded-button border border-slate-200 text-text-secondary font-bold text-sm hover:bg-slate-50 transition-all flex items-center gap-2 bg-white"
             >
               <span className="material-symbols-outlined text-[20px]">
                 save
@@ -360,7 +360,7 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
             <button
               onClick={handleSubmit}
               disabled={submitting || items.length === 0}
-              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold text-sm hover:shadow-2xl hover:shadow-cyan-500/30 transition-all flex items-center gap-2 disabled:opacity-50"
+              className="px-5 py-2.5 rounded-button bg-gradient-to-r from-primary-500 to-secondary-500 text-white font-bold text-sm hover:shadow-soft-lg transition-all flex items-center gap-2 disabled:opacity-50"
             >
               <span className="material-symbols-outlined text-[20px]">
                 check
@@ -373,26 +373,26 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         <div className="lg:col-span-4 flex flex-col gap-8">
-          <div className="bg-slate-900/50 backdrop-blur-xl rounded-3xl shadow-sm border border-purple-500/20 hover:border-purple-400/40 hover:shadow-2xl hover:shadow-purple-500/20 transition-all p-8">
-            <h3 className="text-xl font-black text-white mb-6 flex items-center gap-3">
-              <span className="material-symbols-outlined text-cyan-400 fill-1">
+          <div className="bg-white backdrop-blur-sm rounded-card shadow-soft border border-slate-200 hover:border-primary-300 hover:shadow-soft-lg transition-all p-8">
+            <h3 className="text-xl font-black text-text-primary mb-6 flex items-center gap-3">
+              <span className="material-symbols-outlined text-primary-600 fill-1">
                 receipt_long
               </span>
               Order Details
             </h3>
             <div className="flex flex-col gap-6">
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-widest text-cyan-400">
+                <label className="text-xs font-bold uppercase tracking-widest text-primary-700">
                   Customer
                 </label>
                 <div className="relative" ref={customerDropdownRef}>
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-cyan-400 z-10">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-primary-600 z-10">
                     <span className="material-symbols-outlined text-[20px]">
                       person_search
                     </span>
                   </span>
                   <input
-                    className="w-full bg-slate-800/50 border border-slate-700/50 text-slate-100 placeholder:text-slate-500 rounded-xl pl-11 pr-4 py-3 text-sm font-bold focus:ring-4 focus:ring-cyan-500/20 transition-all outline-none"
+                    className="w-full bg-white border border-slate-200 text-text-primary placeholder:text-text-muted rounded-xl pl-11 pr-4 py-3 text-sm font-bold focus:ring-4 focus:ring-primary-400/30 transition-all outline-none"
                     placeholder="Search customer..."
                     type="text"
                     value={customerSearch}
@@ -403,9 +403,9 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
                     onFocus={() => setShowCustomerDropdown(true)}
                   />
                   {showCustomerDropdown && customerSearch && (
-                    <div className="absolute z-[100] w-full mt-1 bg-slate-800 border border-slate-700/50 rounded-xl shadow-2xl max-h-48 overflow-y-auto">
+                    <div className="absolute z-[100] w-full mt-1 bg-white border border-slate-200 rounded-card shadow-soft-lg max-h-48 overflow-y-auto">
                       <button
-                        className="w-full px-4 py-2 text-left hover:bg-slate-700/50 text-sm font-medium text-slate-300"
+                        className="w-full px-4 py-2 text-left hover:bg-slate-50 text-sm font-medium text-text-primary"
                         onClick={() => {
                           setCustomerId(0);
                           setCustomerSearch("Walk-in Customer");
@@ -417,7 +417,7 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
                       {filteredCustomers.slice(0, 5).map((customer) => (
                         <button
                           key={customer.id}
-                          className="w-full px-4 py-2 text-left hover:bg-slate-700/50 text-sm font-medium text-slate-300"
+                          className="w-full px-4 py-2 text-left hover:bg-slate-50 text-sm font-medium text-text-primary"
                           onClick={() => {
                             setCustomerId(customer.id);
                             setCustomerSearch(customer.name);
@@ -432,7 +432,7 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
                 </div>
                 <button
                   onClick={() => setShowCustomerModal(true)}
-                  className="text-[10px] text-cyan-400 font-black uppercase tracking-widest hover:underline flex items-center gap-1 mt-2"
+                  className="text-[10px] text-primary-600 font-black uppercase tracking-widest hover:underline flex items-center gap-1 mt-2"
                 >
                   <span className="material-symbols-outlined text-sm">add</span>{" "}
                   Add New Customer
@@ -440,17 +440,17 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-widest text-cyan-400">
+                <label className="text-xs font-bold uppercase tracking-widest text-primary-700">
                   Sale Type
                 </label>
                 <div className="flex gap-3">
                   <button
                     type="button"
                     onClick={() => setSaleType("retail")}
-                    className={`flex-1 py-3 px-4 rounded-xl font-bold text-sm transition-all ${
+                    className={`flex-1 py-3 px-4 rounded-button font-bold text-sm transition-all ${
                       saleType === "retail"
-                        ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/30"
-                        : "bg-slate-800/50 text-slate-300 hover:bg-slate-700/50"
+                        ? "bg-gradient-to-r from-primary-500 to-secondary-500 text-white shadow-soft-lg"
+                        : "bg-white text-text-secondary hover:bg-slate-50 border border-slate-200"
                     }`}
                   >
                     Retail
@@ -458,10 +458,10 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
                   <button
                     type="button"
                     onClick={() => setSaleType("wholesale")}
-                    className={`flex-1 py-3 px-4 rounded-xl font-bold text-sm transition-all ${
+                    className={`flex-1 py-3 px-4 rounded-button font-bold text-sm transition-all ${
                       saleType === "wholesale"
-                        ? "bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-lg shadow-emerald-500/30"
-                        : "bg-slate-800/50 text-slate-300 hover:bg-slate-700/50"
+                        ? "bg-gradient-to-r from-primary-500 to-secondary-500 text-white shadow-soft-lg"
+                        : "bg-white text-text-secondary hover:bg-slate-50 border border-slate-200"
                     }`}
                   >
                     Wholesale
@@ -471,21 +471,21 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase tracking-widest text-cyan-400">
+                  <label className="text-xs font-bold uppercase tracking-widest text-primary-700">
                     Order Date
                   </label>
                   <input
-                    className="w-full bg-slate-800/50 border border-slate-700/50 text-cyan-300 rounded-xl px-4 py-3 text-sm font-bold focus:ring-4 focus:ring-cyan-500/20 transition-all"
+                    className="w-full bg-white border border-slate-200 text-text-primary rounded-button px-4 py-3 text-sm font-bold focus:ring-4 focus:ring-primary-400/30 transition-all"
                     type="date"
                     defaultValue={new Date().toISOString().split("T")[0]}
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase tracking-widest text-cyan-400">
+                  <label className="text-xs font-bold uppercase tracking-widest text-primary-700">
                     Invoice #
                   </label>
                   <input
-                    className="w-full bg-slate-800/50 border border-slate-700/50 rounded-xl px-4 py-3 text-sm font-bold text-slate-400 cursor-not-allowed"
+                    className="w-full bg-background-soft border border-slate-200 rounded-button px-4 py-3 text-sm font-bold text-text-muted cursor-not-allowed"
                     readOnly
                     value={`INV-${Date.now().toString().slice(-6)}`}
                   />
@@ -493,12 +493,12 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-widest text-cyan-400">
+                <label className="text-xs font-bold uppercase tracking-widest text-primary-700">
                   Payment Method
                 </label>
                 <div className="relative">
                   <select
-                    className="w-full bg-slate-800/50 border border-slate-700/50 text-slate-100 rounded-xl px-4 py-3 text-sm font-bold focus:ring-4 focus:ring-cyan-500/20 transition-all appearance-none cursor-pointer"
+                    className="w-full bg-white border border-slate-200 text-text-primary rounded-button px-4 py-3 text-sm font-bold focus:ring-4 focus:ring-primary-400/30 transition-all appearance-none cursor-pointer"
                     value={paymentMethod}
                     onChange={(e) => setPaymentMethod(e.target.value)}
                   >
@@ -506,19 +506,19 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
                     <option>Bank Transfer</option>
                     <option>Cash on Delivery</option>
                   </select>
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-cyan-400 pointer-events-none material-symbols-outlined">
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-primary-600 pointer-events-none material-symbols-outlined">
                     expand_more
                   </span>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-widest text-cyan-400">
+                <label className="text-xs font-bold uppercase tracking-widest text-primary-700">
                   Order Status
                 </label>
                 <div className="relative">
                   <select
-                    className="w-full bg-slate-800/50 border border-slate-700/50 text-slate-100 rounded-xl px-4 py-3 text-sm font-bold focus:ring-4 focus:ring-cyan-500/20 transition-all appearance-none cursor-pointer"
+                    className="w-full bg-white border border-slate-200 text-text-primary rounded-button px-4 py-3 text-sm font-bold focus:ring-4 focus:ring-primary-400/30 transition-all appearance-none cursor-pointer"
                     value={orderStatus}
                     onChange={(e) => setOrderStatus(e.target.value as any)}
                   >
@@ -527,24 +527,24 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
                     <option value="completed">Completed</option>
                     <option value="cancelled">Cancelled</option>
                   </select>
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-cyan-400 pointer-events-none material-symbols-outlined">
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-primary-600 pointer-events-none material-symbols-outlined">
                     expand_more
                   </span>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-widest text-cyan-400">
+                <label className="text-xs font-bold uppercase tracking-widest text-primary-700">
                   Discount Amount
                 </label>
                 <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-cyan-400 text-sm font-bold">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-primary-600 text-sm font-bold">
                     ₫
                   </span>
                   <input
                     type="number"
                     min="0"
-                    className="w-full bg-slate-800/50 border border-slate-700/50 text-slate-100 placeholder:text-slate-500 rounded-xl pl-8 pr-4 py-3 text-sm font-bold focus:ring-4 focus:ring-cyan-500/20 transition-all outline-none"
+                    className="w-full bg-white border border-slate-200 text-text-primary placeholder:text-text-muted rounded-button pl-8 pr-4 py-3 text-sm font-bold focus:ring-4 focus:ring-primary-400/30 transition-all outline-none"
                     placeholder="0"
                     value={discountAmount || ""}
                     onChange={(e) =>
@@ -565,11 +565,11 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-widest text-cyan-400">
+                <label className="text-xs font-bold uppercase tracking-widest text-primary-700">
                   Notes
                 </label>
                 <textarea
-                  className="w-full bg-slate-800/50 border border-slate-700/50 text-slate-100 placeholder:text-slate-500 rounded-xl px-4 py-3 text-sm font-bold focus:ring-4 focus:ring-cyan-500/20 transition-all resize-none min-h-[100px]"
+                  className="w-full bg-white border border-slate-200 text-text-primary placeholder:text-text-muted rounded-button px-4 py-3 text-sm font-bold focus:ring-4 focus:ring-primary-400/30 transition-all resize-none min-h-[100px]"
                   placeholder="Add delivery instructions or internal notes..."
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
@@ -578,16 +578,16 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
             </div>
           </div>
 
-          <div className="bg-gradient-to-br from-cyan-600 to-blue-700 rounded-3xl shadow-xl p-8 text-white relative overflow-hidden group">
-            <div className="absolute -right-10 -top-10 w-40 h-40 bg-cyan-400/10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000"></div>
+          <div className="bg-gradient-to-br from-primary-500 to-secondary-600 rounded-card shadow-soft-lg p-8 text-white relative overflow-hidden group">
+            <div className="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000"></div>
             <div className="relative z-10">
-              <h4 className="text-cyan-100 text-[10px] font-bold uppercase tracking-widest mb-1">
+              <h4 className="text-white/80 text-[10px] font-bold uppercase tracking-widest mb-1">
                 Order Total
               </h4>
               <p className="text-4xl font-black mb-4">
                 {formatCurrencyK(grandTotal)}
               </p>
-              <div className="flex items-center gap-2 text-[10px] font-bold bg-cyan-400/20 w-fit px-3 py-1.5 rounded-full uppercase tracking-wider backdrop-blur-sm">
+              <div className="flex items-center gap-2 text-[10px] font-bold bg-white/20 w-fit px-3 py-1.5 rounded-full uppercase tracking-wider backdrop-blur-sm">
                 <span className="material-symbols-outlined text-[16px]">
                   shopping_cart
                 </span>
@@ -598,26 +598,26 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
         </div>
 
         <div className="lg:col-span-8 flex flex-col gap-8">
-          <div className="bg-slate-900/50 backdrop-blur-xl rounded-3xl shadow-sm border border-purple-500/20 hover:border-purple-400/40 hover:shadow-2xl hover:shadow-purple-500/20 transition-all p-8 z-10">
-            <h3 className="text-xl font-black text-white mb-6 flex items-center gap-3">
-              <span className="material-symbols-outlined text-cyan-400 fill-1">
+          <div className="bg-white backdrop-blur-sm rounded-card shadow-soft-lg border border-slate-200 hover:border-primary-300 hover:shadow-soft-xl transition-all p-8 z-10">
+            <h3 className="text-xl font-black text-text-primary mb-6 flex items-center gap-3">
+              <span className="material-symbols-outlined text-primary-600 fill-1">
                 shopping_basket
               </span>
               Add Items
             </h3>
 
-            <div className="flex flex-col md:flex-row gap-6 items-end bg-slate-800/50 p-6 rounded-2xl border border-slate-700/50">
+            <div className="flex flex-col md:flex-row gap-6 items-end bg-background-soft p-6 rounded-card border border-slate-200">
               <div className="flex-1 w-full space-y-2">
-                <label className="text-[10px] font-bold uppercase tracking-widest text-cyan-400">
+                <label className="text-[10px] font-bold uppercase tracking-widest text-primary-700">
                   Select Fish / Product
                 </label>
                 <div className="relative group" ref={fishDropdownRef}>
-                  <div className="flex items-center w-full bg-slate-800/50 border border-slate-700/50 rounded-xl px-4 py-3 shadow-sm focus-within:ring-4 focus-within:ring-cyan-500/20 transition-all">
-                    <span className="material-symbols-outlined text-cyan-400 mr-3 text-[20px]">
+                  <div className="flex items-center w-full bg-white border border-slate-200 rounded-button px-4 py-3 shadow-sm focus-within:ring-4 focus-within:ring-primary-400/30 transition-all">
+                    <span className="material-symbols-outlined text-primary-600 mr-3 text-[20px]">
                       set_meal
                     </span>
                     <input
-                      className="w-full bg-transparent border-none p-0 text-sm font-bold text-slate-100 placeholder:text-slate-500 focus:ring-0 outline-none"
+                      className="w-full bg-transparent border-none p-0 text-sm font-bold text-text-primary placeholder:text-text-muted focus:ring-0 outline-none"
                       placeholder="Start typing product name..."
                       type="text"
                       value={searchFish}
@@ -635,7 +635,7 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
                       )}
                   </div>
                   {showFishDropdown && searchFish && (
-                    <div className="absolute z-[100] w-full mt-1 bg-slate-800 border border-slate-700/50 rounded-xl shadow-2xl max-h-48 overflow-y-auto">
+                    <div className="absolute z-[100] w-full mt-1 bg-white border border-slate-200 rounded-card shadow-soft-lg max-h-48 overflow-y-auto">
                       {filteredFishes.slice(0, 5).map((fish) => {
                         const stock = getStockForFish(fish.id);
                         const price =
@@ -646,10 +646,10 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
                           <button
                             key={fish.id}
                             disabled={stock <= 0}
-                            className={`w-full px-4 py-3 text-left text-sm font-medium text-slate-300 flex justify-between items-center ${
+                            className={`w-full px-4 py-3 text-left text-sm font-medium text-text-primary flex justify-between items-center ${
                               stock <= 0
                                 ? "opacity-50 cursor-not-allowed"
-                                : "hover:bg-slate-700/50"
+                                : "hover:bg-slate-50"
                             }`}
                             onClick={() => {
                               if (stock <= 0) {
@@ -694,11 +694,11 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
               </div>
 
               <div className="w-full md:w-32 space-y-2">
-                <label className="text-[10px] font-bold uppercase tracking-widest text-cyan-400">
+                <label className="text-[10px] font-bold uppercase tracking-widest text-primary-700">
                   Quantity (pieces)
                 </label>
                 <input
-                  className="w-full bg-slate-800/50 border border-slate-700/50 text-slate-100 rounded-xl px-4 py-3 text-sm font-bold text-center focus:ring-4 focus:ring-cyan-500/20 transition-all shadow-sm"
+                  className="w-full bg-white border border-slate-200 text-text-primary rounded-button px-4 py-3 text-sm font-bold text-center focus:ring-4 focus:ring-primary-400/30 transition-all shadow-sm"
                   type="number"
                   value={quantity || ""}
                   onChange={(e) => setQuantity(Number(e.target.value))}
@@ -706,15 +706,15 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
               </div>
 
               <div className="w-full md:w-32 space-y-2">
-                <label className="text-[10px] font-bold uppercase tracking-widest text-cyan-400">
+                <label className="text-[10px] font-bold uppercase tracking-widest text-primary-700">
                   Price / piece
                 </label>
                 <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-400 text-xs font-bold">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-600 text-xs font-bold">
                     K
                   </span>
                   <input
-                    className="w-full bg-slate-800/50 border border-slate-700/50 text-slate-100 rounded-xl pl-6 pr-3 py-3 text-sm font-bold"
+                    className="w-full bg-white border border-slate-200 text-text-primary rounded-button pl-6 pr-3 py-3 text-sm font-bold"
                     type="number"
                     step="0.01"
                     value={unitPrice || ""}
@@ -725,7 +725,7 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
 
               <button
                 onClick={handleAddItem}
-                className="w-full md:w-auto px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-black uppercase tracking-widest text-xs rounded-xl hover:shadow-2xl hover:shadow-cyan-500/30 transition-all flex items-center justify-center gap-2"
+                className="w-full md:w-auto px-8 py-3 bg-gradient-to-r from-primary-500 to-secondary-500 text-white font-black uppercase tracking-widest text-xs rounded-button hover:shadow-soft-lg transition-all flex items-center justify-center gap-2"
               >
                 <span className="material-symbols-outlined text-[18px]">
                   add_shopping_cart
@@ -752,9 +752,9 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
             )}
           </div>
 
-          <div className="bg-slate-900/50 backdrop-blur-xl rounded-3xl shadow-2xl shadow-purple-500/20 border border-purple-500/20 overflow-hidden flex flex-col">
-            <div className="p-5 border-b border-slate-800/50 flex justify-between items-center bg-slate-800/30">
-              <h3 className="text-xs font-bold uppercase tracking-widest text-cyan-400">
+          <div className="bg-white backdrop-blur-sm rounded-card shadow-soft-lg border border-slate-200 overflow-hidden flex flex-col">
+            <div className="p-5 border-b border-slate-200 flex justify-between items-center bg-background-soft">
+              <h3 className="text-xs font-bold uppercase tracking-widest text-primary-700">
                 Order Items ({items.length})
               </h3>
               <button
@@ -771,33 +771,33 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="border-b border-slate-800/50 bg-slate-800/30">
-                    <th className="px-6 py-4 text-[10px] font-bold text-cyan-400 uppercase tracking-widest w-12 text-center">
+                  <tr className="border-b border-slate-200 bg-background-soft">
+                    <th className="px-6 py-4 text-[10px] font-bold text-primary-700 uppercase tracking-widest w-12 text-center">
                       #
                     </th>
-                    <th className="px-6 py-4 text-[10px] font-bold text-cyan-400 uppercase tracking-widest">
+                    <th className="px-6 py-4 text-[10px] font-bold text-primary-700 uppercase tracking-widest">
                       Product
                     </th>
-                    <th className="px-6 py-4 text-[10px] font-bold text-cyan-400 uppercase tracking-widest text-right">
+                    <th className="px-6 py-4 text-[10px] font-bold text-primary-700 uppercase tracking-widest text-right">
                       Unit Price
                     </th>
-                    <th className="px-6 py-4 text-[10px] font-bold text-cyan-400 uppercase tracking-widest text-center">
+                    <th className="px-6 py-4 text-[10px] font-bold text-primary-700 uppercase tracking-widest text-center">
                       Qty (pieces)
                     </th>
-                    <th className="px-6 py-4 text-[10px] font-bold text-cyan-400 uppercase tracking-widest text-right">
+                    <th className="px-6 py-4 text-[10px] font-bold text-primary-700 uppercase tracking-widest text-right">
                       Total
                     </th>
-                    <th className="px-6 py-4 text-[10px] font-bold text-cyan-400 uppercase tracking-widest text-center w-20">
+                    <th className="px-6 py-4 text-[10px] font-bold text-primary-700 uppercase tracking-widest text-center w-20">
                       Action
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800/50 font-bold">
+                <tbody className="divide-y divide-slate-200 font-bold">
                   {items.length === 0 ? (
                     <tr>
                       <td
                         colSpan={6}
-                        className="px-6 py-8 text-center text-slate-400"
+                        className="px-6 py-8 text-center text-text-muted"
                       >
                         No items added yet
                       </td>
@@ -806,27 +806,27 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
                     items.map((item, index) => (
                       <tr
                         key={index}
-                        className={`hover:bg-slate-800/50 transition-colors ${
-                          item.available_stock < 30 ? "bg-amber-900/20" : ""
+                        className={`hover:bg-slate-50 transition-colors ${
+                          item.available_stock < 30 ? "bg-amber-50" : ""
                         }`}
                       >
-                        <td className="px-6 py-4 text-xs text-slate-400 text-center">
+                        <td className="px-6 py-4 text-xs text-text-muted text-center">
                           {index + 1}
                         </td>
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-4">
-                            <div className="h-10 w-10 rounded-xl bg-slate-800/50 border border-cyan-500/20 flex items-center justify-center text-xl">
+                            <div className="h-10 w-10 rounded-card bg-background-soft border border-primary-200 flex items-center justify-center text-xl">
                               🐟
                             </div>
                             <div>
-                              <p className="text-sm text-slate-100 font-manrope">
+                              <p className="text-sm text-text-primary font-manrope">
                                 {item.fish_name}
                               </p>
                               <div
                                 className={`flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider ${
                                   item.available_stock < 30
-                                    ? "text-amber-400"
-                                    : "text-slate-500"
+                                    ? "text-amber-600"
+                                    : "text-text-muted"
                                 }`}
                               >
                                 {item.available_stock < 30 && (
@@ -839,19 +839,19 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
                             </div>
                           </div>
                         </td>
-                        <td className="px-6 py-4 text-sm text-slate-400 text-right">
+                        <td className="px-6 py-4 text-sm text-text-secondary text-right">
                           {formatCurrencyK(item.unit_price)}
                         </td>
-                        <td className="px-6 py-4 text-sm text-slate-100 text-center font-black">
+                        <td className="px-6 py-4 text-sm text-text-primary text-center font-black">
                           {item.quantity.toFixed(1)}
                         </td>
-                        <td className="px-6 py-4 text-sm text-cyan-400 text-right font-black">
+                        <td className="px-6 py-4 text-sm text-primary-600 text-right font-black">
                           {formatCurrencyK(item.quantity * item.unit_price)}
                         </td>
                         <td className="px-6 py-4 text-center">
                           <button
                             onClick={() => handleRemoveItem(index)}
-                            className="text-slate-400 hover:text-red-400 transition-colors p-2 rounded-xl hover:bg-red-500/10 hover:scale-105"
+                            className="text-text-muted hover:text-red-500 transition-colors p-2 rounded-button hover:bg-red-50 hover:scale-105"
                           >
                             <span className="material-symbols-outlined text-[20px]">
                               delete
@@ -865,26 +865,26 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
               </table>
             </div>
 
-            <div className="bg-slate-800/30 p-8 border-t border-slate-800/50">
+            <div className="bg-background-soft p-8 border-t border-slate-200">
               <div className="flex flex-col sm:flex-row justify-end items-end gap-12">
                 <div className="text-right space-y-3 min-w-[200px]">
-                  <div className="flex justify-between text-xs font-bold text-slate-400 uppercase tracking-widest">
+                  <div className="flex justify-between text-xs font-bold text-text-secondary uppercase tracking-widest">
                     <span>Subtotal</span>
-                    <span className="text-slate-100">
+                    <span className="text-text-primary">
                       {formatCurrencyK(subtotal)}
                     </span>
                   </div>
                   {/* Discount */}
-                  <div className="flex justify-between text-xs font-black text-emerald-400 uppercase tracking-widest">
+                  <div className="flex justify-between text-xs font-black text-emerald-600 uppercase tracking-widest">
                     <span>Discount</span>
                     <span>-{formatCurrencyK(discountAmount)}</span>
                   </div>
-                  <div className="h-px bg-slate-700/50 my-2"></div>
+                  <div className="h-px bg-slate-200 my-2"></div>
                   <div className="flex justify-between items-end">
-                    <span className="text-sm font-black text-slate-100 uppercase tracking-widest">
+                    <span className="text-sm font-black text-text-primary uppercase tracking-widest">
                       Total
                     </span>
-                    <span className="text-3xl font-black text-cyan-400">
+                    <span className="text-3xl font-black text-primary-600">
                       {formatCurrencyK(grandTotal)}
                     </span>
                   </div>
@@ -897,13 +897,15 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
 
       {/* Add Customer Modal */}
       {showCustomerModal && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-slate-900 border border-purple-500/20 rounded-2xl shadow-2xl shadow-purple-500/20 max-w-md w-full overflow-hidden">
-            <div className="flex items-center justify-between p-6 border-b border-slate-800/50">
-              <h3 className="text-xl font-bold text-white">Add New Customer</h3>
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white border border-slate-200 rounded-card shadow-soft-lg max-w-md w-full overflow-hidden">
+            <div className="flex items-center justify-between p-6 border-b border-slate-200">
+              <h3 className="text-xl font-bold text-text-primary">
+                Add New Customer
+              </h3>
               <button
                 onClick={() => setShowCustomerModal(false)}
-                className="p-2 text-slate-400 hover:text-slate-300 hover:bg-slate-800/50 rounded-lg transition-colors"
+                className="p-2 text-text-muted hover:text-text-primary hover:bg-slate-50 rounded-lg transition-colors"
               >
                 <span className="material-symbols-outlined">close</span>
               </button>
@@ -911,11 +913,11 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
 
             <div className="p-6 space-y-4">
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-widest text-cyan-400">
+                <label className="text-xs font-bold uppercase tracking-widest text-primary-700">
                   Name *
                 </label>
                 <input
-                  className="w-full bg-slate-800/50 border border-slate-700/50 text-slate-100 placeholder:text-slate-500 rounded-xl px-4 py-3 text-sm font-bold focus:ring-4 focus:ring-cyan-500/20 transition-all outline-none"
+                  className="w-full bg-white border border-slate-200 text-text-primary placeholder:text-text-muted rounded-button px-4 py-3 text-sm font-bold focus:ring-4 focus:ring-primary-400/30 transition-all outline-none"
                   placeholder="Customer name"
                   value={newCustomerName}
                   onChange={(e) => setNewCustomerName(e.target.value)}
@@ -923,11 +925,11 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-widest text-cyan-400">
+                <label className="text-xs font-bold uppercase tracking-widest text-primary-700">
                   Email
                 </label>
                 <input
-                  className="w-full bg-slate-800/50 border border-slate-700/50 text-slate-100 placeholder:text-slate-500 rounded-xl px-4 py-3 text-sm font-bold focus:ring-4 focus:ring-cyan-500/20 transition-all outline-none"
+                  className="w-full bg-white border border-slate-200 text-text-primary placeholder:text-text-muted rounded-button px-4 py-3 text-sm font-bold focus:ring-4 focus:ring-primary-400/30 transition-all outline-none"
                   placeholder="customer@email.com"
                   type="email"
                   value={newCustomerEmail}
@@ -936,11 +938,11 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-widest text-cyan-400">
+                <label className="text-xs font-bold uppercase tracking-widest text-primary-700">
                   Social
                 </label>
                 <input
-                  className="w-full bg-slate-800/50 border border-slate-700/50 text-slate-100 placeholder:text-slate-500 rounded-xl px-4 py-3 text-sm font-bold focus:ring-4 focus:ring-cyan-500/20 transition-all outline-none"
+                  className="w-full bg-white border border-slate-200 text-text-primary placeholder:text-text-muted rounded-button px-4 py-3 text-sm font-bold focus:ring-4 focus:ring-primary-400/30 transition-all outline-none"
                   placeholder="Instagram / Facebook / Zalo"
                   value={newCustomerSocial}
                   onChange={(e) => setNewCustomerSocial(e.target.value)}
@@ -948,11 +950,11 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-widest text-cyan-400">
+                <label className="text-xs font-bold uppercase tracking-widest text-primary-700">
                   Phone
                 </label>
                 <input
-                  className="w-full bg-slate-800/50 border border-slate-700/50 text-slate-100 placeholder:text-slate-500 rounded-xl px-4 py-3 text-sm font-bold focus:ring-4 focus:ring-cyan-500/20 transition-all outline-none"
+                  className="w-full bg-white border border-slate-200 text-text-primary placeholder:text-text-muted rounded-button px-4 py-3 text-sm font-bold focus:ring-4 focus:ring-primary-400/30 transition-all outline-none"
                   placeholder="+1 234 567 890"
                   value={newCustomerPhone}
                   onChange={(e) => setNewCustomerPhone(e.target.value)}
@@ -960,11 +962,11 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-widest text-cyan-400">
+                <label className="text-xs font-bold uppercase tracking-widest text-primary-700">
                   Address
                 </label>
                 <textarea
-                  className="w-full bg-slate-800/50 border border-slate-700/50 text-slate-100 placeholder:text-slate-500 rounded-xl px-4 py-3 text-sm font-bold focus:ring-4 focus:ring-cyan-500/20 transition-all outline-none resize-none"
+                  className="w-full bg-white border border-slate-200 text-text-primary placeholder:text-text-muted rounded-button px-4 py-3 text-sm font-bold focus:ring-4 focus:ring-primary-400/30 transition-all outline-none resize-none"
                   placeholder="Customer address"
                   rows={2}
                   value={newCustomerAddress}
@@ -973,17 +975,17 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
               </div>
             </div>
 
-            <div className="p-6 border-t border-slate-800/50 flex gap-3">
+            <div className="p-6 border-t border-slate-200 flex gap-3">
               <button
                 onClick={() => setShowCustomerModal(false)}
-                className="flex-1 px-6 py-3 rounded-xl border border-slate-700/50 text-slate-300 font-bold text-sm hover:bg-slate-800/50 hover:text-cyan-300 transition-all"
+                className="flex-1 px-6 py-3 rounded-button border border-slate-200 text-text-secondary font-bold text-sm hover:bg-slate-50 hover:text-text-primary transition-all"
               >
                 Cancel
               </button>
               <button
                 onClick={handleCreateCustomer}
                 disabled={creatingCustomer || !newCustomerName.trim()}
-                className="flex-1 px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold text-sm hover:shadow-2xl hover:shadow-cyan-500/30 transition-all disabled:opacity-50"
+                className="flex-1 px-6 py-3 rounded-button bg-gradient-to-r from-primary-500 to-secondary-500 text-white font-bold text-sm hover:shadow-soft-lg transition-all disabled:opacity-50"
               >
                 {creatingCustomer ? "Creating..." : "Create Customer"}
               </button>

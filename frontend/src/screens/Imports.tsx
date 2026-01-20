@@ -58,17 +58,17 @@ const Imports: React.FC<ImportsProps> = ({ onNewImport }) => {
     <div className="max-w-7xl mx-auto flex flex-col gap-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-black text-white tracking-tight">
+          <h2 className="text-3xl font-black text-text-primary tracking-tight">
             Imports
           </h2>
-          <p className="text-cyan-300 font-medium mt-1">
+          <p className="text-text-secondary font-medium mt-1">
             Manage import/orders from suppliers ({imports.length} items).
           </p>
         </div>
         <div className="flex items-center gap-3">
           <button
             onClick={onNewImport}
-            className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:shadow-2xl hover:shadow-cyan-500/30 text-white px-6 py-3 rounded-xl shadow-lg shadow-cyan-500/20 flex items-center gap-2 font-bold transition-all active:scale-95"
+            className="bg-gradient-to-r from-secondary-500 to-secondary-600 hover:shadow-soft-lg text-white px-6 py-3 rounded-button shadow-soft flex items-center gap-2 font-bold transition-all"
           >
             <span className="material-symbols-outlined text-xl">add</span>
             New Import
@@ -76,11 +76,11 @@ const Imports: React.FC<ImportsProps> = ({ onNewImport }) => {
         </div>
       </div>
 
-      <div className="bg-slate-900/50 backdrop-blur-xl rounded-2xl shadow-sm border border-emerald-500/20 hover:border-emerald-400/40 hover:shadow-2xl hover:shadow-emerald-500/20 transition-all overflow-hidden">
+      <div className="bg-white backdrop-blur-sm rounded-card shadow-soft border border-slate-200 hover:border-primary-300 hover:shadow-soft-lg transition-all overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-slate-800/50 border-b border-slate-800/50 text-cyan-400 text-[10px] font-bold uppercase tracking-widest">
+              <tr className="bg-background-soft border-b border-slate-200 text-primary-700 text-[10px] font-bold uppercase tracking-widest">
                 <th className="px-6 py-4">Order #</th>
                 <th className="px-6 py-4">Supplier</th>
                 <th className="px-6 py-4">Expected</th>
@@ -91,7 +91,7 @@ const Imports: React.FC<ImportsProps> = ({ onNewImport }) => {
                 <th className="px-6 py-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="text-sm font-medium text-slate-300">
+            <tbody className="text-sm font-medium text-text-primary">
               {loading ? (
                 <tr>
                   <td
@@ -114,16 +114,16 @@ const Imports: React.FC<ImportsProps> = ({ onNewImport }) => {
                 imports.map((imp: any) => (
                   <tr
                     key={imp.id}
-                    className="border-b border-slate-800/30 hover:bg-slate-800/30 transition-colors group"
+                    className="border-b border-slate-100 hover:bg-slate-50 transition-colors group"
                   >
-                    <td className="px-6 py-4 font-bold text-white">
+                    <td className="px-6 py-4 font-bold text-text-primary">
                       {imp.order_number}
                     </td>
                     <td className="px-6 py-4">{imp.supplier_name}</td>
                     <td className="px-6 py-4">{imp.expected_delivery}</td>
                     <td className="px-6 py-4">{imp.delivery_date || "-"}</td>
                     <td className="px-6 py-4">{imp.item_count}</td>
-                    <td className="px-6 py-4 font-bold text-white">
+                    <td className="px-6 py-4 font-bold text-text-primary">
                       {formatCurrencyK(Number(imp.total_amount))}
                     </td>
                     <td className="px-6 py-4">

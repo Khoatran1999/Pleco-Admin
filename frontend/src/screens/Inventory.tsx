@@ -69,7 +69,7 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
 
   const handleEdit = (fish: Fish) => {
     dispatch(setSelected(fish));
-    onEditItem?.();
+    onEditItem?.(fish.id);
   };
 
   const handleDelete = async (id: number) => {
@@ -110,30 +110,30 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
     <div className="max-w-7xl mx-auto flex flex-col gap-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-black text-white tracking-tight">
+          <h2 className="text-3xl font-black text-text-primary tracking-tight">
             Fish Inventory
           </h2>
-          <p className="text-cyan-300 font-medium mt-1">
+          <p className="text-text-secondary font-medium mt-1">
             Manage your aquatic stock, update prices, and track availability. (
             {fishes.length} items)
           </p>
         </div>
         <button
           onClick={onAddItem}
-          className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:shadow-2xl hover:shadow-cyan-500/30 text-white px-6 py-3 rounded-xl shadow-lg shadow-cyan-500/20 flex items-center gap-2 font-bold transition-all active:scale-95"
+          className="bg-gradient-to-r from-primary-500 to-secondary-500 hover:shadow-soft-lg text-white px-6 py-3 rounded-button shadow-soft flex items-center gap-2 font-bold transition-all"
         >
           <span className="material-symbols-outlined text-xl">add</span>
           Add New Fish
         </button>
       </div>
 
-      <div className="bg-slate-900/50 backdrop-blur-xl p-4 rounded-2xl shadow-sm border border-emerald-500/20 hover:border-emerald-400/40 hover:shadow-2xl hover:shadow-emerald-500/20 transition-all flex flex-col md:flex-row gap-4 items-center">
+      <div className="bg-white backdrop-blur-sm p-4 rounded-card shadow-soft border border-slate-200 hover:border-primary-300 hover:shadow-soft-lg transition-all flex flex-col md:flex-row gap-4 items-center">
         <div className="relative flex-1 w-full">
-          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-cyan-400">
+          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-primary-600">
             search
           </span>
           <input
-            className="w-full pl-10 pr-4 py-2.5 rounded-xl border-none bg-slate-800/50 text-slate-100 placeholder:text-slate-500 focus:bg-slate-800/70 focus:ring-2 focus:ring-cyan-500/20 transition-all text-sm font-medium"
+            className="w-full pl-10 pr-4 py-2.5 rounded-xl border-none bg-background-soft text-text-primary placeholder:text-text-muted focus:bg-white focus:ring-2 focus:ring-primary-400/30 transition-all text-sm font-medium"
             placeholder="Search by name, scientific name, or SKU..."
             type="text"
             value={search}
@@ -142,7 +142,7 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
         </div>
         <div className="flex gap-3 w-full md:w-auto">
           <select
-            className="flex-1 md:min-w-[160px] pl-4 pr-10 py-2.5 rounded-xl border-none bg-slate-800/50 text-cyan-300 text-sm font-bold focus:ring-2 focus:ring-cyan-500/20 cursor-pointer appearance-none"
+            className="flex-1 md:min-w-[160px] pl-4 pr-10 py-2.5 rounded-button border border-slate-200 bg-white text-text-primary text-sm font-semibold focus:ring-2 focus:ring-primary-400/30 focus:border-primary-400 cursor-pointer appearance-none transition-all"
             value={categoryFilter}
             onChange={(e) => setCategoryFilter(e.target.value)}
           >
@@ -154,7 +154,7 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
             ))}
           </select>
           <select
-            className="flex-1 md:min-w-[160px] pl-4 pr-10 py-2.5 rounded-xl border-none bg-slate-800/50 text-cyan-300 text-sm font-bold focus:ring-2 focus:ring-cyan-500/20 cursor-pointer appearance-none"
+            className="flex-1 md:min-w-[160px] pl-4 pr-10 py-2.5 rounded-button border border-slate-200 bg-white text-text-primary text-sm font-semibold focus:ring-2 focus:ring-primary-400/30 focus:border-primary-400 cursor-pointer appearance-none transition-all"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
           >
@@ -166,11 +166,11 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
         </div>
       </div>
 
-      <div className="bg-slate-900/50 backdrop-blur-xl rounded-2xl shadow-sm border border-emerald-500/20 hover:border-emerald-400/40 hover:shadow-2xl hover:shadow-emerald-500/20 transition-all overflow-hidden">
+      <div className="bg-white backdrop-blur-sm rounded-card shadow-soft border border-slate-200 hover:border-primary-300 hover:shadow-soft-lg transition-all overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-slate-800/50 border-b border-slate-800/50 text-cyan-400 text-[10px] font-bold uppercase tracking-widest">
+              <tr className="bg-background-soft border-b border-slate-200 text-primary-700 text-[10px] font-bold uppercase tracking-widest">
                 <th className="px-6 py-4 w-12 text-center">
                   <input
                     className="rounded border-slate-300 text-primary focus:ring-primary/30"
@@ -187,7 +187,7 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
                 <th className="px-6 py-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="text-sm font-medium text-slate-300">
+            <tbody className="text-sm font-medium text-text-primary">
               {loading ? (
                 <tr>
                   <td
@@ -210,7 +210,7 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
                 paginatedFishes.map((fish: Fish) => (
                   <tr
                     key={fish.id}
-                    className="border-b border-slate-800/30 hover:bg-slate-800/30 transition-colors group"
+                    className="border-b border-slate-100 hover:bg-slate-50 transition-colors group"
                   >
                     <td className="px-6 py-4 text-center">
                       <input
@@ -220,20 +220,22 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
                     </td>
                     <td className="px-6 py-4">
                       <div
-                        className="size-12 rounded-xl bg-slate-800/50 bg-cover bg-center border border-slate-700/50"
+                        className="size-12 rounded-xl bg-background-soft bg-cover bg-center border border-slate-200"
                         style={{
                           backgroundImage: `url(${fish.image || FALLBACK_IMG})`,
                         }}
                       ></div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="font-bold text-white">{fish.name}</div>
-                      <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-0.5">
+                      <div className="font-bold text-text-primary">
+                        {fish.name}
+                      </div>
+                      <div className="text-[10px] text-text-muted font-bold uppercase tracking-wider mt-0.5">
                         {fish.scientific_name}
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-800/50 text-slate-300">
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-background-soft text-text-secondary">
                         {fish.size || "N/A"}
                       </span>
                     </td>
@@ -242,10 +244,10 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
                         {fish.category_name || "Uncategorized"}
                       </span>
                     </td>
-                    <td className="px-6 py-4 font-bold text-cyan-400">
+                    <td className="px-6 py-4 font-bold text-primary-600">
                       {formatCurrencyK(Number(fish.retail_price || 0))}
                     </td>
-                    <td className="px-6 py-4 font-bold text-emerald-400">
+                    <td className="px-6 py-4 font-bold text-secondary-600">
                       {formatCurrencyK(Number(fish.wholesale_price || 0))}
                     </td>
                     <td className="px-6 py-4">
@@ -264,7 +266,7 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
                       <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-all">
                         <button
                           onClick={() => handleEdit(fish)}
-                          className="p-2 text-slate-400 hover:text-cyan-400 hover:bg-cyan-500/20 rounded-lg transition-colors"
+                          className="p-2 text-text-secondary hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
                           title="Edit"
                         >
                           <span className="material-symbols-outlined text-[20px]">
@@ -297,8 +299,8 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
             </tbody>
           </table>
         </div>
-        <div className="px-6 py-4 border-t border-slate-800/50 flex items-center justify-between bg-slate-800/30">
-          <p className="text-xs font-bold text-cyan-400 uppercase tracking-widest">
+        <div className="px-6 py-4 border-t border-slate-200 flex items-center justify-between bg-slate-50">
+          <p className="text-xs font-bold text-primary-700 uppercase tracking-widest">
             Showing {paginatedFishes.length} of {fishes.length} results (Page{" "}
             {currentPage} of {totalPages || 1})
           </p>
@@ -306,7 +308,7 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
             <button
               onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
               disabled={currentPage <= 1}
-              className="p-2 rounded-lg border border-slate-700/50 bg-slate-800/50 text-slate-400 text-sm hover:bg-slate-700/50 disabled:opacity-50"
+              className="p-2 rounded-lg border border-slate-200 bg-white text-text-secondary text-sm hover:bg-slate-50 hover:border-slate-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
             >
               <span className="material-symbols-outlined text-[18px]">
                 chevron_left
@@ -320,19 +322,21 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
                   onClick={() => setCurrentPage(page)}
                   className={`px-3.5 py-2 rounded-lg text-xs font-bold ${
                     currentPage === page
-                      ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md shadow-cyan-500/20"
-                      : "border border-slate-700/50 bg-slate-800/50 text-slate-300 hover:bg-slate-700/50"
+                      ? "bg-gradient-to-r from-primary-500 to-secondary-500 text-white shadow-soft"
+                      : "border border-slate-200 bg-white text-text-primary hover:bg-slate-50"
                   }`}
                 >
                   {page}
                 </button>
               );
             })}
-            {totalPages > 5 && <span className="px-2 text-slate-400">...</span>}
+            {totalPages > 5 && (
+              <span className="px-2 text-text-muted">...</span>
+            )}
             <button
               onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
               disabled={currentPage >= totalPages}
-              className="p-2 rounded-lg border border-slate-700/50 bg-slate-800/50 text-slate-300 text-sm hover:bg-slate-700/50 disabled:opacity-50"
+              className="p-2 rounded-lg border border-slate-200 bg-white text-text-secondary text-sm hover:bg-slate-50 hover:border-slate-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
             >
               <span className="material-symbols-outlined text-[18px]">
                 chevron_right
@@ -344,13 +348,15 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
 
       {/* Loss Recording Modal */}
       {showLossModal && selectedFishForLoss && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="bg-slate-900 border border-orange-500/20 rounded-2xl p-6 w-full max-w-md shadow-2xl shadow-orange-500/20">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-white border border-slate-200 rounded-card p-6 w-full max-w-md shadow-soft-lg">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-bold text-white">Record Fish Loss</h3>
+              <h3 className="text-xl font-bold text-text-primary">
+                Record Fish Loss
+              </h3>
               <button
                 onClick={() => setShowLossModal(false)}
-                className="p-2 text-slate-400 hover:text-slate-300 hover:bg-slate-800/50 rounded-lg transition-colors"
+                className="p-2 text-text-secondary hover:text-text-primary hover:bg-slate-50 rounded-lg transition-colors"
               >
                 <span className="material-symbols-outlined">close</span>
               </button>
@@ -358,14 +364,14 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-bold text-cyan-400 mb-2">
+                <label className="block text-sm font-bold text-primary-700 mb-2">
                   Fish
                 </label>
-                <div className="p-3 bg-slate-800/50 rounded-lg">
-                  <div className="font-bold text-white">
+                <div className="p-3 bg-background-soft rounded-lg">
+                  <div className="font-bold text-text-primary">
                     {selectedFishForLoss.name}
                   </div>
-                  <div className="text-xs text-slate-400">
+                  <div className="text-xs text-text-muted">
                     Size: {selectedFishForLoss.size || "N/A"} | Current stock:{" "}
                     {selectedFishForLoss.stock}
                   </div>
@@ -373,8 +379,8 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-cyan-400 mb-2">
-                  Quantity Lost <span className="text-red-400">*</span>
+                <label className="block text-sm font-bold text-primary-700 mb-2">
+                  Quantity Lost <span className="text-red-600">*</span>
                 </label>
                 <input
                   type="number"
@@ -384,18 +390,18 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
                   onChange={(e) =>
                     setLossQuantity(Math.max(1, parseInt(e.target.value) || 1))
                   }
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-700/50 bg-slate-800/50 text-slate-100 focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500/50 transition-all"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-text-primary focus:ring-2 focus:ring-primary-400/30 focus:border-primary-400 transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-cyan-400 mb-2">
-                  Reason for Loss <span className="text-red-400">*</span>
+                <label className="block text-sm font-bold text-primary-700 mb-2">
+                  Reason for Loss <span className="text-red-600">*</span>
                 </label>
                 <select
                   value={lossReason}
                   onChange={(e) => setLossReason(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-700/50 bg-slate-800/50 text-slate-100 focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500/50 transition-all"
+                  className="w-full px-4 py-2.5 rounded-button border border-slate-200 bg-white text-text-primary focus:ring-2 focus:ring-accent-400/30 focus:border-accent-400 transition-all"
                 >
                   <option value="">Select reason...</option>
                   <option value="death">Death</option>
@@ -409,7 +415,7 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-cyan-400 mb-2">
+                <label className="block text-sm font-bold text-primary-700 mb-2">
                   Additional Notes
                 </label>
                 <textarea
@@ -417,7 +423,7 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
                   onChange={(e) => setLossNote(e.target.value)}
                   placeholder="Optional: Add more details..."
                   rows={3}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-700/50 bg-slate-800/50 text-slate-100 placeholder:text-slate-500 focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500/50 transition-all resize-none"
+                  className="w-full px-4 py-2.5 rounded-button border border-slate-200 bg-background-soft text-text-primary placeholder:text-text-muted focus:ring-2 focus:ring-accent-400/30 focus:border-accent-400 transition-all resize-none"
                 />
               </div>
             </div>
@@ -425,14 +431,14 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
             <div className="flex gap-3 mt-6">
               <button
                 onClick={() => setShowLossModal(false)}
-                className="flex-1 px-4 py-2.5 rounded-xl border border-slate-700/50 text-slate-300 font-bold hover:bg-slate-800/50 hover:border-orange-500/50 hover:text-orange-300 transition-all"
+                className="flex-1 px-4 py-2.5 rounded-button border border-slate-200 text-text-secondary font-semibold hover:bg-background-muted hover:border-slate-300 transition-all cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 onClick={handleRecordLoss}
                 disabled={!lossReason || lossQuantity < 1}
-                className="flex-1 px-4 py-2.5 rounded-xl bg-gradient-to-r from-orange-500 to-red-600 text-white font-bold hover:shadow-2xl hover:shadow-orange-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 px-4 py-2.5 rounded-button bg-gradient-to-r from-accent-500 to-red-600 text-white font-semibold hover:from-accent-600 hover:to-red-700 hover:shadow-soft-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Record Loss
               </button>

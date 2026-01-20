@@ -106,43 +106,43 @@ const Quotation: React.FC = () => {
         <div className="flex flex-wrap gap-2">
           <button
             onClick={() => setSingleSort("featured", "desc")}
-            className="px-4 py-2 rounded-lg bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:bg-slate-800 hover:border-slate-600 transition-all"
+            className="px-4 py-2 rounded-button bg-white border border-slate-200 text-text-primary hover:bg-slate-50 hover:border-primary-400 transition-all"
           >
             Featured
           </button>
           <button
             onClick={() => setSingleSort("newest", "desc")}
-            className="px-4 py-2 rounded-lg bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:bg-slate-800 hover:border-slate-600 transition-all"
+            className="px-4 py-2 rounded-button bg-white border border-slate-200 text-text-primary hover:bg-slate-50 hover:border-primary-400 transition-all"
           >
             Newest
           </button>
           <button
             onClick={() => setSingleSort("best", "desc")}
-            className="px-4 py-2 rounded-lg bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:bg-slate-800 hover:border-slate-600 transition-all"
+            className="px-4 py-2 rounded-button bg-white border border-slate-200 text-text-primary hover:bg-slate-50 hover:border-primary-400 transition-all"
           >
             Best Selling
           </button>
           <button
             onClick={() => setSingleSort("name", "asc")}
-            className="px-4 py-2 rounded-lg bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:bg-slate-800 hover:border-slate-600 transition-all"
+            className="px-4 py-2 rounded-button bg-white border border-slate-200 text-text-primary hover:bg-slate-50 hover:border-primary-400 transition-all"
           >
             A to Z
           </button>
           <button
             onClick={() => setSingleSort("name", "desc")}
-            className="px-4 py-2 rounded-lg bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:bg-slate-800 hover:border-slate-600 transition-all"
+            className="px-4 py-2 rounded-button bg-white border border-slate-200 text-text-primary hover:bg-slate-50 hover:border-primary-400 transition-all"
           >
             Z to A
           </button>
           <button
             onClick={() => setSingleSort("price", "asc")}
-            className="px-4 py-2 rounded-lg bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:bg-slate-800 hover:border-slate-600 transition-all"
+            className="px-4 py-2 rounded-button bg-white border border-slate-200 text-text-primary hover:bg-slate-50 hover:border-primary-400 transition-all"
           >
             Price: ↑
           </button>
           <button
             onClick={() => setSingleSort("price", "desc")}
-            className="px-4 py-2 rounded-lg bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:bg-slate-800 hover:border-slate-600 transition-all"
+            className="px-4 py-2 rounded-button bg-white border border-slate-200 text-text-primary hover:bg-slate-50 hover:border-primary-400 transition-all"
           >
             Price: ↓
           </button>
@@ -171,36 +171,36 @@ const Quotation: React.FC = () => {
             setMinPrice("");
             setMaxPrice("");
           }}
-          className="px-4 py-2 bg-slate-100 rounded-lg"
+          className="px-4 py-2 bg-background-soft rounded-button border border-slate-200 hover:bg-slate-50 transition-all"
         >
           Reset
         </button>
         <button
           onClick={() => setHiddenRows({})}
-          className="px-4 py-2 bg-emerald-50 text-emerald-600 rounded-lg"
+          className="px-4 py-2 bg-emerald-50 text-emerald-600 rounded-button border border-emerald-200 hover:bg-emerald-100 transition-all"
         >
           Show all (
           {Object.keys(hiddenRows).filter((k) => hiddenRows[Number(k)]).length})
         </button>
       </div>
 
-      <div className="bg-slate-900/50 backdrop-blur-xl rounded-2xl shadow-2xl shadow-purple-500/20 border border-purple-500/20 overflow-auto">
+      <div className="bg-white backdrop-blur-sm rounded-card shadow-soft-lg border border-slate-200 overflow-auto">
         <table className="min-w-full table-auto">
           <thead>
-            <tr className="text-left bg-slate-800/30 border-b border-slate-800/50">
-              <th className="px-4 py-3 text-cyan-400 text-xs font-bold uppercase tracking-widest">
+            <tr className="text-left bg-background-soft border-b border-slate-200">
+              <th className="px-4 py-3 text-primary-600 text-xs font-bold uppercase tracking-widest">
                 Tên
               </th>
-              <th className="px-4 py-3 text-cyan-400 text-xs font-bold uppercase tracking-widest">
+              <th className="px-4 py-3 text-primary-600 text-xs font-bold uppercase tracking-widest">
                 Kích thước
               </th>
-              <th className="px-4 py-3 text-cyan-400 text-xs font-bold uppercase tracking-widest">
+              <th className="px-4 py-3 text-primary-600 text-xs font-bold uppercase tracking-widest">
                 Category
               </th>
-              <th className="px-4 py-3 text-cyan-400 text-xs font-bold uppercase tracking-widest">
+              <th className="px-4 py-3 text-primary-600 text-xs font-bold uppercase tracking-widest">
                 Giá
               </th>
-              <th className="px-4 py-3 text-cyan-400 text-xs font-bold uppercase tracking-widest">
+              <th className="px-4 py-3 text-primary-600 text-xs font-bold uppercase tracking-widest">
                 Hành động
               </th>
             </tr>
@@ -210,7 +210,7 @@ const Quotation: React.FC = () => {
               <tr>
                 <td
                   colSpan={5}
-                  className="px-4 py-6 text-center text-sm text-slate-500"
+                  className="px-4 py-6 text-center text-sm text-text-muted"
                 >
                   Loading...
                 </td>
@@ -220,7 +220,7 @@ const Quotation: React.FC = () => {
               <tr>
                 <td
                   colSpan={5}
-                  className="px-4 py-6 text-center text-sm text-slate-500"
+                  className="px-4 py-6 text-center text-sm text-text-muted"
                 >
                   Không có dữ liệu
                 </td>
@@ -244,7 +244,7 @@ const Quotation: React.FC = () => {
                     <td className="px-4 py-3">
                       <button
                         onClick={() => toggleHide(f.id)}
-                        className="px-3 py-1 bg-red-50 text-red-600 rounded-lg text-sm"
+                        className="px-3 py-1 bg-red-50 text-red-600 rounded-button text-sm border border-red-200 hover:bg-red-100 transition-all"
                       >
                         {hiddenRows[f.id] ? "Hiện" : "Ẩn"}
                       </button>
