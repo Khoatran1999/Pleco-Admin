@@ -55,21 +55,20 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
   const [editCustomer, setEditCustomer] = React.useState(
     order?.customer_name || "",
   );
-  const [selectedCustomerId, setSelectedCustomerId] = React.useState<
-    number | null
-  >(order?.customer_id ?? null);
+  const [, setSelectedCustomerId] = React.useState<number | null>(
+    order?.customer_id ?? null,
+  );
   const [editNotes, setEditNotes] = React.useState(order?.notes || "");
   const dispatch = useAppDispatch();
   const { data: customers } = useAppSelector((s) => s.customer);
   React.useEffect(() => {
     if (isOpen) {
-      dispatch(fetchCustomers());
+      dispatch(fetchCustomers({}));
       // initialize fields when opening modal
       setEditCustomer(order?.customer_name || "");
       setSelectedCustomerId(order?.customer_id ?? null);
       setEditNotes(order?.notes || "");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, order]);
 
   if (!isOpen) return null;
@@ -196,7 +195,7 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                                   );
                                   alert("Copied to clipboard");
                                 } catch (err) {
-                                  alert("Copy failed");
+                                  alert("Copy failed" + err);
                                 }
                               }}
                               className="px-2 py-1 rounded-lg bg-background-soft text-slate-700 text-xs"

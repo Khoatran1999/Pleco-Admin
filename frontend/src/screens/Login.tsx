@@ -28,6 +28,7 @@ const Login: React.FC = () => {
       navigate("/");
     } catch (err) {
       // Error is handled by Redux
+      console.error("Login failed:", err);
     }
   };
 

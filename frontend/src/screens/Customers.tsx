@@ -9,7 +9,7 @@ import {
 
 const Customers: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { data: customers, loading } = useAppSelector((s) => s.customer);
+  const { data: customers } = useAppSelector((s) => s.customer);
 
   const [search, setSearch] = useState("");
   const [showModal, setShowModal] = useState(false);

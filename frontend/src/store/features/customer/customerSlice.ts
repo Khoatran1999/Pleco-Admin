@@ -31,7 +31,7 @@ const initialState: CustomerState = {
 
 export const fetchCustomers = createAsyncThunk(
   "customer/fetchAll",
-  async (_: {} | undefined, { rejectWithValue }) => {
+  async (_: unknown, { rejectWithValue }) => {
     try {
       const response = await api.get("/customers");
       return response.data.data;

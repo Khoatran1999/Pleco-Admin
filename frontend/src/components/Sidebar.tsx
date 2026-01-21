@@ -5,7 +5,7 @@ interface SidebarProps {
   onLogout?: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ onLogout }) => {
+const Sidebar: React.FC<SidebarProps> = () => {
   const navigate = useNavigate();
   const navItems = [
     { to: "/", label: "Dashboard", icon: "dashboard" },

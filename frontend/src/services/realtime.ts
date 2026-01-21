@@ -7,18 +7,6 @@
 import { supabase } from "./supabase";
 import { RealtimeChannel } from "@supabase/supabase-js";
 
-type InventoryChangePayload = {
-  fish_id: number;
-  quantity: number;
-  location?: string;
-};
-
-type OrderChangePayload = {
-  id: number;
-  status: string;
-  total_amount: number;
-};
-
 type LowStockAlert = {
   fish_id: number;
   fish_name: string;

@@ -45,9 +45,8 @@ export const createSupplier = createAsyncThunk(
   "supplier/create",
   async (supplierData: any, { rejectWithValue }) => {
     try {
-      let response;
       // Let axios/browser set the correct multipart Content-Type (with boundary)
-      response = await api.post("/suppliers", supplierData);
+      const response = await api.post("/suppliers", supplierData);
       return response.data.data;
     } catch (error: any) {
       return rejectWithValue(
@@ -61,9 +60,8 @@ export const updateSupplier = createAsyncThunk(
   "supplier/update",
   async ({ id, data }: { id: number; data: any }, { rejectWithValue }) => {
     try {
-      let response;
       // Let axios/browser set the correct multipart Content-Type (with boundary)
-      response = await api.put(`/suppliers/${id}`, data);
+      const response = await api.put(`/suppliers/${id}`, data);
       return response.data.data;
     } catch (error: any) {
       return rejectWithValue(

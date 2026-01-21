@@ -1,9 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import {
-  supabase,
-  getCurrentUser,
-  getSession,
-} from "../../../services/supabase";
+import { getSession } from "../../../services/supabase";
 import api, { API_BASE_URL } from "../../../services/api";
 
 interface User {

@@ -3,7 +3,6 @@ import { useAppDispatch, useAppSelector } from "../store/hooks";
 import {
   createFish,
   updateFish,
-  Fish,
   setSelected,
 } from "../store/features/fish/fishSlice";
 import { fetchCategories } from "../store/features/category/categorySlice";
@@ -295,7 +294,9 @@ const NewFish: React.FC<NewFishProps> = ({ onBack, editMode = false }) => {
             <span className="material-symbols-outlined text-primary-600 text-2xl fill-1">
               payments
             </span>
-            <h3 className="text-xl font-black text-text-primary">Pricing & Stock</h3>
+            <h3 className="text-xl font-black text-text-primary">
+              Pricing & Stock
+            </h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
             <div className="space-y-2">

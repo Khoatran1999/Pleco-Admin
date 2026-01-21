@@ -202,7 +202,7 @@ const Orders: React.FC<OrdersProps> = ({ onAddOrder }) => {
                                       // small feedback
                                       alert("Copied to clipboard");
                                     } catch (err) {
-                                      alert("Copy failed");
+                                      alert("Copy failed" + err);
                                     }
                                   }}
                                   className="cursor-pointer px-3 py-1 rounded-lg bg-primary-50 text-primary-600 text-xs hover:bg-primary-100 transition-colors"
@@ -226,7 +226,9 @@ const Orders: React.FC<OrdersProps> = ({ onAddOrder }) => {
                     <td className="px-6 py-4 text-text-secondary">
                       {new Date(o.order_date).toLocaleDateString()}
                     </td>
-                    <td className="px-6 py-4 text-text-secondary">{o.item_count}</td>
+                    <td className="px-6 py-4 text-text-secondary">
+                      {o.item_count}
+                    </td>
                     <td className="px-6 py-4 font-bold text-text-primary">
                       {formatCurrencyK(Number(o.total_amount))}
                     </td>

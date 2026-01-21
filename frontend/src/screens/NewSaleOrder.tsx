@@ -5,7 +5,7 @@ import {
   fetchCustomers,
   createCustomer,
 } from "../store/features/customer/customerSlice";
-import { fetchFishes, Fish } from "../store/features/fish/fishSlice";
+import { fetchFishes } from "../store/features/fish/fishSlice";
 import { fetchInventory } from "../store/features/inventory/inventorySlice";
 import { createSaleOrder } from "../store/features/sale/saleSlice";
 
@@ -131,7 +131,7 @@ const NewSaleOrder: React.FC<NewSaleOrderProps> = ({ onBack }) => {
       customerId,
       saleType,
       // include status in draft for convenience
-      // @ts-ignore - DraftData doesn't include status yet, kept simple
+      // @ts-expect-error - DraftData doesn't include status yet, kept simple
       status: orderStatus,
       paymentMethod,
       notes,

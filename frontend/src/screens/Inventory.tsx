@@ -9,10 +9,7 @@ import {
 import formatCurrencyK from "../utils/format";
 import { getStatusDotColor, getStatusTextColor } from "../utils/status";
 import { fetchCategories } from "../store/features/category/categorySlice";
-import {
-  recordLoss,
-  fetchLossLogs,
-} from "../store/features/inventory/inventorySlice";
+import { recordLoss } from "../store/features/inventory/inventorySlice";
 
 interface InventoryProps {
   onAddItem: () => void;
@@ -38,11 +35,7 @@ const Inventory: React.FC<InventoryProps> = ({ onAddItem, onEditItem }) => {
   const [lossNote, setLossNote] = useState("");
 
   const dispatch = useAppDispatch();
-  const {
-    data: fishes,
-    loading,
-    total,
-  } = useAppSelector((state) => state.fish);
+  const { data: fishes, loading } = useAppSelector((state) => state.fish);
   const { data: categories } = useAppSelector((state) => state.category);
 
   useEffect(() => {

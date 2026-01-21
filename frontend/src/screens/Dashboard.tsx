@@ -24,8 +24,9 @@ interface DashboardProps {
 const Dashboard: React.FC<DashboardProps> = ({ onAddOrder }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { dashboardStats, weeklyRevenue, speciesSales, loading } =
-    useAppSelector((state) => state.report);
+  const { dashboardStats, weeklyRevenue, speciesSales } = useAppSelector(
+    (state) => state.report,
+  );
 
   useEffect(() => {
     dispatch(fetchDashboardStats());
