@@ -71,11 +71,10 @@ Hệ thống quản lý cửa hàng cá cảnh toàn diện với theo dõi tồ
 
 ### Testing
 
-| Công nghệ  | Mô tả                   |
-| ---------- | ----------------------- |
-| Vitest     | Unit Testing (Frontend) |
-| Playwright | E2E Testing             |
-| Jest       | Unit Testing (Backend)  |
+| Công nghệ | Mô tả                   |
+| --------- | ----------------------- |
+| Vitest    | Unit Testing (Frontend) |
+| Jest      | Unit Testing (Backend)  |
 
 ## 📁 Cấu trúc dự án
 
