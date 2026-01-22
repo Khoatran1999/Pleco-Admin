@@ -4,7 +4,7 @@
   "buildCommand": "npm run vercel-build",
   "devCommand": "",
   "outputDirectory": "frontend/dist",
-  "installCommand": "cd frontend && npm ci --production=false",
+  "installCommand": "npm install --prefix frontend --include=dev && npm install --prefix backend",
   "functions": {
     "api/index.js": {
       "maxDuration": 30
