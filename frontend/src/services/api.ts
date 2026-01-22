@@ -10,7 +10,8 @@ function getApiBaseUrl() {
     // ignore
   }
   // fallback to process.env for node-based test runners
-  const nodeEnvUrl = typeof process !== 'undefined' ? (process as any).env?.VITE_API_URL : undefined;
+  const nodeEnvUrl =
+    typeof process !== 'undefined' ? (process as any).env?.VITE_API_URL : undefined;
   return nodeEnvUrl;
 }
 

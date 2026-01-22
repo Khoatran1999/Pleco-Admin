@@ -4,10 +4,22 @@
  * NOTE: This is optional - the app works through Backend API
  */
 
-import { createClient, SupabaseClient } from "@supabase/supabase-js";
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || "";
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || "";
+function getEnvVar(name: string) {
+  try {
+    // @ts-expect-error import.meta may not have env typed in some test environments
+    const v = (import.meta as unknown as { env?: Record<string, string> })?.env?.[name];
+    if (v) return v;
+  } catch {
+    // ignore
+  }
+  const nodeVal = typeof process !== 'undefined' ? (process as any).env?.[name] : undefined;
+  return nodeVal;
+}
+
+const supabaseUrl = getEnvVar('VITE_SUPABASE_URL') || '';
+const supabaseAnonKey = getEnvVar('VITE_SUPABASE_ANON_KEY') || '';
 
 // Only create client if environment variables are available
 // Otherwise, realtime features will be disabled but app still works via Backend API
@@ -28,9 +40,7 @@ if (supabaseUrl && supabaseAnonKey) {
     },
   });
 } else {
-  console.warn(
-    "Supabase environment variables not set - realtime features disabled",
-  );
+  console.warn('Supabase environment variables not set - realtime features disabled');
 }
 
 export { supabase };
@@ -58,9 +68,7 @@ export const getSession = async () => {
 };
 
 // Auth state change listener
-export const onAuthStateChange = (
-  callback: (event: string, session: any) => void,
-) => {
+export const onAuthStateChange = (callback: (event: string, session: any) => void) => {
   if (!supabase) return { data: { subscription: { unsubscribe: () => {} } } };
   return supabase.auth.onAuthStateChange(callback);
 };
