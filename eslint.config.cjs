@@ -1,7 +1,5 @@
-const js = require('@eslint/js');
-
+// Minimal flat ESLint config without external package dependency
 module.exports = [
-  js.configs.recommended,
   {
     files: ['**/*.js'],
     languageOptions: {
