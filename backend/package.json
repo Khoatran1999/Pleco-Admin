@@ -7,7 +7,7 @@
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
     "test": "jest --runInBand",
-    "lint": "eslint src --ext .js"
+    "lint": "eslint src"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.90.1",
@@ -24,6 +24,7 @@
   "devDependencies": {
     "jest": "^29.0.0",
     "nodemon": "^3.0.2",
-    "supertest": "^6.3.3"
+    "supertest": "^6.3.3",
+    "eslint": "^8.49.0"
   }
 }
