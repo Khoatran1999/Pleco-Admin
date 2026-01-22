@@ -3,8 +3,7 @@
  * Handles user authentication using Supabase Auth
  */
 
-const supabase = require("../config/supabase");
-const { executeQuery } = require("../utils/supabase-query");
+const supabase = require('../config/supabase');
 
 /**
  * Sign up new user
@@ -17,21 +16,21 @@ async function signUp(req, res) {
     if (!email || !password || !full_name || !username) {
       return res.status(400).json({
         success: false,
-        message: "Email, password, full_name, and username are required",
+        message: 'Email, password, full_name, and username are required',
       });
     }
 
     // Check if username already exists
     const { data: existingUser } = await supabase
-      .from("users")
-      .select("id")
-      .eq("username", username)
+      .from('users')
+      .select('id')
+      .eq('username', username)
       .single();
 
     if (existingUser) {
       return res.status(400).json({
         success: false,
-        message: "Username already exists",
+        message: 'Username already exists',
       });
     }
 
@@ -56,32 +55,32 @@ async function signUp(req, res) {
     }
 
     // Auto-confirm email in development (if service role key is available)
-    if (process.env.NODE_ENV === "development" && authData.user) {
+    if (process.env.NODE_ENV === 'development' && authData.user) {
       try {
         await supabase.auth.admin.updateUserById(authData.user.id, {
           email_confirm: true,
         });
       } catch (confirmError) {
-        console.warn("Could not auto-confirm email:", confirmError.message);
+        console.warn('Could not auto-confirm email:', confirmError.message);
       }
     }
 
     // Get default staff role
     const { data: staffRole } = await supabase
-      .from("roles")
-      .select("id")
-      .eq("name", "staff")
+      .from('roles')
+      .select('id')
+      .eq('name', 'staff')
       .single();
 
     // Create user record in database
     const { data: userData, error: dbError } = await supabase
-      .from("users")
+      .from('users')
       .insert({
         username,
         email,
         full_name,
         role_id: staffRole?.id || 3,
-        password: "managed_by_supabase_auth", // Placeholder
+        password: 'managed_by_supabase_auth', // Placeholder
       })
       .select()
       .single();
@@ -92,14 +91,13 @@ async function signUp(req, res) {
 
       return res.status(500).json({
         success: false,
-        message: "Failed to create user record",
+        message: 'Failed to create user record',
       });
     }
 
     res.status(201).json({
       success: true,
-      message:
-        "User created successfully. Please check your email for verification.",
+      message: 'User created successfully. Please check your email for verification.',
       data: {
         user: {
           id: userData.id,
@@ -110,10 +108,10 @@ async function signUp(req, res) {
       },
     });
   } catch (error) {
-    console.error("Sign up error:", error);
+    console.error('Sign up error:', error);
     res.status(500).json({
       success: false,
-      message: "Sign up failed",
+      message: 'Sign up failed',
     });
   }
 }
@@ -128,7 +126,7 @@ async function signIn(req, res) {
     if (!email || !password) {
       return res.status(400).json({
         success: false,
-        message: "Email and password are required",
+        message: 'Email and password are required',
       });
     }
 
@@ -147,7 +145,7 @@ async function signIn(req, res) {
 
     // Get user details from database
     const { data: userData, error: userError } = await supabase
-      .from("users")
+      .from('users')
       .select(
         `
         id,
@@ -162,32 +160,32 @@ async function signIn(req, res) {
         )
       `,
       )
-      .eq("email", email)
+      .eq('email', email)
       .single();
 
     if (userError || !userData) {
       return res.status(404).json({
         success: false,
-        message: "User not found",
+        message: 'User not found',
       });
     }
 
     if (!userData.is_active) {
       return res.status(403).json({
         success: false,
-        message: "Account is deactivated",
+        message: 'Account is deactivated',
       });
     }
 
     res.json({
       success: true,
-      message: "Login successful",
+      message: 'Login successful',
       user: {
         id: userData.id,
         username: userData.username,
         email: userData.email,
         full_name: userData.full_name,
-        role_name: userData.roles?.name || "staff",
+        role_name: userData.roles?.name || 'staff',
         role_id: userData.roles?.id,
       },
       session: {
@@ -197,10 +195,10 @@ async function signIn(req, res) {
       },
     });
   } catch (error) {
-    console.error("Sign in error:", error);
+    console.error('Sign in error:', error);
     res.status(500).json({
       success: false,
-      message: "Login failed",
+      message: 'Login failed',
     });
   }
 }
@@ -214,13 +212,13 @@ async function signOut(req, res) {
     // Just confirm success
     res.json({
       success: true,
-      message: "Logged out successfully",
+      message: 'Logged out successfully',
     });
   } catch (error) {
-    console.error("Sign out error:", error);
+    console.error('Sign out error:', error);
     res.status(500).json({
       success: false,
-      message: "Logout failed",
+      message: 'Logout failed',
     });
   }
 }
@@ -231,7 +229,7 @@ async function signOut(req, res) {
 async function getProfile(req, res) {
   try {
     const { data: userData, error } = await supabase
-      .from("users")
+      .from('users')
       .select(
         `
         id,
@@ -247,13 +245,13 @@ async function getProfile(req, res) {
         )
       `,
       )
-      .eq("id", req.user.id)
+      .eq('id', req.user.id)
       .single();
 
     if (error) {
       return res.status(404).json({
         success: false,
-        message: "User not found",
+        message: 'User not found',
       });
     }
 
@@ -262,10 +260,10 @@ async function getProfile(req, res) {
       data: userData,
     });
   } catch (error) {
-    console.error("Get profile error:", error);
+    console.error('Get profile error:', error);
     res.status(500).json({
       success: false,
-      message: "Failed to fetch profile",
+      message: 'Failed to fetch profile',
     });
   }
 }
@@ -280,7 +278,7 @@ async function resetPassword(req, res) {
     if (!email) {
       return res.status(400).json({
         success: false,
-        message: "Email is required",
+        message: 'Email is required',
       });
     }
 
@@ -297,13 +295,13 @@ async function resetPassword(req, res) {
 
     res.json({
       success: true,
-      message: "Password reset email sent",
+      message: 'Password reset email sent',
     });
   } catch (error) {
-    console.error("Reset password error:", error);
+    console.error('Reset password error:', error);
     res.status(500).json({
       success: false,
-      message: "Failed to send reset email",
+      message: 'Failed to send reset email',
     });
   }
 }
@@ -318,7 +316,7 @@ async function updatePassword(req, res) {
     if (!password) {
       return res.status(400).json({
         success: false,
-        message: "New password is required",
+        message: 'New password is required',
       });
     }
 
@@ -335,13 +333,13 @@ async function updatePassword(req, res) {
 
     res.json({
       success: true,
-      message: "Password updated successfully",
+      message: 'Password updated successfully',
     });
   } catch (error) {
-    console.error("Update password error:", error);
+    console.error('Update password error:', error);
     res.status(500).json({
       success: false,
-      message: "Failed to update password",
+      message: 'Failed to update password',
     });
   }
 }
@@ -356,7 +354,7 @@ async function refreshToken(req, res) {
     if (!refresh_token) {
       return res.status(400).json({
         success: false,
-        message: "Refresh token is required",
+        message: 'Refresh token is required',
       });
     }
 
@@ -382,10 +380,10 @@ async function refreshToken(req, res) {
       },
     });
   } catch (error) {
-    console.error("Refresh token error:", error);
+    console.error('Refresh token error:', error);
     res.status(500).json({
       success: false,
-      message: "Failed to refresh token",
+      message: 'Failed to refresh token',
     });
   }
 }

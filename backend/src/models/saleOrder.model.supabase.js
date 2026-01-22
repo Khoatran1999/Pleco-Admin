@@ -3,9 +3,9 @@
  * Handles sale orders to customers
  */
 
-const supabase = require("../config/supabase");
-const { executeQuery, applyPagination } = require("../utils/supabase-query");
-const { sanitizeForLike } = require("../utils/security");
+const supabase = require('../config/supabase');
+const { executeQuery, applyPagination } = require('../utils/supabase-query');
+const { sanitizeForLike } = require('../utils/security');
 
 const SaleOrder = {
   /**
@@ -13,7 +13,7 @@ const SaleOrder = {
    */
   async getAll(filters = {}) {
     return executeQuery(async () => {
-      let query = supabase.from("sale_orders").select(
+      let query = supabase.from('sale_orders').select(
         `
           *,
           customers (
@@ -31,41 +31,41 @@ const SaleOrder = {
             full_name
           )
         `,
-        { count: "exact" },
+        { count: 'exact' },
       );
 
       // Apply status filter
       if (filters.status) {
-        query = query.eq("status", filters.status);
+        query = query.eq('status', filters.status);
       }
 
       // Apply customer filter
       if (filters.customer_id) {
-        query = query.eq("customer_id", filters.customer_id);
+        query = query.eq('customer_id', filters.customer_id);
       }
 
       // Apply sale type filter
       if (filters.sale_type) {
-        query = query.eq("sale_type", filters.sale_type);
+        query = query.eq('sale_type', filters.sale_type);
       }
 
       // Apply date range filter
       if (filters.start_date) {
-        query = query.gte("order_date", filters.start_date);
+        query = query.gte('order_date', filters.start_date);
       }
 
       if (filters.end_date) {
-        query = query.lte("order_date", filters.end_date);
+        query = query.lte('order_date', filters.end_date);
       }
 
       // Apply search
       if (filters.search) {
         const sanitizedSearch = sanitizeForLike(filters.search);
-        query = query.ilike("order_number", `%${sanitizedSearch}%`);
+        query = query.ilike('order_number', `%${sanitizedSearch}%`);
       }
 
       // Apply sorting
-      query = query.order("order_date", { ascending: false });
+      query = query.order('order_date', { ascending: false });
 
       // Apply pagination
       if (filters.page && filters.limit) {
@@ -83,7 +83,7 @@ const SaleOrder = {
     return executeQuery(async () => {
       // Get order details
       const { data: order, error: orderError } = await supabase
-        .from("sale_orders")
+        .from('sale_orders')
         .select(
           `
           *,
@@ -103,14 +103,14 @@ const SaleOrder = {
           )
         `,
         )
-        .eq("id", id)
+        .eq('id', id)
         .single();
 
       if (orderError) throw orderError;
 
       // Get order items
       const { data: items, error: itemsError } = await supabase
-        .from("sale_order_items")
+        .from('sale_order_items')
         .select(
           `
           *,
@@ -126,7 +126,7 @@ const SaleOrder = {
           )
         `,
         )
-        .eq("sale_order_id", id);
+        .eq('sale_order_id', id);
 
       if (itemsError) throw itemsError;
 
@@ -153,44 +153,31 @@ const SaleOrder = {
    * Create new sale order with items
    */
   async create(orderData, userId) {
-    const {
-      customer_id,
-      sale_type,
-      order_date,
-      payment_method,
-      discount_amount,
-      notes,
-      items,
-    } = orderData;
+    const { customer_id, sale_type, order_date, payment_method, discount_amount, notes, items } =
+      orderData;
 
     // Generate order number if not provided - use timestamp + random for uniqueness
-    const randomSuffix = Math.random()
-      .toString(36)
-      .substring(2, 8)
-      .toUpperCase();
-    const order_number =
-      orderData.order_number || `SO-${Date.now()}-${randomSuffix}`;
+    const randomSuffix = Math.random().toString(36).substring(2, 8).toUpperCase();
+    const order_number = orderData.order_number || `SO-${Date.now()}-${randomSuffix}`;
 
     return executeQuery(async () => {
       // Validate inventory availability
       for (const item of items) {
         const { data: inventory } = await supabase
-          .from("inventories")
-          .select("quantity")
-          .eq("fish_id", item.fish_id)
+          .from('inventories')
+          .select('quantity')
+          .eq('fish_id', item.fish_id)
           .single();
 
         const available = inventory?.quantity || 0;
         if (available < parseFloat(item.quantity)) {
           const { data: fish } = await supabase
-            .from("fishes")
-            .select("name")
-            .eq("id", item.fish_id)
+            .from('fishes')
+            .select('name')
+            .eq('id', item.fish_id)
             .single();
 
-          throw new Error(
-            `Insufficient stock for ${fish?.name}. Available: ${available}`,
-          );
+          throw new Error(`Insufficient stock for ${fish?.name}. Available: ${available}`);
         }
       }
 
@@ -203,13 +190,13 @@ const SaleOrder = {
 
       // Create order
       const { data: order, error: orderError } = await supabase
-        .from("sale_orders")
+        .from('sale_orders')
         .insert({
           order_number,
           customer_id,
-          sale_type: sale_type || "retail",
+          sale_type: sale_type || 'retail',
           order_date: order_date || new Date().toISOString(),
-          status: "pending",
+          status: 'pending',
           subtotal,
           discount_amount: parseFloat(discount_amount) || 0,
           total_amount: totalAmount,
@@ -231,9 +218,7 @@ const SaleOrder = {
         total_price: parseFloat(item.quantity) * parseFloat(item.unit_price),
       }));
 
-      const { error: itemsError } = await supabase
-        .from("sale_order_items")
-        .insert(orderItems);
+      const { error: itemsError } = await supabase.from('sale_order_items').insert(orderItems);
 
       if (itemsError) throw itemsError;
 
@@ -262,8 +247,7 @@ const SaleOrder = {
       if (sale_type !== undefined) updateData.sale_type = sale_type;
       if (order_date !== undefined) updateData.order_date = order_date;
       if (status !== undefined) updateData.status = status;
-      if (payment_method !== undefined)
-        updateData.payment_method = payment_method;
+      if (payment_method !== undefined) updateData.payment_method = payment_method;
       if (notes !== undefined) updateData.notes = notes;
 
       // Recalculate amounts if items or discount changed
@@ -272,35 +256,29 @@ const SaleOrder = {
 
         if (items) {
           subtotal = items.reduce((sum, item) => {
-            return (
-              sum + parseFloat(item.quantity) * parseFloat(item.unit_price)
-            );
+            return sum + parseFloat(item.quantity) * parseFloat(item.unit_price);
           }, 0);
 
           // Delete existing items and insert new ones
-          await supabase
-            .from("sale_order_items")
-            .delete()
-            .eq("sale_order_id", id);
+          await supabase.from('sale_order_items').delete().eq('sale_order_id', id);
 
           const orderItems = items.map((item) => ({
             sale_order_id: id,
             fish_id: item.fish_id,
             quantity: parseFloat(item.quantity),
             unit_price: parseFloat(item.unit_price),
-            total_price:
-              parseFloat(item.quantity) * parseFloat(item.unit_price),
+            total_price: parseFloat(item.quantity) * parseFloat(item.unit_price),
           }));
 
-          await supabase.from("sale_order_items").insert(orderItems);
+          await supabase.from('sale_order_items').insert(orderItems);
 
           updateData.subtotal = subtotal;
         } else {
           // Get current subtotal
           const { data: currentOrder } = await supabase
-            .from("sale_orders")
-            .select("subtotal")
-            .eq("id", id)
+            .from('sale_orders')
+            .select('subtotal')
+            .eq('id', id)
             .single();
 
           subtotal = currentOrder?.subtotal || 0;
@@ -313,9 +291,9 @@ const SaleOrder = {
 
       // Update order
       const { data: order, error } = await supabase
-        .from("sale_orders")
+        .from('sale_orders')
         .update(updateData)
-        .eq("id", id)
+        .eq('id', id)
         .select()
         .single();
 
@@ -332,43 +310,43 @@ const SaleOrder = {
     return executeQuery(async () => {
       // Get order items
       const { data: items } = await supabase
-        .from("sale_order_items")
-        .select("*")
-        .eq("sale_order_id", id);
+        .from('sale_order_items')
+        .select('*')
+        .eq('sale_order_id', id);
 
       // Update inventory for each item
       for (const item of items) {
         // Get current inventory
         const { data: currentInv } = await supabase
-          .from("inventories")
-          .select("quantity")
-          .eq("fish_id", item.fish_id)
+          .from('inventories')
+          .select('quantity')
+          .eq('fish_id', item.fish_id)
           .single();
 
         const quantityBefore = currentInv?.quantity || 0;
         const quantityAfter = quantityBefore - parseFloat(item.quantity);
 
         if (quantityAfter < 0) {
-          throw new Error("Insufficient inventory");
+          throw new Error('Insufficient inventory');
         }
 
         // Update inventory
         await supabase
-          .from("inventories")
+          .from('inventories')
           .update({
             quantity: quantityAfter,
             last_updated: new Date().toISOString(),
           })
-          .eq("fish_id", item.fish_id);
+          .eq('fish_id', item.fish_id);
 
         // Create inventory log
-        await supabase.from("inventory_logs").insert({
+        await supabase.from('inventory_logs').insert({
           fish_id: item.fish_id,
-          type: "sale",
+          type: 'sale',
           quantity_change: -parseFloat(item.quantity),
           quantity_before: quantityBefore,
           quantity_after: quantityAfter,
-          reference_type: "sale_order",
+          reference_type: 'sale_order',
           reference_id: id,
           created_by: userId,
         });
@@ -376,9 +354,9 @@ const SaleOrder = {
 
       // Update order status to processing
       const { data: order } = await supabase
-        .from("sale_orders")
-        .update({ status: "processing" })
-        .eq("id", id)
+        .from('sale_orders')
+        .update({ status: 'processing' })
+        .eq('id', id)
         .select()
         .single();
 
@@ -392,9 +370,9 @@ const SaleOrder = {
   async complete(id) {
     return executeQuery(async () => {
       const { data: order } = await supabase
-        .from("sale_orders")
-        .update({ status: "completed" })
-        .eq("id", id)
+        .from('sale_orders')
+        .update({ status: 'completed' })
+        .eq('id', id)
         .select()
         .single();
 
@@ -405,12 +383,12 @@ const SaleOrder = {
   /**
    * Update order status
    */
-  async updateStatus(id, status, userId) {
+  async updateStatus(id, status) {
     return executeQuery(async () => {
       const { data: order, error } = await supabase
-        .from("sale_orders")
+        .from('sale_orders')
         .update({ status })
-        .eq("id", id)
+        .eq('id', id)
         .select()
         .single();
 
@@ -427,48 +405,45 @@ const SaleOrder = {
     return executeQuery(async () => {
       // Get current order status
       const { data: currentOrder } = await supabase
-        .from("sale_orders")
-        .select("status")
-        .eq("id", id)
+        .from('sale_orders')
+        .select('status')
+        .eq('id', id)
         .single();
 
       // If order was processed, restore inventory
-      if (
-        currentOrder?.status === "processing" ||
-        currentOrder?.status === "completed"
-      ) {
+      if (currentOrder?.status === 'processing' || currentOrder?.status === 'completed') {
         const { data: items } = await supabase
-          .from("sale_order_items")
-          .select("*")
-          .eq("sale_order_id", id);
+          .from('sale_order_items')
+          .select('*')
+          .eq('sale_order_id', id);
 
         for (const item of items) {
           const { data: currentInv } = await supabase
-            .from("inventories")
-            .select("quantity")
-            .eq("fish_id", item.fish_id)
+            .from('inventories')
+            .select('quantity')
+            .eq('fish_id', item.fish_id)
             .single();
 
           const quantityBefore = currentInv?.quantity || 0;
           const quantityAfter = quantityBefore + parseFloat(item.quantity);
 
           await supabase
-            .from("inventories")
+            .from('inventories')
             .update({
               quantity: quantityAfter,
               last_updated: new Date().toISOString(),
             })
-            .eq("fish_id", item.fish_id);
+            .eq('fish_id', item.fish_id);
 
-          await supabase.from("inventory_logs").insert({
+          await supabase.from('inventory_logs').insert({
             fish_id: item.fish_id,
-            type: "adjustment",
+            type: 'adjustment',
             quantity_change: parseFloat(item.quantity),
             quantity_before: quantityBefore,
             quantity_after: quantityAfter,
-            reference_type: "sale_order_cancelled",
+            reference_type: 'sale_order_cancelled',
             reference_id: id,
-            note: "Order cancelled - inventory restored",
+            note: 'Order cancelled - inventory restored',
             created_by: userId,
           });
         }
@@ -476,9 +451,9 @@ const SaleOrder = {
 
       // Update order status
       const { data: order } = await supabase
-        .from("sale_orders")
-        .update({ status: "cancelled" })
-        .eq("id", id)
+        .from('sale_orders')
+        .update({ status: 'cancelled' })
+        .eq('id', id)
         .select()
         .single();
 
@@ -492,10 +467,7 @@ const SaleOrder = {
   async delete(id) {
     return executeQuery(async () => {
       // Items will be deleted via CASCADE
-      const { error } = await supabase
-        .from("sale_orders")
-        .delete()
-        .eq("id", id);
+      const { error } = await supabase.from('sale_orders').delete().eq('id', id);
 
       if (error) throw error;
 
@@ -508,16 +480,14 @@ const SaleOrder = {
    */
   async getStats(filters = {}) {
     return executeQuery(async () => {
-      let query = supabase
-        .from("sale_orders")
-        .select("status, total_amount, sale_type");
+      let query = supabase.from('sale_orders').select('status, total_amount, sale_type');
 
       if (filters.start_date) {
-        query = query.gte("order_date", filters.start_date);
+        query = query.gte('order_date', filters.start_date);
       }
 
       if (filters.end_date) {
-        query = query.lte("order_date", filters.end_date);
+        query = query.lte('order_date', filters.end_date);
       }
 
       const { data: orders } = await query;
@@ -535,11 +505,11 @@ const SaleOrder = {
 
       orders?.forEach((order) => {
         stats[order.status]++;
-        if (order.status === "completed") {
+        if (order.status === 'completed') {
           const amount = parseFloat(order.total_amount);
           stats.total_revenue += amount;
 
-          if (order.sale_type === "retail") {
+          if (order.sale_type === 'retail') {
             stats.retail_revenue += amount;
           } else {
             stats.wholesale_revenue += amount;

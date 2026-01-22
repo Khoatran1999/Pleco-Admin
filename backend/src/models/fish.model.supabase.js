@@ -3,14 +3,9 @@
  * Handles fish products CRUD operations
  */
 
-const supabase = require("../config/supabase");
-const {
-  executeQuery,
-  applyFilters,
-  applyPagination,
-  softDelete,
-} = require("../utils/supabase-query");
-const { sanitizeForLike } = require("../utils/security");
+const supabase = require('../config/supabase');
+const { executeQuery, applyPagination, softDelete } = require('../utils/supabase-query');
+const { sanitizeForLike } = require('../utils/security');
 
 const Fish = {
   /**
@@ -18,7 +13,7 @@ const Fish = {
    */
   async getAll(filters = {}) {
     return executeQuery(async () => {
-      let query = supabase.from("fishes").select(
+      let query = supabase.from('fishes').select(
         `
           *,
           fish_categories (
@@ -31,24 +26,24 @@ const Fish = {
             last_updated
           )
         `,
-        { count: "exact" },
+        { count: 'exact' },
       );
 
       // Apply active filter by default
       if (filters.is_active !== undefined) {
-        query = query.eq("is_active", filters.is_active);
+        query = query.eq('is_active', filters.is_active);
       } else {
-        query = query.eq("is_active", true);
+        query = query.eq('is_active', true);
       }
 
       // Apply category filter
       if (filters.category_id) {
-        query = query.eq("category_id", filters.category_id);
+        query = query.eq('category_id', filters.category_id);
       }
 
       // Apply size filter
       if (filters.size) {
-        query = query.eq("size", filters.size);
+        query = query.eq('size', filters.size);
       }
 
       // Apply search filter
@@ -66,8 +61,8 @@ const Fish = {
       }
 
       // Apply sorting
-      const sortBy = filters.sort_by || "name";
-      const sortOrder = filters.sort_order === "desc" ? false : true;
+      const sortBy = filters.sort_by || 'name';
+      const sortOrder = filters.sort_order === 'desc' ? false : true;
       query = query.order(sortBy, { ascending: sortOrder });
 
       // Apply pagination
@@ -83,12 +78,12 @@ const Fish = {
       if (result.data) {
         result.data = result.data.map((fish) => {
           const quantity = fish.inventories?.quantity || 0;
-          let status = "Out of Stock";
+          let status = 'Out of Stock';
 
           if (quantity > 0 && quantity <= fish.min_stock) {
-            status = "Low Stock";
+            status = 'Low Stock';
           } else if (quantity > fish.min_stock) {
-            status = "In Stock";
+            status = 'In Stock';
           }
 
           return {
@@ -101,9 +96,7 @@ const Fish = {
 
         // Apply status filter if provided
         if (filters.status) {
-          result.data = result.data.filter(
-            (fish) => fish.status === filters.status,
-          );
+          result.data = result.data.filter((fish) => fish.status === filters.status);
         }
       }
 
@@ -116,25 +109,23 @@ const Fish = {
    */
   async count(filters = {}) {
     return executeQuery(async () => {
-      let query = supabase
-        .from("fishes")
-        .select("*", { count: "exact", head: true });
+      let query = supabase.from('fishes').select('*', { count: 'exact', head: true });
 
       // Apply active filter by default
       if (filters.is_active !== undefined) {
-        query = query.eq("is_active", filters.is_active);
+        query = query.eq('is_active', filters.is_active);
       } else {
-        query = query.eq("is_active", true);
+        query = query.eq('is_active', true);
       }
 
       // Apply category filter
       if (filters.category_id) {
-        query = query.eq("category_id", filters.category_id);
+        query = query.eq('category_id', filters.category_id);
       }
 
       // Apply size filter
       if (filters.size) {
-        query = query.eq("size", filters.size);
+        query = query.eq('size', filters.size);
       }
 
       // Apply search filter
@@ -159,7 +150,7 @@ const Fish = {
   async findById(id) {
     return executeQuery(async () => {
       const result = await supabase
-        .from("fishes")
+        .from('fishes')
         .select(
           `
           *,
@@ -174,17 +165,17 @@ const Fish = {
           )
         `,
         )
-        .eq("id", id)
+        .eq('id', id)
         .single();
 
       if (result.data) {
         const quantity = result.data.inventories?.quantity || 0;
-        let status = "Out of Stock";
+        let status = 'Out of Stock';
 
         if (quantity > 0 && quantity <= result.data.min_stock) {
-          status = "Low Stock";
+          status = 'Low Stock';
         } else if (quantity > result.data.min_stock) {
-          status = "In Stock";
+          status = 'In Stock';
         }
 
         result.data = {
@@ -205,7 +196,7 @@ const Fish = {
   async findBySku(sku) {
     return executeQuery(async () => {
       const result = await supabase
-        .from("fishes")
+        .from('fishes')
         .select(
           `
           *,
@@ -220,7 +211,7 @@ const Fish = {
           )
         `,
         )
-        .eq("sku", sku)
+        .eq('sku', sku)
         .single();
 
       return result;
@@ -251,7 +242,7 @@ const Fish = {
       // Start transaction-like operation
       // 1. Create fish
       const { data: fish, error: fishError } = await supabase
-        .from("fishes")
+        .from('fishes')
         .insert({
           sku,
           name,
@@ -262,7 +253,7 @@ const Fish = {
           retail_price: parseFloat(retail_price) || 0,
           wholesale_price: parseFloat(wholesale_price) || 0,
           cost_price: parseFloat(cost_price) || 0,
-          unit: unit || "pieces",
+          unit: unit || 'pieces',
           image,
           min_stock: parseInt(min_stock) || 10,
           is_active: true,
@@ -274,7 +265,7 @@ const Fish = {
 
       // 2. Create inventory record if stock provided
       if (stock !== undefined && stock > 0) {
-        const { error: invError } = await supabase.from("inventories").insert({
+        const { error: invError } = await supabase.from('inventories').insert({
           fish_id: fish.id,
           quantity: parseFloat(stock) || 0,
         });
@@ -282,13 +273,13 @@ const Fish = {
         if (invError) throw invError;
 
         // 3. Create inventory log
-        await supabase.from("inventory_logs").insert({
+        await supabase.from('inventory_logs').insert({
           fish_id: fish.id,
-          type: "adjustment",
+          type: 'adjustment',
           quantity_change: parseFloat(stock) || 0,
           quantity_before: 0,
           quantity_after: parseFloat(stock) || 0,
-          note: "Initial stock",
+          note: 'Initial stock',
           created_by: userId,
         });
       }
@@ -318,17 +309,13 @@ const Fish = {
 
     const updateData = {};
     if (name !== undefined) updateData.name = name;
-    if (scientific_name !== undefined)
-      updateData.scientific_name = scientific_name;
+    if (scientific_name !== undefined) updateData.scientific_name = scientific_name;
     if (category_id !== undefined) updateData.category_id = category_id;
     if (size !== undefined) updateData.size = size;
     if (description !== undefined) updateData.description = description;
-    if (retail_price !== undefined)
-      updateData.retail_price = parseFloat(retail_price);
-    if (wholesale_price !== undefined)
-      updateData.wholesale_price = parseFloat(wholesale_price);
-    if (cost_price !== undefined)
-      updateData.cost_price = parseFloat(cost_price);
+    if (retail_price !== undefined) updateData.retail_price = parseFloat(retail_price);
+    if (wholesale_price !== undefined) updateData.wholesale_price = parseFloat(wholesale_price);
+    if (cost_price !== undefined) updateData.cost_price = parseFloat(cost_price);
     if (unit !== undefined) updateData.unit = unit;
     if (image !== undefined) updateData.image = image;
     if (min_stock !== undefined) updateData.min_stock = parseInt(min_stock);
@@ -336,9 +323,9 @@ const Fish = {
 
     return executeQuery(async () => {
       const result = await supabase
-        .from("fishes")
+        .from('fishes')
         .update(updateData)
-        .eq("id", id)
+        .eq('id', id)
         .select()
         .single();
 
@@ -350,7 +337,7 @@ const Fish = {
    * Delete fish (soft delete)
    */
   async delete(id) {
-    return softDelete(supabase, "fishes", id);
+    return softDelete(supabase, 'fishes', id);
   },
 
   /**
@@ -360,19 +347,17 @@ const Fish = {
     const fileName = `fish-${fishId}-${Date.now()}${file.originalname}`;
 
     // Upload to Supabase Storage
-    const { data, error } = await supabase.storage
-      .from("fish-images")
-      .upload(fileName, file.buffer, {
-        contentType: file.mimetype,
-        upsert: true,
-      });
+    const { error } = await supabase.storage.from('fish-images').upload(fileName, file.buffer, {
+      contentType: file.mimetype,
+      upsert: true,
+    });
 
     if (error) throw error;
 
     // Get public URL
     const {
       data: { publicUrl },
-    } = supabase.storage.from("fish-images").getPublicUrl(fileName);
+    } = supabase.storage.from('fish-images').getPublicUrl(fileName);
 
     // Update fish record
     await this.update(fishId, { image: publicUrl });
@@ -386,7 +371,7 @@ const Fish = {
   async getLowStock() {
     return executeQuery(async () => {
       const { data: fishes } = await supabase
-        .from("fishes")
+        .from('fishes')
         .select(
           `
           *,
@@ -394,7 +379,7 @@ const Fish = {
           inventories (quantity)
         `,
         )
-        .eq("is_active", true);
+        .eq('is_active', true);
 
       // Filter where quantity <= min_stock and quantity > 0
       const lowStockFishes =
@@ -413,7 +398,7 @@ const Fish = {
   async getOutOfStock() {
     return executeQuery(async () => {
       const { data: fishes } = await supabase
-        .from("fishes")
+        .from('fishes')
         .select(
           `
           *,
@@ -421,7 +406,7 @@ const Fish = {
           inventories (quantity)
         `,
         )
-        .eq("is_active", true);
+        .eq('is_active', true);
 
       // Filter where quantity = 0
       const outOfStockFishes =

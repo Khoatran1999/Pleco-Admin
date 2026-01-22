@@ -41,7 +41,7 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SER
 // Test connection on initialization
 async function testConnection() {
   try {
-    const { data, error } = await supabase.from('roles').select('count').limit(1);
+    const { error } = await supabase.from('roles').select('count').limit(1);
 
     if (error) throw error;
     console.log('✅ Supabase connection successful');

@@ -177,7 +177,7 @@ async function optionalAuth(req, res, next) {
     }
 
     next();
-  } catch (error) {
+  } catch {
     // Silently fail for optional auth
     next();
   }

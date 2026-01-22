@@ -3,14 +3,9 @@
  * Handles supplier CRUD operations
  */
 
-const supabase = require("../config/supabase");
-const {
-  executeQuery,
-  applyFilters,
-  applyPagination,
-  softDelete,
-} = require("../utils/supabase-query");
-const { sanitizeForLike } = require("../utils/security");
+const supabase = require('../config/supabase');
+const { executeQuery, applyPagination, softDelete } = require('../utils/supabase-query');
+const { sanitizeForLike } = require('../utils/security');
 
 const Supplier = {
   /**
@@ -18,25 +13,23 @@ const Supplier = {
    */
   async getAll(filters = {}) {
     return executeQuery(async () => {
-      let query = supabase.from("suppliers").select("*", { count: "exact" });
+      let query = supabase.from('suppliers').select('*', { count: 'exact' });
 
       // Apply active filter by default
       if (filters.is_active !== undefined) {
-        query = query.eq("is_active", filters.is_active);
+        query = query.eq('is_active', filters.is_active);
       } else {
-        query = query.eq("is_active", true);
+        query = query.eq('is_active', true);
       }
 
       // Apply search filter
       if (filters.search) {
         const s = sanitizeForLike(filters.search);
-        query = query.or(
-          `name.ilike.%${s}%,contact_person.ilike.%${s}%,email.ilike.%${s}%`,
-        );
+        query = query.or(`name.ilike.%${s}%,contact_person.ilike.%${s}%,email.ilike.%${s}%`);
       }
 
       // Apply sorting
-      query = query.order("name", { ascending: true });
+      query = query.order('name', { ascending: true });
 
       // Apply pagination if provided
       if (filters.page && filters.limit) {
@@ -52,11 +45,7 @@ const Supplier = {
    */
   async findById(id) {
     return executeQuery(async () => {
-      const result = await supabase
-        .from("suppliers")
-        .select("*")
-        .eq("id", id)
-        .single();
+      const result = await supabase.from('suppliers').select('*').eq('id', id).single();
 
       return result;
     });
@@ -66,12 +55,11 @@ const Supplier = {
    * Create new supplier
    */
   async create(supplierData) {
-    const { name, contact_person, email, phone, address, avatar } =
-      supplierData;
+    const { name, contact_person, email, phone, address, avatar } = supplierData;
 
     return executeQuery(async () => {
       const result = await supabase
-        .from("suppliers")
+        .from('suppliers')
         .insert({
           name,
           contact_person,
@@ -92,13 +80,11 @@ const Supplier = {
    * Update supplier
    */
   async update(id, supplierData) {
-    const { name, contact_person, email, phone, address, avatar, is_active } =
-      supplierData;
+    const { name, contact_person, email, phone, address, avatar, is_active } = supplierData;
 
     const updateData = {};
     if (name !== undefined) updateData.name = name;
-    if (contact_person !== undefined)
-      updateData.contact_person = contact_person;
+    if (contact_person !== undefined) updateData.contact_person = contact_person;
     if (email !== undefined) updateData.email = email;
     if (phone !== undefined) updateData.phone = phone;
     if (address !== undefined) updateData.address = address;
@@ -107,9 +93,9 @@ const Supplier = {
 
     return executeQuery(async () => {
       const result = await supabase
-        .from("suppliers")
+        .from('suppliers')
         .update(updateData)
-        .eq("id", id)
+        .eq('id', id)
         .select()
         .single();
 
@@ -121,7 +107,7 @@ const Supplier = {
    * Delete supplier (soft delete)
    */
   async delete(id) {
-    return softDelete(supabase, "suppliers", id);
+    return softDelete(supabase, 'suppliers', id);
   },
 
   /**
@@ -131,19 +117,17 @@ const Supplier = {
     const fileName = `supplier-${supplierId}-${Date.now()}${file.originalname}`;
 
     // Upload to Supabase Storage
-    const { data, error } = await supabase.storage
-      .from("suppliers")
-      .upload(fileName, file.buffer, {
-        contentType: file.mimetype,
-        upsert: true,
-      });
+    const { error } = await supabase.storage.from('suppliers').upload(fileName, file.buffer, {
+      contentType: file.mimetype,
+      upsert: true,
+    });
 
     if (error) throw error;
 
     // Get public URL
     const {
       data: { publicUrl },
-    } = supabase.storage.from("suppliers").getPublicUrl(fileName);
+    } = supabase.storage.from('suppliers').getPublicUrl(fileName);
 
     // Update supplier record
     await this.update(supplierId, { avatar: publicUrl });
@@ -158,29 +142,26 @@ const Supplier = {
     return executeQuery(async () => {
       // Get total import orders
       const { count: totalOrders } = await supabase
-        .from("import_orders")
-        .select("*", { count: "exact", head: true })
-        .eq("supplier_id", supplierId);
+        .from('import_orders')
+        .select('*', { count: 'exact', head: true })
+        .eq('supplier_id', supplierId);
 
       // Get total amount
       const { data: orders } = await supabase
-        .from("import_orders")
-        .select("total_amount")
-        .eq("supplier_id", supplierId)
-        .eq("status", "delivered");
+        .from('import_orders')
+        .select('total_amount')
+        .eq('supplier_id', supplierId)
+        .eq('status', 'delivered');
 
       const totalAmount =
-        orders?.reduce(
-          (sum, order) => sum + parseFloat(order.total_amount),
-          0,
-        ) || 0;
+        orders?.reduce((sum, order) => sum + parseFloat(order.total_amount), 0) || 0;
 
       // Get pending orders
       const { count: pendingOrders } = await supabase
-        .from("import_orders")
-        .select("*", { count: "exact", head: true })
-        .eq("supplier_id", supplierId)
-        .eq("status", "pending");
+        .from('import_orders')
+        .select('*', { count: 'exact', head: true })
+        .eq('supplier_id', supplierId)
+        .eq('status', 'pending');
 
       return {
         data: {

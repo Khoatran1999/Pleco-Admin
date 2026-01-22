@@ -3,8 +3,8 @@
  * Handles analytics and reporting
  */
 
-const supabase = require("../config/supabase");
-const { executeQuery } = require("../utils/supabase-query");
+const supabase = require('../config/supabase');
+const { executeQuery } = require('../utils/supabase-query');
 
 const Report = {
   /**
@@ -12,7 +12,7 @@ const Report = {
    */
   async getDashboardSummary(filters = {}) {
     return executeQuery(async () => {
-      const today = new Date().toISOString().split("T")[0];
+      const today = new Date().toISOString().split('T')[0];
       const startOfMonth = new Date(
         new Date().getFullYear(),
         new Date().getMonth(),
@@ -21,34 +21,33 @@ const Report = {
 
       // Total revenue (completed sales)
       let revenueQuery = supabase
-        .from("sale_orders")
-        .select("total_amount")
-        .eq("status", "completed");
+        .from('sale_orders')
+        .select('total_amount')
+        .eq('status', 'completed');
 
       if (filters.start_date) {
-        revenueQuery = revenueQuery.gte("order_date", filters.start_date);
+        revenueQuery = revenueQuery.gte('order_date', filters.start_date);
       } else {
-        revenueQuery = revenueQuery.gte("order_date", startOfMonth);
+        revenueQuery = revenueQuery.gte('order_date', startOfMonth);
       }
 
       if (filters.end_date) {
-        revenueQuery = revenueQuery.lte("order_date", filters.end_date);
+        revenueQuery = revenueQuery.lte('order_date', filters.end_date);
       }
 
       const { data: sales } = await revenueQuery;
       const totalRevenue =
-        sales?.reduce((sum, sale) => sum + parseFloat(sale.total_amount), 0) ||
-        0;
+        sales?.reduce((sum, sale) => sum + parseFloat(sale.total_amount), 0) || 0;
 
       // Total orders
       const { count: totalOrders } = await supabase
-        .from("sale_orders")
-        .select("*", { count: "exact", head: true })
-        .gte("order_date", filters.start_date || startOfMonth)
-        .lte("order_date", filters.end_date || new Date().toISOString());
+        .from('sale_orders')
+        .select('*', { count: 'exact', head: true })
+        .gte('order_date', filters.start_date || startOfMonth)
+        .lte('order_date', filters.end_date || new Date().toISOString());
 
       // Low stock count
-      const { data: inventories } = await supabase.from("inventories").select(`
+      const { data: inventories } = await supabase.from('inventories').select(`
           quantity,
           fishes (min_stock)
         `);
@@ -62,22 +61,19 @@ const Report = {
 
       // Pending orders
       const { count: pendingOrders } = await supabase
-        .from("sale_orders")
-        .select("*", { count: "exact", head: true })
-        .in("status", ["pending", "processing"]);
+        .from('sale_orders')
+        .select('*', { count: 'exact', head: true })
+        .in('status', ['pending', 'processing']);
 
       // Today's sales
       const { data: todaySales } = await supabase
-        .from("sale_orders")
-        .select("total_amount")
-        .eq("status", "completed")
-        .gte("order_date", today);
+        .from('sale_orders')
+        .select('total_amount')
+        .eq('status', 'completed')
+        .gte('order_date', today);
 
       const todayRevenue =
-        todaySales?.reduce(
-          (sum, sale) => sum + parseFloat(sale.total_amount),
-          0,
-        ) || 0;
+        todaySales?.reduce((sum, sale) => sum + parseFloat(sale.total_amount), 0) || 0;
 
       return {
         data: {
@@ -96,7 +92,7 @@ const Report = {
    */
   async getSalesReport(filters = {}) {
     return executeQuery(async () => {
-      let query = supabase.from("sale_orders").select(`
+      let query = supabase.from('sale_orders').select(`
           id,
           order_number,
           order_date,
@@ -110,22 +106,22 @@ const Report = {
         `);
 
       if (filters.start_date) {
-        query = query.gte("order_date", filters.start_date);
+        query = query.gte('order_date', filters.start_date);
       }
 
       if (filters.end_date) {
-        query = query.lte("order_date", filters.end_date);
+        query = query.lte('order_date', filters.end_date);
       }
 
       if (filters.status) {
-        query = query.eq("status", filters.status);
+        query = query.eq('status', filters.status);
       }
 
       if (filters.sale_type) {
-        query = query.eq("sale_type", filters.sale_type);
+        query = query.eq('sale_type', filters.sale_type);
       }
 
-      query = query.order("order_date", { ascending: false });
+      query = query.order('order_date', { ascending: false });
 
       const { data: orders } = await query;
 
@@ -141,11 +137,11 @@ const Report = {
       };
 
       orders?.forEach((order) => {
-        if (order.status === "completed") {
+        if (order.status === 'completed') {
           summary.total_revenue += parseFloat(order.total_amount);
           summary.total_discount += parseFloat(order.discount_amount);
 
-          if (order.sale_type === "retail") {
+          if (order.sale_type === 'retail') {
             summary.retail_orders++;
             summary.retail_revenue += parseFloat(order.total_amount);
           } else {
@@ -169,7 +165,7 @@ const Report = {
    */
   async getInventoryReport(filters = {}) {
     return executeQuery(async () => {
-      let query = supabase.from("inventories").select(`
+      let query = supabase.from('inventories').select(`
           *,
           fishes (
             id,
@@ -192,11 +188,11 @@ const Report = {
           const qty = inv.quantity || 0;
           const minStock = fish?.min_stock || 10;
 
-          let status = "Out of Stock";
+          let status = 'Out of Stock';
           if (qty > 0 && qty <= minStock) {
-            status = "Low Stock";
+            status = 'Low Stock';
           } else if (qty > minStock) {
-            status = "In Stock";
+            status = 'In Stock';
           }
 
           const stockValue = qty * (parseFloat(fish?.retail_price) || 0);
@@ -225,19 +221,16 @@ const Report = {
         total_items: report.reduce((sum, item) => sum + item.quantity, 0),
         total_value: report.reduce((sum, item) => sum + item.stock_value, 0),
         total_cost: report.reduce((sum, item) => sum + item.stock_cost, 0),
-        in_stock: report.filter((item) => item.status === "In Stock").length,
-        low_stock: report.filter((item) => item.status === "Low Stock").length,
-        out_of_stock: report.filter((item) => item.status === "Out of Stock")
-          .length,
+        in_stock: report.filter((item) => item.status === 'In Stock').length,
+        low_stock: report.filter((item) => item.status === 'Low Stock').length,
+        out_of_stock: report.filter((item) => item.status === 'Out of Stock').length,
         total_products: report.length,
       };
 
       // Apply status filter
       let filteredReport = report;
       if (filters.status) {
-        filteredReport = report.filter(
-          (item) => item.status === filters.status,
-        );
+        filteredReport = report.filter((item) => item.status === filters.status);
       }
 
       return {
@@ -256,21 +249,18 @@ const Report = {
     return executeQuery(async () => {
       const limit = filters.limit || 10;
 
-      let dateFilter = "";
-      if (filters.start_date && filters.end_date) {
-        dateFilter = `AND so.order_date >= '${filters.start_date}' AND so.order_date <= '${filters.end_date}'`;
-      }
+      // dateFilter not used; rely on RPC params or fallback below
 
       // Use raw SQL for complex aggregation
-      const { data, error } = await supabase.rpc("get_top_selling_products", {
-        date_from: filters.start_date || "1900-01-01",
-        date_to: filters.end_date || "2100-12-31",
+      const { data, error } = await supabase.rpc('get_top_selling_products', {
+        date_from: filters.start_date || '1900-01-01',
+        date_to: filters.end_date || '2100-12-31',
         result_limit: limit,
       });
 
       if (error) {
         // Fallback: manual aggregation
-        const { data: items } = await supabase.from("sale_order_items").select(`
+        const { data: items } = await supabase.from('sale_order_items').select(`
             fish_id,
             quantity,
             total_price,
@@ -289,18 +279,10 @@ const Report = {
         // Group by fish_id
         const grouped = {};
         items?.forEach((item) => {
-          if (item.sale_orders.status !== "completed") return;
+          if (item.sale_orders.status !== 'completed') return;
 
-          if (
-            filters.start_date &&
-            item.sale_orders.order_date < filters.start_date
-          )
-            return;
-          if (
-            filters.end_date &&
-            item.sale_orders.order_date > filters.end_date
-          )
-            return;
+          if (filters.start_date && item.sale_orders.order_date < filters.start_date) return;
+          if (filters.end_date && item.sale_orders.order_date > filters.end_date) return;
 
           if (!grouped[item.fish_id]) {
             grouped[item.fish_id] = {
@@ -337,22 +319,20 @@ const Report = {
    */
   async getRevenueByPeriod(filters = {}) {
     return executeQuery(async () => {
-      const period = filters.period || "daily"; // daily, monthly
+      const period = filters.period || 'daily'; // daily, monthly
 
-      let query = supabase
-        .from("sale_orders")
-        .select("order_date, total_amount, status");
+      let query = supabase.from('sale_orders').select('order_date, total_amount, status');
 
       if (filters.start_date) {
-        query = query.gte("order_date", filters.start_date);
+        query = query.gte('order_date', filters.start_date);
       }
 
       if (filters.end_date) {
-        query = query.lte("order_date", filters.end_date);
+        query = query.lte('order_date', filters.end_date);
       }
 
-      query = query.eq("status", "completed");
-      query = query.order("order_date");
+      query = query.eq('status', 'completed');
+      query = query.order('order_date');
 
       const { data: orders } = await query;
 
@@ -363,10 +343,10 @@ const Report = {
         let key;
         const date = new Date(order.order_date);
 
-        if (period === "monthly") {
-          key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+        if (period === 'monthly') {
+          key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
         } else {
-          key = order.order_date.split("T")[0];
+          key = order.order_date.split('T')[0];
         }
 
         if (!grouped[key]) {
@@ -381,9 +361,7 @@ const Report = {
         grouped[key].orders++;
       });
 
-      const data = Object.values(grouped).sort((a, b) =>
-        a.period.localeCompare(b.period),
-      );
+      const data = Object.values(grouped).sort((a, b) => a.period.localeCompare(b.period));
 
       return { data };
     });
@@ -392,10 +370,10 @@ const Report = {
   /**
    * Get customer analytics
    */
-  async getCustomerAnalytics(filters = {}) {
+  async getCustomerAnalytics() {
     return executeQuery(async () => {
       let query = supabase
-        .from("customers")
+        .from('customers')
         .select(
           `
           id,
@@ -405,7 +383,7 @@ const Report = {
           email
         `,
         )
-        .eq("is_active", true);
+        .eq('is_active', true);
 
       const { data: customers } = await query;
 
@@ -413,30 +391,27 @@ const Report = {
       const customerData = await Promise.all(
         customers?.map(async (customer) => {
           const { data: orders } = await supabase
-            .from("sale_orders")
-            .select("total_amount, status")
-            .eq("customer_id", customer.id);
+            .from('sale_orders')
+            .select('total_amount, status')
+            .eq('customer_id', customer.id);
 
           const totalOrders = orders?.length || 0;
           const totalRevenue =
             orders
-              ?.filter((o) => o.status === "completed")
+              ?.filter((o) => o.status === 'completed')
               .reduce((sum, o) => sum + parseFloat(o.total_amount), 0) || 0;
 
           return {
             ...customer,
             total_orders: totalOrders,
             total_revenue: totalRevenue,
-            average_order_value:
-              totalOrders > 0 ? totalRevenue / totalOrders : 0,
+            average_order_value: totalOrders > 0 ? totalRevenue / totalOrders : 0,
           };
         }) || [],
       );
 
       // Sort by revenue
-      const sorted = customerData.sort(
-        (a, b) => b.total_revenue - a.total_revenue,
-      );
+      const sorted = customerData.sort((a, b) => b.total_revenue - a.total_revenue);
 
       return { data: sorted };
     });
@@ -447,7 +422,7 @@ const Report = {
    */
   async getInventoryValue() {
     return executeQuery(async () => {
-      const { data: inventories } = await supabase.from("inventories").select(`
+      const { data: inventories } = await supabase.from('inventories').select(`
           quantity,
           fishes (
             retail_price,
@@ -464,7 +439,7 @@ const Report = {
         const qty = inv.quantity || 0;
         const retailPrice = parseFloat(inv.fishes?.retail_price) || 0;
         const costPrice = parseFloat(inv.fishes?.cost_price) || 0;
-        const category = inv.fishes?.fish_categories?.name || "Uncategorized";
+        const category = inv.fishes?.fish_categories?.name || 'Uncategorized';
 
         totalRetailValue += qty * retailPrice;
         totalCostValue += qty * costPrice;
@@ -499,7 +474,7 @@ const Report = {
     return executeQuery(async () => {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
-      const todayStr = today.toISOString().split("T")[0];
+      const todayStr = today.toISOString().split('T')[0];
 
       // Rolling 7-day windows for better UX
       const sevenDaysAgo = new Date(today);
@@ -509,61 +484,52 @@ const Report = {
 
       // Last 7 days revenue (including today)
       const { data: last7DaysSales } = await supabase
-        .from("sale_orders")
-        .select("total_amount")
-        .eq("status", "completed")
-        .gte("order_date", sevenDaysAgo.toISOString().split("T")[0])
-        .lte("order_date", todayStr);
+        .from('sale_orders')
+        .select('total_amount')
+        .eq('status', 'completed')
+        .gte('order_date', sevenDaysAgo.toISOString().split('T')[0])
+        .lte('order_date', todayStr);
 
       const this_week_revenue =
-        last7DaysSales?.reduce(
-          (sum, sale) => sum + parseFloat(sale.total_amount),
-          0,
-        ) || 0;
+        last7DaysSales?.reduce((sum, sale) => sum + parseFloat(sale.total_amount), 0) || 0;
 
       // Previous 7 days revenue (8-14 days ago)
       const { data: prev7DaysSales } = await supabase
-        .from("sale_orders")
-        .select("total_amount")
-        .eq("status", "completed")
-        .gte("order_date", fourteenDaysAgo.toISOString().split("T")[0])
-        .lt("order_date", sevenDaysAgo.toISOString().split("T")[0]);
+        .from('sale_orders')
+        .select('total_amount')
+        .eq('status', 'completed')
+        .gte('order_date', fourteenDaysAgo.toISOString().split('T')[0])
+        .lt('order_date', sevenDaysAgo.toISOString().split('T')[0]);
 
       const last_week_revenue =
-        prev7DaysSales?.reduce(
-          (sum, sale) => sum + parseFloat(sale.total_amount),
-          0,
-        ) || 0;
+        prev7DaysSales?.reduce((sum, sale) => sum + parseFloat(sale.total_amount), 0) || 0;
 
       // Total inventory
       const { data: inventories } = await supabase
-        .from("inventories")
-        .select("quantity, fishes!inner(is_active)")
-        .eq("fishes.is_active", true);
+        .from('inventories')
+        .select('quantity, fishes!inner(is_active)')
+        .eq('fishes.is_active', true);
 
-      const total_inventory =
-        inventories?.reduce((sum, inv) => sum + (inv.quantity || 0), 0) || 0;
+      const total_inventory = inventories?.reduce((sum, inv) => sum + (inv.quantity || 0), 0) || 0;
 
       // Today's imports
       const { data: todayImports } = await supabase
-        .from("import_order_items")
-        .select("quantity, import_orders!inner(delivery_date, status)")
-        .eq("import_orders.status", "delivered")
-        .gte("import_orders.delivery_date", todayStr);
+        .from('import_order_items')
+        .select('quantity, import_orders!inner(delivery_date, status)')
+        .eq('import_orders.status', 'delivered')
+        .gte('import_orders.delivery_date', todayStr);
 
-      const today_imports =
-        todayImports?.reduce((sum, item) => sum + (item.quantity || 0), 0) || 0;
+      const today_imports = todayImports?.reduce((sum, item) => sum + (item.quantity || 0), 0) || 0;
 
       // Last 7 days orders
       const { data: last7DaysOrders, count: total_orders } = await supabase
-        .from("sale_orders")
-        .select("status", { count: "exact" })
-        .gte("order_date", sevenDaysAgo.toISOString().split("T")[0])
-        .lte("order_date", todayStr);
+        .from('sale_orders')
+        .select('status', { count: 'exact' })
+        .gte('order_date', sevenDaysAgo.toISOString().split('T')[0])
+        .lte('order_date', todayStr);
 
       const pending_orders =
-        last7DaysOrders?.filter((order) => order.status === "pending").length ||
-        0;
+        last7DaysOrders?.filter((order) => order.status === 'pending').length || 0;
 
       return {
         data: {
@@ -593,7 +559,7 @@ const Report = {
       for (let i = 6; i >= 0; i--) {
         const date = new Date();
         date.setDate(date.getDate() - i);
-        days.push(date.toISOString().split("T")[0]);
+        days.push(date.toISOString().split('T')[0]);
       }
 
       const revenueData = await Promise.all(
@@ -602,22 +568,18 @@ const Report = {
           nextDay.setDate(nextDay.getDate() + 1);
 
           const { data: sales } = await supabase
-            .from("sale_orders")
-            .select("total_amount")
-            .eq("status", "completed")
-            .gte("order_date", date)
-            .lt("order_date", nextDay.toISOString().split("T")[0]);
+            .from('sale_orders')
+            .select('total_amount')
+            .eq('status', 'completed')
+            .gte('order_date', date)
+            .lt('order_date', nextDay.toISOString().split('T')[0]);
 
-          const revenue =
-            sales?.reduce(
-              (sum, sale) => sum + parseFloat(sale.total_amount),
-              0,
-            ) || 0;
+          const revenue = sales?.reduce((sum, sale) => sum + parseFloat(sale.total_amount), 0) || 0;
 
           return {
             date,
-            day: new Date(date).toLocaleDateString("en-US", {
-              weekday: "short",
+            day: new Date(date).toLocaleDateString('en-US', {
+              weekday: 'short',
             }),
             revenue,
           };
@@ -635,7 +597,7 @@ const Report = {
     return executeQuery(async () => {
       // Get all sale order items with fish and category info
       const { data: items } = await supabase
-        .from("sale_order_items")
+        .from('sale_order_items')
         .select(
           `
           quantity,
@@ -647,13 +609,13 @@ const Report = {
           )
         `,
         )
-        .eq("sale_orders.status", "completed");
+        .eq('sale_orders.status', 'completed');
 
       // Group by category
       const categoryStats = {};
 
       items?.forEach((item) => {
-        const categoryName = item.fishes?.fish_categories?.name || "Other";
+        const categoryName = item.fishes?.fish_categories?.name || 'Other';
 
         if (!categoryStats[categoryName]) {
           categoryStats[categoryName] = {
@@ -699,81 +661,69 @@ const Report = {
 
       // Current period stats
       const { data: currentOrders } = await supabase
-        .from("sale_orders")
-        .select("total_amount, status")
-        .gte("order_date", startDate)
-        .lte("order_date", endDate);
+        .from('sale_orders')
+        .select('total_amount, status')
+        .gte('order_date', startDate)
+        .lte('order_date', endDate);
 
       const { data: currentItems } = await supabase
-        .from("sale_order_items")
+        .from('sale_order_items')
         .select(
           `
           quantity,
           sale_orders!inner(order_date, status)
         `,
         )
-        .gte("sale_orders.order_date", startDate)
-        .lte("sale_orders.order_date", endDate)
-        .eq("sale_orders.status", "completed");
+        .gte('sale_orders.order_date', startDate)
+        .lte('sale_orders.order_date', endDate)
+        .eq('sale_orders.status', 'completed');
 
       // Previous period stats
       const { data: prevOrders } = await supabase
-        .from("sale_orders")
-        .select("total_amount, status")
-        .gte("order_date", prevStart.toISOString().split("T")[0])
-        .lte("order_date", prevEnd.toISOString().split("T")[0]);
+        .from('sale_orders')
+        .select('total_amount, status')
+        .gte('order_date', prevStart.toISOString().split('T')[0])
+        .lte('order_date', prevEnd.toISOString().split('T')[0]);
 
       const { data: prevItems } = await supabase
-        .from("sale_order_items")
+        .from('sale_order_items')
         .select(
           `
           quantity,
           sale_orders!inner(order_date, status)
         `,
         )
-        .gte("sale_orders.order_date", prevStart.toISOString().split("T")[0])
-        .lte("sale_orders.order_date", prevEnd.toISOString().split("T")[0])
-        .eq("sale_orders.status", "completed");
+        .gte('sale_orders.order_date', prevStart.toISOString().split('T')[0])
+        .lte('sale_orders.order_date', prevEnd.toISOString().split('T')[0])
+        .eq('sale_orders.status', 'completed');
 
       // Calculate current metrics
       const currentRevenue =
         currentOrders
-          ?.filter((o) => o.status === "completed")
+          ?.filter((o) => o.status === 'completed')
           .reduce((sum, o) => sum + parseFloat(o.total_amount), 0) || 0;
       const currentOrderCount = currentOrders?.length || 0;
-      const currentQuantity =
-        currentItems?.reduce((sum, i) => sum + (i.quantity || 0), 0) || 0;
-      const currentAvgOrder =
-        currentOrderCount > 0 ? currentRevenue / currentOrderCount : 0;
+      const currentQuantity = currentItems?.reduce((sum, i) => sum + (i.quantity || 0), 0) || 0;
+      const currentAvgOrder = currentOrderCount > 0 ? currentRevenue / currentOrderCount : 0;
 
       // Calculate previous metrics
       const prevRevenue =
         prevOrders
-          ?.filter((o) => o.status === "completed")
+          ?.filter((o) => o.status === 'completed')
           .reduce((sum, o) => sum + parseFloat(o.total_amount), 0) || 0;
       const prevOrderCount = prevOrders?.length || 0;
-      const prevQuantity =
-        prevItems?.reduce((sum, i) => sum + (i.quantity || 0), 0) || 0;
-      const prevAvgOrder =
-        prevOrderCount > 0 ? prevRevenue / prevOrderCount : 0;
+      const prevQuantity = prevItems?.reduce((sum, i) => sum + (i.quantity || 0), 0) || 0;
+      const prevAvgOrder = prevOrderCount > 0 ? prevRevenue / prevOrderCount : 0;
 
       // Calculate percentage changes
       const revenueChange =
-        prevRevenue > 0
-          ? ((currentRevenue - prevRevenue) / prevRevenue) * 100
-          : 0;
+        prevRevenue > 0 ? ((currentRevenue - prevRevenue) / prevRevenue) * 100 : 0;
       const ordersChange =
-        prevOrderCount > 0
-          ? ((currentOrderCount - prevOrderCount) / prevOrderCount) * 100
-          : 0;
+        prevOrderCount > 0 ? ((currentOrderCount - prevOrderCount) / prevOrderCount) * 100 : 0;
       const quantityChange =
-        prevQuantity > 0
-          ? ((currentQuantity - prevQuantity) / prevQuantity) * 100
-          : 0;
+        prevQuantity > 0 ? ((currentQuantity - prevQuantity) / prevQuantity) * 100 : 0;
       const avgOrderChange =
-        prevAvgOrder > 0
-          ? ((currentAvgOrder - prevAvgOrder) / prevAvgOrder) * 100
-          : 0;
+        prevAvgOrder > 0 ? ((currentAvgOrder - prevAvgOrder) / prevAvgOrder) * 100 : 0;
 
       return {
         data: {
@@ -798,17 +748,17 @@ const Report = {
   async getRevenueByDate(startDate, endDate) {
     return executeQuery(async () => {
       const { data: orders } = await supabase
-        .from("sale_orders")
-        .select("order_date, total_amount")
-        .eq("status", "completed")
-        .gte("order_date", startDate)
-        .lte("order_date", endDate)
-        .order("order_date");
+        .from('sale_orders')
+        .select('order_date, total_amount')
+        .eq('status', 'completed')
+        .gte('order_date', startDate)
+        .lte('order_date', endDate)
+        .order('order_date');
 
       // Group by date
       const grouped = {};
       orders?.forEach((order) => {
-        const date = order.order_date.split("T")[0];
+        const date = order.order_date.split('T')[0];
         if (!grouped[date]) {
           grouped[date] = {
             date,

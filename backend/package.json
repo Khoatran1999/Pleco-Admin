@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
-    "test": "jest --runInBand"
+    "test": "jest --runInBand",
+    "lint": "eslint src --ext .js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.90.1",

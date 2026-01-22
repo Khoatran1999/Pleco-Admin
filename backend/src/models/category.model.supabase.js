@@ -3,13 +3,9 @@
  * Handles fish categories CRUD operations
  */
 
-const supabase = require("../config/supabase");
-const {
-  executeQuery,
-  applyFilters,
-  softDelete,
-} = require("../utils/supabase-query");
-const { sanitizeForLike } = require("../utils/security");
+const supabase = require('../config/supabase');
+const { executeQuery, softDelete } = require('../utils/supabase-query');
+const { sanitizeForLike } = require('../utils/security');
 
 const Category = {
   /**
@@ -17,16 +13,13 @@ const Category = {
    */
   async getAll(filters = {}) {
     return executeQuery(async () => {
-      let query = supabase
-        .from("fish_categories")
-        .select("*")
-        .order("name", { ascending: true });
+      let query = supabase.from('fish_categories').select('*').order('name', { ascending: true });
 
       // Apply active filter by default
       if (filters.is_active !== undefined) {
-        query = query.eq("is_active", filters.is_active);
+        query = query.eq('is_active', filters.is_active);
       } else {
-        query = query.eq("is_active", true);
+        query = query.eq('is_active', true);
       }
 
       // Apply search filter
@@ -44,11 +37,7 @@ const Category = {
    */
   async findById(id) {
     return executeQuery(async () => {
-      const result = await supabase
-        .from("fish_categories")
-        .select("*")
-        .eq("id", id)
-        .single();
+      const result = await supabase.from('fish_categories').select('*').eq('id', id).single();
 
       return result;
     });
@@ -59,9 +48,9 @@ const Category = {
    */
   async findByName(name) {
     const { data, error } = await supabase
-      .from("fish_categories")
-      .select("*")
-      .eq("name", name)
+      .from('fish_categories')
+      .select('*')
+      .eq('name', name)
       .maybeSingle();
 
     if (error) throw error;
@@ -76,7 +65,7 @@ const Category = {
 
     return executeQuery(async () => {
       const result = await supabase
-        .from("fish_categories")
+        .from('fish_categories')
         .insert({
           name,
           description,
@@ -102,9 +91,9 @@ const Category = {
 
     return executeQuery(async () => {
       const result = await supabase
-        .from("fish_categories")
+        .from('fish_categories')
         .update(updateData)
-        .eq("id", id)
+        .eq('id', id)
         .select()
         .single();
 
@@ -116,7 +105,7 @@ const Category = {
    * Delete category (soft delete)
    */
   async delete(id) {
-    return softDelete(supabase, "fish_categories", id);
+    return softDelete(supabase, 'fish_categories', id);
   },
 
   /**
@@ -124,10 +113,7 @@ const Category = {
    */
   async hardDelete(id) {
     return executeQuery(async () => {
-      const result = await supabase
-        .from("fish_categories")
-        .delete()
-        .eq("id", id);
+      const result = await supabase.from('fish_categories').delete().eq('id', id);
 
       return result;
     });
@@ -140,19 +126,19 @@ const Category = {
     return executeQuery(async () => {
       // First get all categories
       const { data: categories } = await supabase
-        .from("fish_categories")
-        .select("*")
-        .eq("is_active", true)
-        .order("name");
+        .from('fish_categories')
+        .select('*')
+        .eq('is_active', true)
+        .order('name');
 
       // Then get fish counts for each category
       const categoriesWithCount = await Promise.all(
         categories.map(async (category) => {
           const { count } = await supabase
-            .from("fishes")
-            .select("*", { count: "exact", head: true })
-            .eq("category_id", category.id)
-            .eq("is_active", true);
+            .from('fishes')
+            .select('*', { count: 'exact', head: true })
+            .eq('category_id', category.id)
+            .eq('is_active', true);
 
           return {
             ...category,
