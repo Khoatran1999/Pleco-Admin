@@ -12,6 +12,22 @@ This document records fixes and recommendations to make GitHub Actions and Verce
 
 - Use Node 20 for builds (the repo CI and Vercel should run Node 20). In Vercel, set the Node version in Project Settings if needed.
 
+### Fix: `vercel-build` script
+
+- Problem: Vercel sets `NODE_ENV=production` during installs. When the root `vercel-build` runs a nested `npm install` in `frontend`, devDependencies (including `vite`) are omitted and the build fails with `vite: command not found`.
+- Fix applied in this repo: the root `package.json` `vercel-build` now forces a development install for the frontend so build tools are present:
+
+```diff
+"vercel-build": "cd frontend && npm install && npm run build",
+"vercel-build": "cd frontend && NODE_ENV=development npm ci && npm run build",
+```
+
+If your Vercel environment doesn't accept the inline `NODE_ENV` syntax, an alternative is to set a Project Environment Variable for the build step:
+
+- Key: `NPM_CONFIG_PRODUCTION` Value: `false` (this causes `npm ci`/`npm install` to include devDependencies)
+
+Or explicitly install devDependencies in a build hook before running the build command.
+
 ## GitHub Actions (CI)
 
 - The repository CI (`.github/workflows/ci.yml`) already uses Node 20. The frontend job runs:
@@ -51,6 +67,15 @@ On Windows PowerShell:
 $env:PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = '1'
 cd frontend
 npm ci
+npm run build
+```
+
+If you need to reproduce the root `vercel-build` behavior locally (POSIX):
+
+```bash
+cd /path/to/repo
+cd frontend
+NODE_ENV=development npm ci
 npm run build
 ```
 
