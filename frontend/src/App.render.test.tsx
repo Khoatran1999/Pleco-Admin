@@ -3,8 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import App from './App';
 import { Provider } from 'react-redux';
 import { store } from './store';
-import { describe } from 'vitest';
-import { it } from 'node:test';
+// Use Vitest globals (`describe`, `it`, `expect`) provided by `vitest.config.ts`
 
 // jsdom (Vitest) does not provide ResizeObserver which some components (recharts)
 // rely on. Provide a minimal mock so components can mount in tests.
