@@ -7,9 +7,23 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
+package-lock.json.bak
+package.json.bak
+
+# Build outputs
+dist
 dist-ssr
 *.local
+frontend/dist
+backend/build
+
+# Test artifacts
+coverage
+test-results
+playwright-report
+.vitest
 
 # Editor directories and files
 .vscode/*
@@ -22,27 +36,40 @@ dist-ssr
 *.sln
 *.sw?
 
-# Electron build artifacts
+# AI tools directories
+.agent
+.claude
+.codex
+.cursor
+.gemini
+.opencode
+.shared
+
+# Database files
+*.db
 *.sqlite
 *.sqlite-journal
 *.sqlite-shm
 *.sqlite-wal
-build/*.ico
-
-# Database files
-*.db
 database/backups/
 database/fishmarket.db
 
-# Temporary scripts
+# Temporary/Debug scripts
 check-*.js
 test-*.js
 test-*.ps1
+debug-*.js
 fix-*.js
+migrate-*.js
+seed-*.js
 *-STATUS.md
 *-MIGRATION*.md
 *-COMPLETE.md
 *-RESULTS*.md
+
+# Backend uploads
+backend/uploads/*
+!backend/uploads/.gitkeep
 
 # Environment - NEVER COMMIT SECRETS!
 .env
