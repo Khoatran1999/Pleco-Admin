@@ -3,16 +3,15 @@ import axios from 'axios';
 function getApiBaseUrl() {
   try {
     // access import.meta.env safely for environments (like Vitest) where it may be undefined
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const v = (import.meta as any)?.env?.VITE_API_URL;
+    // @ts-expect-error - import.meta may not have env typed in some test environments
+    const v = (import.meta as unknown as { env?: { VITE_API_URL?: string } })?.env?.VITE_API_URL;
     if (v) return v;
-  } catch (e) {
+  } catch {
     // ignore
   }
   // fallback to process.env for node-based test runners
-  // @ts-ignore
-  return process?.env?.VITE_API_URL;
+  const nodeEnvUrl = typeof process !== 'undefined' ? (process as any).env?.VITE_API_URL : undefined;
+  return nodeEnvUrl;
 }
 
 const API_BASE_URL = getApiBaseUrl() || 'http://localhost:5000/api';

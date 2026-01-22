@@ -33,7 +33,7 @@ export default [
       "react/react-in-jsx-scope": "off",
 
       // ⚠️ Relax cho FE
-      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/no-explicit-any": "off",
     },
   },
 ];
