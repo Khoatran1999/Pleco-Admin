@@ -1,7 +1,21 @@
 import axios from "axios";
 
-const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+function getApiBaseUrl() {
+  try {
+    // access import.meta.env safely for environments (like Vitest) where it may be undefined
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const v = (import.meta as any)?.env?.VITE_API_URL;
+    if (v) return v;
+  } catch (e) {
+    // ignore
+  }
+  // fallback to process.env for node-based test runners
+  // @ts-ignore
+  return process?.env?.VITE_API_URL;
+}
+
+const API_BASE_URL = getApiBaseUrl() || "http://localhost:5000/api";
 export { API_BASE_URL };
 
 const api = axios.create({ baseURL: API_BASE_URL });
