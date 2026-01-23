@@ -6,6 +6,7 @@
 const supabase = require('../config/supabase');
 const { executeQuery, applyPagination, softDelete } = require('../utils/supabase-query');
 const { sanitizeForLike } = require('../utils/security');
+const Inventory = require('./inventory.model.supabase');
 
 const Fish = {
   /**
@@ -305,6 +306,9 @@ const Fish = {
       image,
       min_stock,
       is_active,
+      // optional: when provided, we also adjust inventory
+      stock,
+      userId,
     } = fishData;
 
     const updateData = {};
@@ -322,12 +326,26 @@ const Fish = {
     if (is_active !== undefined) updateData.is_active = is_active;
 
     return executeQuery(async () => {
+      // 1) Update fish master data
       const result = await supabase
         .from('fishes')
         .update(updateData)
         .eq('id', id)
         .select()
         .single();
+
+      // 2) If stock is provided, update inventory as well
+      if (stock !== undefined) {
+        // Use Inventory model to handle upsert + logging
+        await Inventory.updateQuantity(
+          id,
+          parseFloat(stock),
+          'adjustment',
+          null,
+          userId,
+          'Manual stock update via fish update',
+        );
+      }
 
       return result;
     });
