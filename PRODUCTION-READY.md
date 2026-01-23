@@ -37,14 +37,14 @@
 #### Local `.env` files (NOT committed)
 Create these files locally:
 
-**frontend/.env**
+**frontend/.env** (use `frontend/env.example` as a template)
 ```env
 VITE_SUPABASE_URL=your_supabase_url
 VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 VITE_API_URL=http://localhost:5000
 ```
 
-**backend/.env**
+**backend/.env** (use `backend/env.example` as a template)
 ```env
 SUPABASE_URL=your_supabase_url
 SUPABASE_SERVICE_ROLE_KEY=your_service_role_key

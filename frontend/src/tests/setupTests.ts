@@ -10,6 +10,19 @@ import { rest } from 'msw';
 
 const server = setupServer(
   // default handlers for report endpoints
+  rest.get('http://localhost:5000/api/reports/dashboard', (req, res, ctx) => {
+    return res(
+      ctx.json({
+        success: true,
+        data: {
+          totalRevenue: 0,
+          totalOrders: 0,
+          totalCustomers: 0,
+          lowStockCount: 0,
+        },
+      }),
+    );
+  }),
   rest.get('http://localhost:5000/api/reports/weekly-revenue', (req, res, ctx) => {
     return res(ctx.json({ success: true, data: [] }));
   }),
