@@ -191,7 +191,8 @@ Tạo file `frontend/.env` (tham khảo `frontend/env.example`):
 ```env
 VITE_SUPABASE_URL=https://your-project.supabase.co
 VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
-VITE_API_URL=http://localhost:5000
+# Vercel: dùng /api (relative) để gọi vào serverless function
+VITE_API_URL=/api
 ```
 
 ### Bước 4: Tạo tài khoản admin (tùy chọn)

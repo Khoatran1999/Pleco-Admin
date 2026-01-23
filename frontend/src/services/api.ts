@@ -4,7 +4,16 @@ function getApiBaseUrl() {
   try {
     // access import.meta.env safely for environments (like Vitest) where it may be undefined
     // @ts-expect-error - import.meta may not have env typed in some test environments
-    const v = (import.meta as unknown as { env?: { VITE_API_URL?: string } })?.env?.VITE_API_URL;
+    const env = (import.meta as unknown as { env?: { VITE_API_URL?: string; PROD?: boolean } })?.env;
+    const v = env?.VITE_API_URL;
+
+    // In production (e.g. Vercel), prefer relative API to avoid hardcoding localhost
+    if (env?.PROD) {
+      if (!v) return "/api";
+      // guard against accidentally deploying with localhost API URL
+      if (v.includes("localhost") || v.includes("127.0.0.1")) return "/api";
+    }
+
     if (v) return v;
   } catch {
     // ignore
@@ -15,7 +24,7 @@ function getApiBaseUrl() {
   return nodeEnvUrl;
 }
 
-const API_BASE_URL = getApiBaseUrl() || 'http://localhost:5000/api';
+const API_BASE_URL = getApiBaseUrl() || '/api';
 export { API_BASE_URL };
 
 const api = axios.create({ baseURL: API_BASE_URL });
