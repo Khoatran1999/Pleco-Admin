@@ -215,7 +215,12 @@ const Inventory = {
         created_by: userId,
       });
 
-      return { data: { success: true } };
+      return {
+        data: {
+          success: true,
+          new_quantity: quantityAfter,
+        },
+      };
     });
   },
 

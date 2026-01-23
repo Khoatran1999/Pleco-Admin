@@ -3,7 +3,8 @@ const Inventory = require("../models/inventory.model.supabase");
 const inventoryController = {
   async getAll(req, res, next) {
     try {
-      const inventory = await Inventory.getAll();
+      const result = await Inventory.getAll();
+      const inventory = result.data || [];
 
       res.json({
         success: true,
@@ -19,7 +20,8 @@ const inventoryController = {
 
   async getByFishId(req, res, next) {
     try {
-      const inventory = await Inventory.getByFishId(req.params.fishId);
+      const result = await Inventory.getByFishId(req.params.fishId);
+      const inventory = result.data;
 
       if (!inventory) {
         return res.status(404).json({
@@ -48,25 +50,21 @@ const inventoryController = {
         });
       }
 
-      let newQuantity;
+      // Load current inventory to calculate new quantity
+      const currentResult = await Inventory.getByFishId(fish_id);
+      const currentQuantity = currentResult?.data?.quantity || 0;
+
+      let targetQuantity = currentQuantity;
       if (type === "add") {
-        newQuantity = await Inventory.addStock(
-          fish_id,
-          quantity,
-          req.user.id,
-          note,
-          "adjustment",
-          null,
-        );
+        targetQuantity = currentQuantity + parseFloat(quantity);
       } else if (type === "reduce") {
-        newQuantity = await Inventory.reduceStock(
-          fish_id,
-          quantity,
-          req.user.id,
-          note,
-          "adjustment",
-          null,
-        );
+        targetQuantity = currentQuantity - parseFloat(quantity);
+        if (targetQuantity < 0) {
+          return res.status(400).json({
+            success: false,
+            message: "Resulting quantity cannot be negative.",
+          });
+        }
       } else {
         return res.status(400).json({
           success: false,
@@ -74,10 +72,20 @@ const inventoryController = {
         });
       }
 
+      // Persist new quantity & create log via generic helper
+      await Inventory.updateQuantity(
+        fish_id,
+        targetQuantity,
+        "adjustment",
+        null,
+        req.user.id,
+        note,
+      );
+
       res.json({
         success: true,
         message: "Stock adjusted successfully.",
-        data: { fish_id, new_quantity: newQuantity },
+        data: { fish_id, new_quantity: targetQuantity },
       });
     } catch (error) {
       next(error);
@@ -87,7 +95,11 @@ const inventoryController = {
   async getLogs(req, res, next) {
     try {
       const { fish_id, limit } = req.query;
-      const logs = await Inventory.getLogs(fish_id, parseInt(limit) || 50);
+      const result = await Inventory.getLogs({
+        fish_id,
+        limit: parseInt(limit) || 50,
+      });
+      const logs = result.data || [];
 
       res.json({
         success: true,
@@ -100,11 +112,11 @@ const inventoryController = {
 
   async getTotal(req, res, next) {
     try {
-      const total = await Inventory.getTotalInventory();
+      const summary = await Inventory.getSummary();
 
       res.json({
         success: true,
-        data: total,
+        data: summary.data,
       });
     } catch (error) {
       next(error);
@@ -114,7 +126,7 @@ const inventoryController = {
   // Record fish loss/damage
   async recordLoss(req, res, next) {
     try {
-      const { fish_id, quantity, loss_reason, note } = req.body;
+      const { fish_id, quantity, loss_reason } = req.body;
 
       if (!fish_id || quantity === undefined || quantity <= 0) {
         return res.status(400).json({
@@ -123,13 +135,13 @@ const inventoryController = {
         });
       }
 
-      const newQuantity = await Inventory.recordLoss(
+      const result = await Inventory.recordLoss(
         fish_id,
         quantity,
-        req.user.id,
         loss_reason,
-        note,
+        req.user.id,
       );
+      const newQuantity = result?.data?.new_quantity;
 
       res.json({
         success: true,
@@ -145,10 +157,12 @@ const inventoryController = {
   async getLossLogs(req, res, next) {
     try {
       const { fish_id, limit } = req.query;
-      const logs = await Inventory.getLossLogs(
-        fish_id ? parseInt(fish_id) : null,
-        parseInt(limit) || 50,
-      );
+      const result = await Inventory.getLogs({
+        fish_id: fish_id ? parseInt(fish_id) : undefined,
+        type: "loss",
+        limit: parseInt(limit) || 50,
+      });
+      const logs = result.data || [];
 
       res.json({
         success: true,
