@@ -1,9 +1,11 @@
-const Category = require("../models/category.model.supabase");
+const Category = require('../models/category.model.supabase');
 
 const categoryController = {
   async getAll(req, res, next) {
     try {
-      const categories = await Category.getAll();
+      const raw = await Category.getAll();
+      const categories = raw?.data ?? raw ?? [];
+
       res.json({
         success: true,
         data: categories,
@@ -22,7 +24,7 @@ const categoryController = {
       if (!category) {
         return res.status(404).json({
           success: false,
-          message: "Category not found.",
+          message: 'Category not found.',
         });
       }
       res.json({
@@ -41,7 +43,7 @@ const categoryController = {
       if (!name) {
         return res.status(400).json({
           success: false,
-          message: "Category name is required.",
+          message: 'Category name is required.',
         });
       }
 
@@ -50,7 +52,7 @@ const categoryController = {
       if (existing) {
         return res.status(400).json({
           success: false,
-          message: "Category with this name already exists.",
+          message: 'Category with this name already exists.',
         });
       }
 
@@ -58,7 +60,7 @@ const categoryController = {
 
       res.status(201).json({
         success: true,
-        message: "Category created successfully.",
+        message: 'Category created successfully.',
         data: category,
       });
     } catch (error) {
@@ -72,7 +74,7 @@ const categoryController = {
       if (!category) {
         return res.status(404).json({
           success: false,
-          message: "Category not found.",
+          message: 'Category not found.',
         });
       }
 
@@ -84,22 +86,21 @@ const categoryController = {
         if (existing) {
           return res.status(400).json({
             success: false,
-            message: "Category with this name already exists.",
+            message: 'Category with this name already exists.',
           });
         }
       }
 
       await Category.update(req.params.id, {
         name: name || category.name,
-        description:
-          description !== undefined ? description : category.description,
+        description: description !== undefined ? description : category.description,
       });
 
       const updatedCategory = await Category.findById(req.params.id);
 
       res.json({
         success: true,
-        message: "Category updated successfully.",
+        message: 'Category updated successfully.',
         data: updatedCategory,
       });
     } catch (error) {
@@ -113,7 +114,7 @@ const categoryController = {
       if (!category) {
         return res.status(404).json({
           success: false,
-          message: "Category not found.",
+          message: 'Category not found.',
         });
       }
 
@@ -121,7 +122,7 @@ const categoryController = {
 
       res.json({
         success: true,
-        message: "Category deleted successfully.",
+        message: 'Category deleted successfully.',
       });
     } catch (error) {
       next(error);

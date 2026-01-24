@@ -1,9 +1,10 @@
-const Customer = require("../models/customer.model.supabase");
+const Customer = require('../models/customer.model.supabase');
 
 const customerController = {
   async getAll(req, res, next) {
     try {
-      const customers = await Customer.getAll();
+      const raw = await Customer.getAll();
+      const customers = raw?.data ?? raw ?? [];
 
       res.json({
         success: true,
@@ -24,7 +25,7 @@ const customerController = {
       if (!customer) {
         return res.status(404).json({
           success: false,
-          message: "Customer not found.",
+          message: 'Customer not found.',
         });
       }
 
@@ -44,7 +45,7 @@ const customerController = {
       if (!q) {
         return res.status(400).json({
           success: false,
-          message: "Search query is required.",
+          message: 'Search query is required.',
         });
       }
 
@@ -66,7 +67,7 @@ const customerController = {
       if (!name) {
         return res.status(400).json({
           success: false,
-          message: "Customer name is required.",
+          message: 'Customer name is required.',
         });
       }
 
@@ -80,7 +81,7 @@ const customerController = {
 
       res.status(201).json({
         success: true,
-        message: "Customer created successfully.",
+        message: 'Customer created successfully.',
         data: customer,
       });
     } catch (error) {
@@ -95,7 +96,7 @@ const customerController = {
       if (!customer) {
         return res.status(404).json({
           success: false,
-          message: "Customer not found.",
+          message: 'Customer not found.',
         });
       }
 
@@ -104,7 +105,7 @@ const customerController = {
 
       res.json({
         success: true,
-        message: "Customer updated successfully.",
+        message: 'Customer updated successfully.',
         data: updatedCustomer,
       });
     } catch (error) {
@@ -119,7 +120,7 @@ const customerController = {
       if (!customer) {
         return res.status(404).json({
           success: false,
-          message: "Customer not found.",
+          message: 'Customer not found.',
         });
       }
 
@@ -127,7 +128,7 @@ const customerController = {
 
       res.json({
         success: true,
-        message: "Customer deleted successfully.",
+        message: 'Customer deleted successfully.',
       });
     } catch (error) {
       next(error);

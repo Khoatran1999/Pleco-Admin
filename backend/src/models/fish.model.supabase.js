@@ -75,10 +75,24 @@ const Fish = {
 
       const result = await query;
 
+      // Fetch all inventories separately and create a map for faster lookup
+      const { data: allInventories } = await supabase
+        .from('inventories')
+        .select('fish_id, quantity, last_updated');
+
+      const inventoryMap = new Map();
+      if (allInventories) {
+        allInventories.forEach((inv) => {
+          inventoryMap.set(inv.fish_id, inv);
+        });
+      }
+
       // Post-process to add stock status
       if (result.data) {
         result.data = result.data.map((fish) => {
-          const quantity = fish.inventories?.quantity || 0;
+          // Get inventory from map (more reliable than join)
+          const inventory = inventoryMap.get(fish.id);
+          const quantity = inventory?.quantity ?? 0;
           let status = 'Out of Stock';
 
           if (quantity > 0 && quantity <= fish.min_stock) {
@@ -92,6 +106,8 @@ const Fish = {
             stock: quantity,
             status,
             category_name: fish.fish_categories?.name,
+            // Remove inventories from join result to avoid confusion
+            inventories: undefined,
           };
         });
 
@@ -170,7 +186,14 @@ const Fish = {
         .single();
 
       if (result.data) {
-        const quantity = result.data.inventories?.quantity || 0;
+        // Query inventory separately for this fish
+        const { data: inventory } = await supabase
+          .from('inventories')
+          .select('quantity, last_updated')
+          .eq('fish_id', id)
+          .single();
+
+        const quantity = inventory?.quantity ?? 0;
         let status = 'Out of Stock';
 
         if (quantity > 0 && quantity <= result.data.min_stock) {
@@ -184,6 +207,8 @@ const Fish = {
           stock: quantity,
           status,
           category_name: result.data.fish_categories?.name,
+          // Remove inventories from join result to avoid confusion
+          inventories: undefined,
         };
       }
 
@@ -223,8 +248,8 @@ const Fish = {
    * Create new fish
    */
   async create(fishData, userId) {
+    let sku = fishData.sku;
     const {
-      sku,
       name,
       scientific_name,
       category_id,
@@ -240,6 +265,63 @@ const Fish = {
     } = fishData;
 
     return executeQuery(async () => {
+      // Ensure unique SKU: if missing or collides, auto-generate a unique one
+      const generateCandidateSku = (base) =>
+        `SKU-${base || 'X'}-${Date.now().toString().slice(-6)}-${Math.random()
+          .toString(36)
+          .substring(2, 6)
+          .toUpperCase()}`;
+
+      const ensureUniqueSku = async (desired) => {
+        let candidate = desired;
+        for (let i = 0; i < 8; i++) {
+          const { data: existing } = await supabase
+            .from('fishes')
+            .select('id')
+            .eq('sku', candidate)
+            .single();
+
+          if (!existing) return candidate;
+
+          // generate new candidate based on timestamp/random
+          candidate = generateCandidateSku((name || 'ITEM').replace(/\s+/g, '').toUpperCase().slice(0, 8));
+        }
+        const err = new Error('Unable to generate unique SKU. Try again.');
+        err.name = 'ValidationError';
+        throw err;
+      };
+
+      if (!sku) {
+        sku = await ensureUniqueSku(generateCandidateSku((name || 'ITEM').replace(/\s+/g, '').toUpperCase().slice(0, 8)));
+      } else {
+        // If provided SKU exists, auto-generate a unique one instead of failing
+        const { data: existingBySku } = await supabase
+          .from('fishes')
+          .select('id')
+          .eq('sku', sku)
+          .single();
+
+        if (existingBySku) {
+          sku = await ensureUniqueSku(generateCandidateSku((name || 'ITEM').replace(/\s+/g, '').toUpperCase().slice(0, 8)));
+        }
+      }
+
+      // Validate unique (name,size) combination
+      if (name && size) {
+        const { data: existingByNameSize } = await supabase
+          .from('fishes')
+          .select('id')
+          .eq('name', name)
+          .eq('size', size)
+          .single();
+
+        if (existingByNameSize) {
+          const err = new Error('Fish with the same name and size already exists.');
+          err.name = 'ValidationError';
+          throw err;
+        }
+      }
+
       // Start transaction-like operation
       // 1. Create fish
       const { data: fish, error: fishError } = await supabase
@@ -399,10 +481,23 @@ const Fish = {
         )
         .eq('is_active', true);
 
+      // Fetch all inventories separately
+      const { data: allInventories } = await supabase
+        .from('inventories')
+        .select('fish_id, quantity');
+
+      const inventoryMap = new Map();
+      if (allInventories) {
+        allInventories.forEach((inv) => {
+          inventoryMap.set(inv.fish_id, inv);
+        });
+      }
+
       // Filter where quantity <= min_stock and quantity > 0
       const lowStockFishes =
         fishes?.filter((fish) => {
-          const qty = fish.inventories?.quantity || 0;
+          const inventory = inventoryMap.get(fish.id);
+          const qty = inventory?.quantity ?? 0;
           return qty > 0 && qty <= fish.min_stock;
         }) || [];
 
@@ -426,10 +521,23 @@ const Fish = {
         )
         .eq('is_active', true);
 
+      // Fetch all inventories separately
+      const { data: allInventories } = await supabase
+        .from('inventories')
+        .select('fish_id, quantity');
+
+      const inventoryMap = new Map();
+      if (allInventories) {
+        allInventories.forEach((inv) => {
+          inventoryMap.set(inv.fish_id, inv);
+        });
+      }
+
       // Filter where quantity = 0
       const outOfStockFishes =
         fishes?.filter((fish) => {
-          const qty = fish.inventories?.quantity || 0;
+          const inventory = inventoryMap.get(fish.id);
+          const qty = inventory?.quantity ?? 0;
           return qty === 0;
         }) || [];
 

@@ -31,9 +31,10 @@ function handleResponse(response) {
 async function executeQuery(queryFn) {
   try {
     const response = await queryFn();
-    return handleResponse(response);
+    const data = handleResponse(response);
+    return { data };
   } catch (error) {
-    console.error("Query error:", error);
+    console.error('Query error:', error);
     throw error;
   }
 }
@@ -48,29 +49,29 @@ function applyFilters(query, filters = {}) {
   let filteredQuery = query;
 
   Object.entries(filters).forEach(([key, value]) => {
-    if (value !== undefined && value !== null && value !== "") {
-      if (typeof value === "object" && value.operator) {
+    if (value !== undefined && value !== null && value !== '') {
+      if (typeof value === 'object' && value.operator) {
         // Advanced filter with operator
         switch (value.operator) {
-          case "like":
+          case 'like':
             filteredQuery = filteredQuery.like(key, `%${value.value}%`);
             break;
-          case "ilike":
+          case 'ilike':
             filteredQuery = filteredQuery.ilike(key, `%${value.value}%`);
             break;
-          case "gt":
+          case 'gt':
             filteredQuery = filteredQuery.gt(key, value.value);
             break;
-          case "gte":
+          case 'gte':
             filteredQuery = filteredQuery.gte(key, value.value);
             break;
-          case "lt":
+          case 'lt':
             filteredQuery = filteredQuery.lt(key, value.value);
             break;
-          case "lte":
+          case 'lte':
             filteredQuery = filteredQuery.lte(key, value.value);
             break;
-          case "in":
+          case 'in':
             filteredQuery = filteredQuery.in(key, value.value);
             break;
           default:
@@ -106,7 +107,7 @@ function applyPagination(query, page = 1, limit = 10) {
  * @param {boolean} ascending - Sort direction
  * @returns {Object} Query with sorting
  */
-function applySort(query, column = "id", ascending = true) {
+function applySort(query, column = 'id', ascending = true) {
   return query.order(column, { ascending });
 }
 
@@ -118,9 +119,7 @@ function applySort(query, column = "id", ascending = true) {
  * @returns {Promise<any>} Update result
  */
 async function softDelete(supabase, table, id) {
-  return executeQuery(() =>
-    supabase.from(table).update({ is_active: false }).eq("id", id),
-  );
+  return executeQuery(() => supabase.from(table).update({ is_active: false }).eq('id', id));
 }
 
 /**
@@ -131,7 +130,7 @@ async function softDelete(supabase, table, id) {
  * @returns {Promise<number>} Count
  */
 async function getCount(supabase, table, filters = {}) {
-  let query = supabase.from(table).select("*", { count: "exact", head: true });
+  let query = supabase.from(table).select('*', { count: 'exact', head: true });
 
   query = applyFilters(query, filters);
 

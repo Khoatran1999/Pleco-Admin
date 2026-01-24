@@ -1,9 +1,10 @@
-const Supplier = require("../models/supplier.model.supabase");
+const Supplier = require('../models/supplier.model.supabase');
 
 const supplierController = {
   async getAll(req, res, next) {
     try {
-      const suppliers = await Supplier.getAll();
+      const raw = await Supplier.getAll();
+      const suppliers = raw?.data ?? raw ?? [];
 
       res.json({
         success: true,
@@ -24,7 +25,7 @@ const supplierController = {
       if (!supplier) {
         return res.status(404).json({
           success: false,
-          message: "Supplier not found.",
+          message: 'Supplier not found.',
         });
       }
 
@@ -41,14 +42,12 @@ const supplierController = {
     try {
       const { name, contact_person, email, phone, address } = req.body;
       // handle uploaded file
-      const avatarPath = req.file
-        ? `/uploads/suppliers/${req.file.filename}`
-        : null;
+      const avatarPath = req.file ? `/uploads/suppliers/${req.file.filename}` : null;
 
       if (!name) {
         return res.status(400).json({
           success: false,
-          message: "Supplier name is required.",
+          message: 'Supplier name is required.',
         });
       }
 
@@ -63,7 +62,7 @@ const supplierController = {
 
       res.status(201).json({
         success: true,
-        message: "Supplier created successfully.",
+        message: 'Supplier created successfully.',
         data: supplier,
       });
     } catch (error) {
@@ -78,14 +77,12 @@ const supplierController = {
       if (!supplier) {
         return res.status(404).json({
           success: false,
-          message: "Supplier not found.",
+          message: 'Supplier not found.',
         });
       }
 
       // handle uploaded file
-      const avatarPath = req.file
-        ? `/uploads/suppliers/${req.file.filename}`
-        : null;
+      const avatarPath = req.file ? `/uploads/suppliers/${req.file.filename}` : null;
       const updateData = { ...req.body };
       if (avatarPath) updateData.avatar = avatarPath;
 
@@ -94,7 +91,7 @@ const supplierController = {
 
       res.json({
         success: true,
-        message: "Supplier updated successfully.",
+        message: 'Supplier updated successfully.',
         data: updatedSupplier,
       });
     } catch (error) {
@@ -109,7 +106,7 @@ const supplierController = {
       if (!supplier) {
         return res.status(404).json({
           success: false,
-          message: "Supplier not found.",
+          message: 'Supplier not found.',
         });
       }
 
@@ -117,7 +114,7 @@ const supplierController = {
 
       res.json({
         success: true,
-        message: "Supplier deleted successfully.",
+        message: 'Supplier deleted successfully.',
       });
     } catch (error) {
       next(error);

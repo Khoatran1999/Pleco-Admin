@@ -1,4 +1,4 @@
-const Fish = require("../models/fish.model.supabase");
+const Fish = require('../models/fish.model.supabase');
 
 const fishController = {
   async getAll(req, res, next) {
@@ -6,7 +6,8 @@ const fishController = {
       const { category_id, size, status, search, limit, offset } = req.query;
       const filters = { category_id, size, status, search, limit, offset };
 
-      const fishes = await Fish.getAll(filters);
+      const raw = await Fish.getAll(filters);
+      const fishes = raw?.data ?? raw ?? [];
       const total = await Fish.count(filters);
 
       res.json({
@@ -30,7 +31,7 @@ const fishController = {
       if (!fish) {
         return res.status(404).json({
           success: false,
-          message: "Fish not found.",
+          message: 'Fish not found.',
         });
       }
 
@@ -63,7 +64,7 @@ const fishController = {
       if (!name) {
         return res.status(400).json({
           success: false,
-          message: "Name is required.",
+          message: 'Name is required.',
         });
       }
 
@@ -90,7 +91,7 @@ const fishController = {
 
       res.status(201).json({
         success: true,
-        message: "Fish created successfully.",
+        message: 'Fish created successfully.',
         data: fish,
       });
     } catch (error) {
@@ -105,7 +106,7 @@ const fishController = {
       if (!fish) {
         return res.status(404).json({
           success: false,
-          message: "Fish not found.",
+          message: 'Fish not found.',
         });
       }
 
@@ -114,7 +115,7 @@ const fishController = {
 
       res.json({
         success: true,
-        message: "Fish updated successfully.",
+        message: 'Fish updated successfully.',
         data: updatedFish,
       });
     } catch (error) {
@@ -129,7 +130,7 @@ const fishController = {
       if (!fish) {
         return res.status(404).json({
           success: false,
-          message: "Fish not found.",
+          message: 'Fish not found.',
         });
       }
 
@@ -137,7 +138,7 @@ const fishController = {
 
       res.json({
         success: true,
-        message: "Fish deleted successfully.",
+        message: 'Fish deleted successfully.',
       });
     } catch (error) {
       next(error);

@@ -1,4 +1,4 @@
-const ImportOrder = require("../models/importOrder.model.supabase");
+const ImportOrder = require('../models/importOrder.model.supabase');
 
 /**
  * Transform raw order data to include flattened supplier info
@@ -21,7 +21,8 @@ const importOrderController = {
       const { status, supplier_id, limit } = req.query;
       const filters = { status, supplier_id, limit };
 
-      const orders = await ImportOrder.getAll(filters);
+      const raw = await ImportOrder.getAll(filters);
+      const orders = raw?.data ?? raw ?? [];
 
       // Transform orders to flatten nested supplier/user data
       const transformedOrders = orders.map(transformOrder);
@@ -46,7 +47,7 @@ const importOrderController = {
       if (!order) {
         return res.status(404).json({
           success: false,
-          message: "Import order not found.",
+          message: 'Import order not found.',
         });
       }
 
@@ -61,13 +62,12 @@ const importOrderController = {
 
   async create(req, res, next) {
     try {
-      const { supplier_id, expected_delivery, notes, items, total_amount } =
-        req.body;
+      const { supplier_id, expected_delivery, notes, items, total_amount } = req.body;
 
       if (!supplier_id || !items || items.length === 0) {
         return res.status(400).json({
           success: false,
-          message: "Supplier ID and at least one item are required.",
+          message: 'Supplier ID and at least one item are required.',
         });
       }
 
@@ -76,16 +76,13 @@ const importOrderController = {
         if (!item.fish_id || !item.quantity || !item.unit_price) {
           return res.status(400).json({
             success: false,
-            message: "Each item must have fish_id, quantity, and unit_price.",
+            message: 'Each item must have fish_id, quantity, and unit_price.',
           });
         }
       }
 
       // Generate order number
-      const randomSuffix = Math.random()
-        .toString(36)
-        .substring(2, 8)
-        .toUpperCase();
+      const randomSuffix = Math.random().toString(36).substring(2, 8).toUpperCase();
       const order_number = `IO-${Date.now()}-${randomSuffix}`;
 
       const result = await ImportOrder.create(
@@ -106,7 +103,7 @@ const importOrderController = {
 
       res.status(201).json({
         success: true,
-        message: "Import order created successfully.",
+        message: 'Import order created successfully.',
         data: order,
       });
     } catch (error) {
@@ -117,13 +114,12 @@ const importOrderController = {
   async updateStatus(req, res, next) {
     try {
       const { status, total_amount } = req.body;
-      const validStatuses = ["pending", "confirmed", "delivered", "cancelled"];
+      const validStatuses = ['pending', 'confirmed', 'delivered', 'cancelled'];
 
       if (!status || !validStatuses.includes(status)) {
         return res.status(400).json({
           success: false,
-          message:
-            "Valid status is required (pending, confirmed, delivered, cancelled).",
+          message: 'Valid status is required (pending, confirmed, delivered, cancelled).',
         });
       }
 
@@ -132,16 +128,11 @@ const importOrderController = {
       if (!order) {
         return res.status(404).json({
           success: false,
-          message: "Import order not found.",
+          message: 'Import order not found.',
         });
       }
 
-      await ImportOrder.updateStatus(
-        req.params.id,
-        status,
-        req.user.id,
-        total_amount,
-      );
+      await ImportOrder.updateStatus(req.params.id, status, req.user.id, total_amount);
 
       const updatedOrder = await ImportOrder.findById(req.params.id);
 
@@ -162,14 +153,14 @@ const importOrderController = {
       if (!order) {
         return res.status(404).json({
           success: false,
-          message: "Import order not found.",
+          message: 'Import order not found.',
         });
       }
 
-      if (order.status !== "pending") {
+      if (order.status !== 'pending') {
         return res.status(400).json({
           success: false,
-          message: "Only pending orders can be deleted.",
+          message: 'Only pending orders can be deleted.',
         });
       }
 
@@ -177,7 +168,7 @@ const importOrderController = {
 
       res.json({
         success: true,
-        message: "Import order deleted successfully.",
+        message: 'Import order deleted successfully.',
       });
     } catch (error) {
       next(error);

@@ -1,4 +1,4 @@
-const SaleOrder = require("../models/saleOrder.model.supabase");
+const SaleOrder = require('../models/saleOrder.model.supabase');
 
 /**
  * Transform raw order data to include flattened customer info
@@ -23,7 +23,8 @@ const saleOrderController = {
       const { status, customer_id, date_from, date_to, limit } = req.query;
       const filters = { status, customer_id, date_from, date_to, limit };
 
-      const orders = await SaleOrder.getAll(filters);
+      const raw = await SaleOrder.getAll(filters);
+      const orders = raw?.data ?? raw ?? [];
 
       // Transform orders to flatten nested customer/user data
       const transformedOrders = orders.map(transformOrder);
@@ -48,7 +49,7 @@ const saleOrderController = {
       if (!order) {
         return res.status(404).json({
           success: false,
-          message: "Sale order not found.",
+          message: 'Sale order not found.',
         });
       }
 
@@ -78,7 +79,7 @@ const saleOrderController = {
       if (!items || items.length === 0) {
         return res.status(400).json({
           success: false,
-          message: "At least one item is required.",
+          message: 'At least one item is required.',
         });
       }
 
@@ -87,7 +88,7 @@ const saleOrderController = {
         if (!item.fish_id || !item.quantity || !item.unit_price) {
           return res.status(400).json({
             success: false,
-            message: "Each item must have fish_id, quantity, and unit_price.",
+            message: 'Each item must have fish_id, quantity, and unit_price.',
           });
         }
       }
@@ -112,7 +113,7 @@ const saleOrderController = {
 
       res.status(201).json({
         success: true,
-        message: "Sale order created successfully.",
+        message: 'Sale order created successfully.',
         data: order,
       });
     } catch (error) {
@@ -123,13 +124,12 @@ const saleOrderController = {
   async updateStatus(req, res, next) {
     try {
       const { status } = req.body;
-      const validStatuses = ["pending", "processing", "completed", "cancelled"];
+      const validStatuses = ['pending', 'processing', 'completed', 'cancelled'];
 
       if (!status || !validStatuses.includes(status)) {
         return res.status(400).json({
           success: false,
-          message:
-            "Valid status is required (pending, processing, completed, cancelled).",
+          message: 'Valid status is required (pending, processing, completed, cancelled).',
         });
       }
 
@@ -138,11 +138,11 @@ const saleOrderController = {
       if (!order) {
         return res.status(404).json({
           success: false,
-          message: "Sale order not found.",
+          message: 'Sale order not found.',
         });
       }
 
-      if (status === "cancelled") {
+      if (status === 'cancelled') {
         await SaleOrder.cancel(req.params.id, req.user.id);
       } else {
         await SaleOrder.updateStatus(req.params.id, status, req.user.id);
@@ -166,9 +166,7 @@ const saleOrderController = {
 
       const order = await SaleOrder.findById(req.params.id);
       if (!order) {
-        return res
-          .status(404)
-          .json({ success: false, message: "Sale order not found." });
+        return res.status(404).json({ success: false, message: 'Sale order not found.' });
       }
 
       await SaleOrder.updateOrder(
@@ -178,7 +176,7 @@ const saleOrderController = {
       );
 
       const updated = await SaleOrder.findById(req.params.id);
-      res.json({ success: true, message: "Order updated.", data: updated });
+      res.json({ success: true, message: 'Order updated.', data: updated });
     } catch (error) {
       next(error);
     }
