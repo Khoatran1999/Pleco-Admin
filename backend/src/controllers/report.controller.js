@@ -1,4 +1,4 @@
-const Report = require("../models/report.model.supabase");
+const Report = require('../models/report.model.supabase');
 
 const reportController = {
   async getDashboardStats(req, res, next) {
@@ -8,7 +8,7 @@ const reportController = {
 
       // Calculate percentage changes
       const revenueChange =
-        (stats.revenue && stats.revenue.last_week_revenue > 0)
+        stats.revenue && stats.revenue.last_week_revenue > 0
           ? (
               ((stats.revenue.this_week_revenue - stats.revenue.last_week_revenue) /
                 stats.revenue.last_week_revenue) *
@@ -60,7 +60,7 @@ const reportController = {
       const raw = result && result.data ? result.data : result;
 
       // Assign colors
-      const colors = ["#136dec", "#2dd4bf", "#818cf8", "#94a3b8"];
+      const colors = ['#136dec', '#2dd4bf', '#818cf8', '#94a3b8'];
       const dataWithColors = (Array.isArray(raw) ? raw : []).map((item, index) => ({
         ...item,
         color: colors[index % colors.length],
@@ -82,18 +82,18 @@ const reportController = {
       if (!date_from || !date_to) {
         return res.status(400).json({
           success: false,
-          message: "Date range is required (date_from and date_to).",
+          message: 'Date range is required (date_from and date_to).',
         });
       }
 
-      const summaryResult = await Report.getReportSummaryWithComparison(
-        date_from,
-        date_to,
-      );
+      const summaryResult = await Report.getReportSummaryWithComparison(date_from, date_to);
       const summary = summaryResult && summaryResult.data ? summaryResult.data : summaryResult;
 
       const revenueByDateResult = await Report.getRevenueByDate(date_from, date_to);
-      const revenueByDate = revenueByDateResult && revenueByDateResult.data ? revenueByDateResult.data : revenueByDateResult;
+      const revenueByDate =
+        revenueByDateResult && revenueByDateResult.data
+          ? revenueByDateResult.data
+          : revenueByDateResult;
 
       res.json({
         success: true,
